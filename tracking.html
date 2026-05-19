@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="تتبع المواصلات في مصر — تتبع وهمي مباشر، مواعيد وهمية، وحساب رحلة على الخريطة من مواصلاتي إكسبريس.">
+<title>التتبع والمواعيد — مواصلاتي إكسبريس</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+<style>
+:root{
+  --gold:#C9A84C;
+  --gold2:#E8C97A;
+  --gold3:#A07828;
+  --gold4:#6B4F14;
+  --cream:#F5EDD6;
+  --ink:#0C0A06;
+  --ink2:#181410;
+  --ink3:#221D14;
+  --ink4:#2E2718;
+  --sand:#8B7355;
+  --sand2:#C4A882;
+  --muted:#7A6E5E;
+  --muted2:#9E9282;
+  --border:rgba(201,168,76,0.15);
+  --border2:rgba(201,168,76,0.3);
+  --success:#72d572;
+  --danger:#ff6b6b;
+  --blue:#7AB0FF;
+  --r:16px;
+  --r2:24px;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;font-size:16px;}
+body{
+  font-family:'Tajawal',sans-serif;
+  background:var(--ink);
+  color:var(--cream);
+  overflow-x:hidden;
+  cursor:none;
+}
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none;
+  z-index:9997;
+  opacity:.4;
+}
+
+#cursor{
+  position:fixed;width:12px;height:12px;
+  background:var(--gold);border-radius:50%;
+  pointer-events:none;z-index:99999;
+  transform:translate(-50%,-50%);
+  transition:transform .1s,width .25s,height .25s,background .25s;
+  mix-blend-mode:screen;
+}
+#cursor-ring{
+  position:fixed;width:36px;height:36px;
+  border:1.5px solid rgba(201,168,76,0.5);
+  border-radius:50%;pointer-events:none;
+  z-index:99998;transform:translate(-50%,-50%);
+  transition:all .18s ease;
+}
+
+/* NAV */
+nav{
+  position:fixed;top:0;inset-inline:0;z-index:1000;
+  height:72px;display:flex;justify-content:space-between;align-items:center;
+  padding:0 60px;
+  transition:all .4s;
+}
+nav.scrolled{
+  background:rgba(12,10,6,0.92);
+  backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.nav-logo-icon{
+  width:38px;height:38px;
+  background:linear-gradient(135deg,var(--gold4),var(--gold));
+  border-radius:10px;display:flex;align-items:center;justify-content:center;
+  color:var(--ink);position:relative;overflow:hidden;
+}
+.nav-logo-icon::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.2),transparent);
+}
+.nav-logo-text{font-size:17px;font-weight:800;color:var(--gold2);letter-spacing:-.3px;}
+.nav-logo-text span{color:var(--muted2);font-weight:400;font-size:13px;display:block;line-height:1;}
+.nav-links{display:flex;align-items:center;gap:2px;}
+.nav-links a{
+  padding:8px 16px;border-radius:8px;
+  font-size:14px;font-weight:500;color:var(--muted2);
+  text-decoration:none;transition:all .2s;position:relative;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:4px;right:50%;left:50%;
+  height:1.5px;background:var(--gold);border-radius:2px;
+  transition:all .3s;
+}
+.nav-links a:hover{color:var(--cream);}
+.nav-links a:hover::after,.nav-links a.active::after{right:16px;left:16px;}
+.nav-links a.active{color:var(--gold2);}
+.nav-actions{display:flex;gap:10px;align-items:center;}
+.btn-ghost,.btn-primary{
+  border:none;
+  font-family:'Tajawal',sans-serif;
+  cursor:none;
+}
+.btn-ghost{
+  padding:9px 20px;border-radius:9px;font-size:14px;font-weight:600;
+  border:1px solid var(--border2);color:var(--sand2);
+  background:transparent;transition:all .25s;
+}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.06);}
+.btn-primary{
+  padding:9px 22px;border-radius:9px;font-size:14px;font-weight:800;
+  background:linear-gradient(135deg,var(--gold3),var(--gold));
+  color:var(--ink);transition:all .25s;position:relative;overflow:hidden;
+}
+.btn-primary::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.15),transparent);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,168,76,.3);}
+
+/* HERO */
+.tracking-hero{
+  position:relative;
+  min-height:520px;
+  padding:150px 80px 80px;
+  display:flex;
+  align-items:center;
+  overflow:hidden;
+}
+.hero-bg-img{
+  position:absolute;inset:0;
+  background:url('bg.jpg') center/cover no-repeat;
+  transform:scale(1.08);
+  animation:heroZoom 18s ease-in-out infinite alternate;
+}
+@keyframes heroZoom{
+  0%{transform:scale(1.08) translateX(0);}
+  100%{transform:scale(1.14) translateX(-20px);}
+}
+.hero-overlay{
+  position:absolute;inset:0;
+  background:
+    linear-gradient(to bottom,rgba(12,10,6,.34),rgba(12,10,6,.78) 68%,var(--ink) 100%),
+    linear-gradient(to left,rgba(12,10,6,.62),transparent 60%);
+}
+.hero-pattern{
+  position:absolute;inset:0;opacity:.06;
+  background-image:
+    repeating-linear-gradient(45deg,var(--gold) 0,var(--gold) 1px,transparent 0,transparent 50%),
+    repeating-linear-gradient(-45deg,var(--gold) 0,var(--gold) 1px,transparent 0,transparent 50%);
+  background-size:30px 30px;
+}
+.hero-inner{
+  width:100%;
+  max-width:1180px;
+  margin:auto;
+  position:relative;
+  z-index:2;
+  display:grid;
+  grid-template-columns:1fr .85fr;
+  gap:60px;
+  align-items:center;
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:7px 20px;border-radius:50px;
+  border:1px solid var(--border2);
+  background:rgba(201,168,76,.08);
+  backdrop-filter:blur(10px);
+  font-size:13px;font-weight:700;color:var(--gold2);
+  letter-spacing:.06em;margin-bottom:26px;
+  animation:fadeUp .8s .2s both;
+}
+.hero-live-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--gold);
+  box-shadow:0 0 0 0 rgba(201,168,76,.6);
+  animation:liveRing 2s infinite;
+}
+@keyframes liveRing{
+  0%{box-shadow:0 0 0 0 rgba(201,168,76,.6);}
+  70%{box-shadow:0 0 0 8px rgba(201,168,76,0);}
+  100%{box-shadow:0 0 0 0 rgba(201,168,76,0);}
+}
+.hero-title{
+  font-size:clamp(42px,6vw,76px);
+  font-weight:900;line-height:1.05;letter-spacing:-3px;
+  margin-bottom:20px;
+  animation:fadeUp .8s .35s both;
+}
+.hero-title em{
+  font-style:normal;
+  background:linear-gradient(90deg,var(--gold3),var(--gold2),var(--gold));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero-sub{
+  font-size:17px;font-weight:400;color:var(--sand2);
+  line-height:1.9;max-width:570px;
+  animation:fadeUp .8s .5s both;
+}
+.hero-card{
+  background:rgba(18,15,9,.78);
+  backdrop-filter:blur(26px);
+  border:1px solid var(--border2);
+  border-radius:var(--r2);
+  padding:28px;
+  box-shadow:0 24px 70px rgba(0,0,0,.45);
+  animation:fadeUp .85s .55s both;
+}
+.hero-card-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:20px;
+}
+.hero-card h3{font-size:21px;font-weight:900;letter-spacing:-.5px;}
+.live-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:6px 12px;
+  border-radius:999px;
+  background:rgba(115,214,115,.1);
+  border:1px solid rgba(115,214,115,.22);
+  color:#9df09d;
+  font-size:12px;
+  font-weight:800;
+}
+.quick-summary{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+}
+.quick-summary div{
+  background:rgba(255,255,255,.04);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:16px 12px;
+  text-align:center;
+}
+.quick-summary span{
+  display:block;
+  color:var(--muted2);
+  font-size:11px;
+  font-weight:800;
+  margin-bottom:6px;
+}
+.quick-summary strong{
+  display:block;
+  color:var(--gold2);
+  font-size:20px;
+  font-weight:900;
+}
+
+/* COMMON */
+.main{
+  padding:90px 80px 100px;
+  background:var(--ink);
+}
+.wrap{max-width:1180px;margin:auto;}
+.block{
+  margin-bottom:44px;
+}
+.section-head{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  gap:24px;flex-wrap:wrap;margin-bottom:24px;
+}
+.sec-label{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:11px;font-weight:900;color:var(--gold);
+  letter-spacing:.14em;text-transform:uppercase;
+  margin-bottom:14px;
+}
+.sec-label::before,.sec-label::after{
+  content:'';display:block;height:1px;width:24px;
+  background:linear-gradient(90deg,transparent,var(--gold));
+}
+.sec-label::before{background:linear-gradient(270deg,transparent,var(--gold));}
+.sec-title{
+  font-size:clamp(30px,4vw,46px);font-weight:900;
+  letter-spacing:-1.6px;line-height:1.1;
+}
+.sec-title em{
+  font-style:normal;
+  background:linear-gradient(90deg,var(--gold3),var(--gold2));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.sec-sub{font-size:15px;color:var(--muted2);line-height:1.75;max-width:520px;}
+.panel{
+  background:var(--ink3);
+  border:1px solid var(--border);
+  border-radius:var(--r2);
+  padding:26px;
+  position:relative;
+  overflow:hidden;
+}
+.panel::before{
+  content:'';
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(201,168,76,.055),transparent 60%);
+  pointer-events:none;
+}
+.panel > *{position:relative;z-index:1;}
+.panel-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:16px;
+  margin-bottom:22px;
+}
+.panel-title h3{font-size:22px;font-weight:900;letter-spacing:-.5px;margin-bottom:5px;}
+.panel-title span{font-size:13px;color:var(--muted2);font-weight:700;line-height:1.5;}
+
+/* SECTION 1: LIVE TRACKING */
+.tracking-board{
+  display:grid;
+  grid-template-columns:330px 1fr;
+  gap:22px;
+  align-items:start;
+}
+.transport-list{display:flex;flex-direction:column;gap:10px;}
+.transport-btn{
+  width:100%;
+  border:none;
+  border-radius:16px;
+  background:rgba(255,255,255,.04);
+  border:1px solid var(--border);
+  color:var(--cream);
+  cursor:none;
+  font-family:'Tajawal',sans-serif;
+  padding:15px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  transition:.25s;
+}
+.transport-btn:hover,
+.transport-btn.active{
+  background:rgba(201,168,76,.09);
+  border-color:var(--border2);
+  transform:translateY(-2px);
+}
+.transport-main{display:flex;align-items:center;gap:12px;}
+.transport-main i{
+  width:42px;height:42px;
+  border-radius:13px;
+  background:rgba(201,168,76,.1);
+  border:1px solid var(--border2);
+  color:var(--gold);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+}
+.transport-main strong{display:block;text-align:right;font-size:15px;font-weight:900;margin-bottom:3px;}
+.transport-main span{display:block;text-align:right;font-size:12px;color:var(--muted2);font-weight:700;}
+.transport-eta{color:var(--gold2);font-weight:900;font-size:13px;white-space:nowrap;}
+
+.map-panel{padding:0;overflow:hidden;}
+.fake-map{
+  position:relative;
+  height:430px;
+  background:
+    radial-gradient(circle at 20% 20%,rgba(201,168,76,.12),transparent 25%),
+    radial-gradient(circle at 80% 70%,rgba(122,176,255,.1),transparent 24%),
+    linear-gradient(145deg,var(--ink2),#100d08);
+  overflow:hidden;
+}
+.map-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(201,168,76,.06) 1px, transparent 1px),
+    linear-gradient(90deg,rgba(201,168,76,.06) 1px, transparent 1px);
+  background-size:48px 48px;
+  opacity:.7;
+}
+.map-road{
+  position:absolute;height:5px;
+  background:rgba(201,168,76,.16);
+  border-radius:999px;
+  transform-origin:center;
+}
+.road-1{width:75%;top:25%;right:10%;transform:rotate(-10deg);}
+.road-2{width:85%;top:58%;right:4%;transform:rotate(18deg);}
+.road-3{width:55%;top:76%;right:25%;transform:rotate(-22deg);}
+.road-4{width:50%;top:43%;right:30%;transform:rotate(90deg);}
+.fake-route{position:absolute;inset:58px 68px;}
+.route-svg{width:100%;height:100%;overflow:visible;}
+.route-svg path.bg{
+  stroke:rgba(255,255,255,.1);
+  stroke-width:8;
+  fill:none;
+  stroke-linecap:round;
+}
+.route-svg path.active{
+  stroke:url(#goldGradient);
+  stroke-width:7;
+  fill:none;
+  stroke-linecap:round;
+  stroke-dasharray:900;
+  stroke-dashoffset:520;
+  transition:stroke-dashoffset .8s ease;
+  filter:drop-shadow(0 0 10px rgba(201,168,76,.35));
+}
+.map-marker{
+  position:absolute;
+  width:46px;height:46px;
+  border-radius:15px;
+  background:linear-gradient(135deg,var(--gold4),var(--gold));
+  color:var(--ink);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;
+  box-shadow:0 16px 34px rgba(201,168,76,.32);
+  transition:all .85s cubic-bezier(.22,1,.36,1);
+  z-index:4;
+}
+.map-marker::after{
+  content:'';
+  position:absolute;inset:-8px;
+  border:1px solid rgba(201,168,76,.4);
+  border-radius:19px;
+  animation:markerPulse 1.8s infinite;
+}
+@keyframes markerPulse{
+  0%{transform:scale(.85);opacity:.9;}
+  100%{transform:scale(1.35);opacity:0;}
+}
+.station{
+  position:absolute;
+  display:flex;align-items:center;gap:8px;
+  background:rgba(12,10,6,.6);
+  border:1px solid var(--border);
+  backdrop-filter:blur(12px);
+  border-radius:999px;
+  padding:7px 12px;
+  font-size:12px;color:var(--sand2);font-weight:800;
+}
+.station::before{
+  content:'';
+  width:8px;height:8px;border-radius:50%;
+  background:var(--gold);
+}
+.station.start{right:10%;top:16%;}
+.station.mid{left:34%;top:47%;}
+.station.end{left:8%;bottom:14%;}
+.map-bottom{
+  position:absolute;
+  right:20px;left:20px;bottom:20px;
+  display:flex;justify-content:space-between;align-items:center;
+  gap:14px;
+  background:rgba(12,10,6,.7);
+  border:1px solid var(--border2);
+  backdrop-filter:blur(16px);
+  border-radius:18px;
+  padding:14px 16px;
+}
+.map-bottom strong{font-size:15px;font-weight:900;}
+.map-bottom span{font-size:12px;color:var(--muted2);font-weight:700;}
+.map-status{display:inline-flex;align-items:center;gap:7px;color:#9df09d;font-size:12px;font-weight:900;}
+.map-status i{font-size:9px;}
+
+.details-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin-top:14px;
+}
+.detail-card{
+  background:rgba(255,255,255,.035);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:17px;
+  transition:.25s;
+}
+.detail-card:hover{
+  border-color:var(--border2);
+  background:rgba(201,168,76,.06);
+  transform:translateY(-3px);
+}
+.detail-card i{color:var(--gold);font-size:20px;margin-bottom:10px;display:block;}
+.detail-card span{display:block;color:var(--muted2);font-size:12px;font-weight:700;margin-bottom:5px;}
+.detail-card strong{display:block;font-size:16px;font-weight:900;}
+
+/* SECTION 2: SCHEDULES */
+.schedules-layout{
+  display:grid;
+  grid-template-columns:1fr 1.1fr;
+  gap:22px;
+}
+.transport-cards{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+}
+.mini-card{
+  background:rgba(255,255,255,.035);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:18px;
+  min-height:118px;
+  max-height:118px;
+  overflow:hidden;
+  cursor:none;
+  transition:.45s cubic-bezier(.22,1,.36,1);
+}
+.mini-card:hover{
+  transform:translateY(-5px);
+  border-color:var(--border2);
+  background:rgba(201,168,76,.06);
+}
+.mini-card.active{
+  max-height:430px;
+  background:rgba(201,168,76,.075);
+  border-color:var(--border2);
+}
+.mini-card-top{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.mini-card-icon{
+  width:44px;height:44px;border-radius:13px;
+  background:rgba(201,168,76,.1);
+  border:1px solid var(--border2);
+  color:var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  font-size:19px;
+}
+.mini-card h4{font-size:16px;font-weight:900;margin-bottom:3px;}
+.mini-card span{font-size:12px;color:var(--muted2);font-weight:700;}
+.mini-table{
+  width:100%;margin-top:10px;border-collapse:collapse;
+  opacity:0;transition:.3s;
+}
+.mini-card.active .mini-table{opacity:1;}
+.mini-table td{
+  padding:8px 4px;
+  border-bottom:1px solid var(--border);
+  color:var(--sand2);
+  font-size:13px;
+  font-weight:700;
+}
+.mini-table td:first-child{color:var(--gold2);direction:ltr;text-align:right;font-weight:900;}
+.schedule-head{
+  display:flex;justify-content:space-between;align-items:center;
+  gap:16px;margin-bottom:18px;
+}
+.schedule-head h3{font-size:22px;font-weight:900;letter-spacing:-.5px;}
+.schedule-head span{font-size:13px;color:var(--muted2);font-weight:700;}
+.schedule-list{display:flex;flex-direction:column;gap:10px;}
+.trip-row{
+  display:grid;
+  grid-template-columns:80px 1fr 95px 90px;
+  align-items:center;
+  gap:12px;
+  padding:14px 15px;
+  border-radius:16px;
+  background:rgba(255,255,255,.035);
+  border:1px solid var(--border);
+  transition:.25s;
+}
+.trip-row:hover{
+  border-color:var(--border2);
+  background:rgba(201,168,76,.06);
+  transform:translateY(-2px);
+}
+.trip-time{color:var(--gold2);font-size:19px;font-weight:900;direction:ltr;text-align:right;}
+.trip-route strong{display:block;font-size:14px;font-weight:900;margin-bottom:4px;}
+.trip-route span{display:block;color:var(--muted2);font-size:12px;font-weight:700;}
+.trip-price{color:var(--cream);font-size:13px;font-weight:900;text-align:center;}
+.trip-state{text-align:center;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:900;}
+.state-now{background:rgba(114,213,114,.1);color:var(--success);border:1px solid rgba(114,213,114,.22);}
+.state-soon{background:rgba(201,168,76,.1);color:var(--gold2);border:1px solid var(--border2);}
+.state-late{background:rgba(255,107,107,.1);color:var(--danger);border:1px solid rgba(255,107,107,.22);}
+
+/* SECTION 3: CALCULATOR */
+.calculator-layout{
+  display:grid;
+  grid-template-columns:380px 1fr;
+  gap:22px;
+  align-items:stretch;
+}
+.route-calculator{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:14px;
+}
+.form-group label{
+  display:block;margin-bottom:8px;
+  color:var(--sand2);
+  font-size:13px;font-weight:800;
+}
+.form-control{
+  width:100%;height:52px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.055);
+  color:var(--cream);
+  outline:none;
+  padding:0 16px;
+  font-family:'Tajawal',sans-serif;
+  font-size:15px;font-weight:700;
+  transition:.25s;
+  cursor:none;
+}
+.form-control:focus{
+  border-color:var(--gold);
+  background:rgba(201,168,76,.06);
+  box-shadow:0 0 0 4px rgba(201,168,76,.08);
+}
+.form-control::placeholder{color:var(--muted);}
+.calc-btn{
+  width:100%;height:54px;
+  border:none;border-radius:15px;
+  background:linear-gradient(135deg,var(--gold3),var(--gold));
+  color:var(--ink);
+  font-family:'Tajawal',sans-serif;
+  font-size:15px;font-weight:900;
+  cursor:none;transition:.25s;
+}
+.calc-btn:hover{transform:translateY(-2px);box-shadow:0 14px 34px rgba(201,168,76,.28);}
+.result-box{
+  display:none;
+  margin-top:18px;
+  border-radius:18px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.035);
+  padding:16px;
+}
+.result-box.show{display:block;animation:fadeUp .45s both;}
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.result-item{
+  border-radius:14px;
+  background:rgba(201,168,76,.06);
+  border:1px solid var(--border);
+  padding:13px;
+  text-align:center;
+}
+.result-item span{display:block;color:var(--muted2);font-size:11px;font-weight:800;margin-bottom:5px;}
+.result-item strong{display:block;color:var(--gold2);font-size:16px;font-weight:900;}
+.real-map{
+  min-height:530px;
+  border-radius:22px;
+  border:1px solid var(--border2);
+  overflow:hidden;
+  background:var(--ink2);
+}
+#realMap{width:100%;height:100%;min-height:530px;}
+.leaflet-container{background:#14100a;font-family:'Tajawal',sans-serif;}
+
+/* TOAST */
+#toast{
+  position:fixed;bottom:28px;left:50%;
+  transform:translateX(-50%) translateY(16px);
+  background:var(--ink3);
+  border:1px solid var(--border2);
+  border-radius:14px;
+  padding:16px 28px;
+  font-size:15px;font-weight:700;
+  display:flex;align-items:center;gap:12px;
+  z-index:9999;
+  opacity:0;pointer-events:none;
+  transition:all .4s cubic-bezier(.22,1,.36,1);
+  box-shadow:0 20px 60px rgba(0,0,0,.6);
+  max-width:430px;width:90vw;
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+#toast i{color:var(--gold);font-size:18px;flex-shrink:0;}
+
+footer{
+  background:var(--ink2);
+  border-top:1px solid var(--border);
+  padding:42px 80px;
+  text-align:center;
+}
+footer p{color:var(--muted);font-size:13px;}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(28px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+@media(max-width:1120px){
+  .hero-inner,.tracking-board,.schedules-layout,.calculator-layout{grid-template-columns:1fr;}
+  .details-grid{grid-template-columns:repeat(2,1fr);}
+  .real-map,#realMap{min-height:430px;}
+}
+@media(max-width:1024px){
+  nav{padding:0 28px;}
+  .nav-links{display:none;}
+  .tracking-hero{padding:130px 40px 70px;}
+  .main{padding:80px 40px 90px;}
+  footer{padding:38px 40px;}
+}
+@media(max-width:720px){
+  body{cursor:auto;}
+  #cursor,#cursor-ring{display:none;}
+  .tracking-hero{padding:118px 20px 60px;}
+  .main{padding:64px 20px 80px;}
+  .hero-title{letter-spacing:-1.5px;}
+  .quick-summary,.details-grid,.transport-cards,.result-grid{grid-template-columns:1fr;}
+  .fake-map{height:390px;}
+  .trip-row{
+    grid-template-columns:1fr;
+    text-align:right;
+    gap:8px;
+  }
+  .trip-time{text-align:right;}
+  .trip-price{text-align:right;}
+  .trip-state{text-align:right;width:max-content;}
+  .nav-actions .btn-ghost{display:none;}
+  footer{padding:34px 20px;}
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<nav id="mainNav">
+  <a class="nav-logo" href="index.html">
+    <div class="nav-logo-icon">
+      <i class="fa-solid fa-route" style="position:relative;z-index:1;font-size:15px;"></i>
+    </div>
+    <div>
+      <div class="nav-logo-text">مواصلاتي إكسبريس</div>
+      <div class="nav-logo-text"><span>Smart Mobility Egypt</span></div>
+    </div>
+  </a>
+
+  <div class="nav-links">
+    <a href="index.html#hero">الرئيسية</a>
+    <a href="index.html#services">الخدمات</a>
+    <a href="tracking.html" class="active">التتبع</a>
+    <a href="wallet.html">المحفظة</a>
+    <a href="students.html">الطلبة</a>
+    <a href="news.html">الأخبار</a>
+  </div>
+
+  <div class="nav-actions">
+    <button class="btn-ghost" onclick="window.location='index.html'">الرئيسية</button>
+    <button class="btn-primary" onclick="scrollToTracker()">ابدأ التتبع</button>
+  </div>
+</nav>
+
+<header class="tracking-hero">
+  <div class="hero-bg-img"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-pattern"></div>
+
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow">
+        <div class="hero-live-dot"></div>
+        تتبع مباشر ومواعيد وحساب رحلة
+      </div>
+
+      <h1 class="hero-title">
+        تابع واحسب<br>
+        <em>رحلتك الذكية</em>
+      </h1>
+
+      <p class="hero-sub">
+        صفحة منظمة للتتبع: اختار وسيلة المواصلات، شوف مكانها ومواعيدها، وبعدها احسب رحلتك بين أي مكانين على خريطة حقيقية.
+      </p>
+    </div>
+
+    <div class="hero-card">
+      <div class="hero-card-top">
+        <h3>ملخص الرحلة النشطة</h3>
+        <span class="live-pill"><i class="fa-solid fa-signal"></i> مباشر</span>
+      </div>
+
+      <div class="quick-summary">
+        <div><span>الوسيلة</span><strong id="heroVehicle">مترو</strong></div>
+        <div><span>الوصول</span><strong><b id="heroEta">8</b> د</strong></div>
+        <div><span>الحالة</span><strong id="heroStatus">في الموعد</strong></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="main" id="tracker">
+  <div class="wrap">
+
+    <!-- 1) LIVE TRACKING -->
+    <section class="block">
+      <div class="section-head">
+        <div>
+          <div class="sec-label">١ — التتبع المباشر</div>
+          <h2 class="sec-title">اختار وسيلة <em>المواصلات</em></h2>
+        </div>
+        <p class="sec-sub">
+          الخريطة والبيانات تتغير تلقائيًا حسب الوسيلة المختارة، مع حركة وهمية مستمرة للماركر.
+        </p>
+      </div>
+
+      <div class="tracking-board">
+        <aside class="panel">
+          <div class="panel-title">
+            <div>
+              <h3>وسائل النقل</h3>
+              <span>اضغط لتحديث التتبع</span>
+            </div>
+          </div>
+
+          <div class="transport-list">
+            <button class="transport-btn active" data-type="metro">
+              <div class="transport-main"><i class="fa-solid fa-train-subway"></i><div><strong>مترو الأنفاق</strong><span>خطوط القاهرة الكبرى</span></div></div>
+              <div class="transport-eta">8 د</div>
+            </button>
+
+            <button class="transport-btn" data-type="bus">
+              <div class="transport-main"><i class="fa-solid fa-bus"></i><div><strong>أتوبيسات CTA</strong><span>خطوط داخل المدينة</span></div></div>
+              <div class="transport-eta">18 د</div>
+            </button>
+
+            <button class="transport-btn" data-type="train">
+              <div class="transport-main"><i class="fa-solid fa-train"></i><div><strong>قطارات المحافظات</strong><span>رحلات بين المدن</span></div></div>
+              <div class="transport-eta">45 د</div>
+            </button>
+
+            <button class="transport-btn" data-type="mono">
+              <div class="transport-main"><i class="fa-solid fa-road"></i><div><strong>المونوريل</strong><span>العاصمة الجديدة</span></div></div>
+              <div class="transport-eta">12 د</div>
+            </button>
+
+            <button class="transport-btn" data-type="microbus">
+              <div class="transport-main"><i class="fa-solid fa-van-shuttle"></i><div><strong>ميكروباص</strong><span>خطوط شعبية سريعة</span></div></div>
+              <div class="transport-eta">10 د</div>
+            </button>
+          </div>
+        </aside>
+
+        <section>
+          <div class="panel map-panel">
+            <div class="fake-map">
+              <div class="map-grid"></div>
+              <div class="map-road road-1"></div>
+              <div class="map-road road-2"></div>
+              <div class="map-road road-3"></div>
+              <div class="map-road road-4"></div>
+
+              <div class="fake-route">
+                <svg class="route-svg" viewBox="0 0 600 350" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stop-color="#A07828"/>
+                      <stop offset="50%" stop-color="#E8C97A"/>
+                      <stop offset="100%" stop-color="#C9A84C"/>
+                    </linearGradient>
+                  </defs>
+                  <path class="bg" d="M520 45 C420 90, 430 165, 315 175 S160 210, 82 305"/>
+                  <path class="active" id="activeRoute" d="M520 45 C420 90, 430 165, 315 175 S160 210, 82 305"/>
+                </svg>
+              </div>
+
+              <div class="station start" id="startStation">الشهداء</div>
+              <div class="station mid" id="midStation">السادات</div>
+              <div class="station end" id="endStation">جامعة القاهرة</div>
+
+              <div class="map-marker" id="mapMarker">
+                <i class="fa-solid fa-train-subway" id="markerIcon"></i>
+              </div>
+
+              <div class="map-bottom">
+                <div>
+                  <strong id="mapTitle">مترو الأنفاق</strong>
+                  <span id="mapSubtitle">يتحرك الآن نحو السادات</span>
+                </div>
+                <div class="map-status"><i class="fa-solid fa-circle"></i> متصل الآن</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="details-grid">
+            <div class="detail-card"><i class="fa-solid fa-clock"></i><span>وقت الوصول</span><strong id="detailEta">8 دقائق</strong></div>
+            <div class="detail-card"><i class="fa-solid fa-gauge-high"></i><span>السرعة</span><strong id="detailSpeed">60 كم/س</strong></div>
+            <div class="detail-card"><i class="fa-solid fa-location-dot"></i><span>المحطة القادمة</span><strong id="detailNext">السادات</strong></div>
+            <div class="detail-card"><i class="fa-solid fa-ticket"></i><span>سعر الرحلة</span><strong id="detailPrice">10 جنيه</strong></div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- 2) SCHEDULES -->
+    <section class="block">
+      <div class="section-head">
+        <div>
+          <div class="sec-label">٢ — المواعيد</div>
+          <h2 class="sec-title">مواعيد وهمية <em>مرتبة</em></h2>
+        </div>
+        <p class="sec-sub">
+          كروت مختصرة لكل وسيلة، وجدول تفصيلي للوسيلة المختارة.
+        </p>
+      </div>
+
+      <div class="schedules-layout">
+        <section class="panel">
+          <div class="panel-title">
+            <div>
+              <h3>كروت المواعيد</h3>
+              <span>اضغط على الكارت لفتح المواعيد وتحديد الوسيلة</span>
+            </div>
+          </div>
+          <div class="transport-cards" id="miniCards"></div>
+        </section>
+
+        <section class="panel">
+          <div class="schedule-head">
+            <div>
+              <h3>جدول الرحلات</h3>
+              <span id="scheduleSubtitle">مواعيد وهمية حسب وسيلة النقل المختارة</span>
+            </div>
+            <button class="btn-ghost" onclick="shuffleSchedule()">تحديث</button>
+          </div>
+          <div class="schedule-list" id="scheduleList"></div>
+        </section>
+      </div>
+    </section>
+
+    <!-- 3) ROUTE CALCULATOR -->
+    <section class="block">
+      <div class="section-head">
+        <div>
+          <div class="sec-label">٣ — حساب الرحلة</div>
+          <h2 class="sec-title">احسب مسارك على <em>الخريطة</em></h2>
+        </div>
+        <p class="sec-sub">
+          اكتب البداية والنهاية وسيتم رسم المسار وحساب المسافة والوقت والسعر المتوقع.
+        </p>
+      </div>
+
+      <div class="calculator-layout">
+        <section class="panel">
+          <div class="panel-title">
+            <div>
+              <h3>بيانات الرحلة</h3>
+              <span>يفضل كتابة أسماء أماكن واضحة مثل Cairo أو Alexandria</span>
+            </div>
+          </div>
+
+          <form class="route-calculator" onsubmit="createRealRoute(event)">
+            <div class="form-group">
+              <label for="passengerName">الاسم</label>
+              <input class="form-control" id="passengerName" type="text" placeholder="مثال: Nasser Gamal" required>
+            </div>
+
+            <div class="form-group">
+              <label for="calcTransport">وسيلة النقل</label>
+              <select class="form-control" id="calcTransport">
+                <option value="bus">باص</option>
+                <option value="metro">مترو</option>
+                <option value="train">قطار</option>
+                <option value="mono">مونوريل</option>
+                <option value="microbus">ميكروباص</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="fromPlace">من</label>
+              <input class="form-control" id="fromPlace" type="text" placeholder="مثال: Cairo" required>
+            </div>
+
+            <div class="form-group">
+              <label for="toPlace">إلى</label>
+              <input class="form-control" id="toPlace" type="text" placeholder="مثال: Alexandria" required>
+            </div>
+
+            <button class="calc-btn" type="submit">احسب الرحلة وارسم المسار</button>
+          </form>
+
+          <div class="result-box" id="routeResult">
+            <div class="result-grid">
+              <div class="result-item"><span>الراكب</span><strong id="resName">-</strong></div>
+              <div class="result-item"><span>المسافة</span><strong id="resDistance">-</strong></div>
+              <div class="result-item"><span>الوقت</span><strong id="resDuration">-</strong></div>
+              <div class="result-item"><span>السعر</span><strong id="resPrice">-</strong></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="real-map">
+          <div id="realMap"></div>
+        </section>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<div id="toast"><i class="fa-solid fa-location-dot"></i><span id="toastMsg"></span></div>
+
+<footer>
+  <p>© ٢٠٢٦ مواصلاتي إكسبريس — Eng. Nasser Gamal. جميع الحقوق محفوظة.</p>
+</footer>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+/* CURSOR */
+const cur=document.getElementById('cursor');
+const ring=document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;
+  my=e.clientY;
+  cur.style.left=mx+'px';
+  cur.style.top=my+'px';
+});
+
+function animRing(){
+  rx+=(mx-rx)*.14;
+  ry+=(my-ry)*.14;
+  ring.style.left=rx+'px';
+  ring.style.top=ry+'px';
+  requestAnimationFrame(animRing);
+}
+animRing();
+
+function bindCursorHover(){
+  document.querySelectorAll('a,button,.transport-btn,.detail-card,.trip-row,.mini-card,.leaflet-control-zoom a').forEach(el=>{
+    if(el.dataset.cursorBound) return;
+    el.dataset.cursorBound='1';
+
+    el.addEventListener('mouseenter',()=>{
+      cur.style.width='20px';
+      cur.style.height='20px';
+      cur.style.background='rgba(201,168,76,.5)';
+      ring.style.width='54px';
+      ring.style.height='54px';
+      ring.style.borderColor='rgba(201,168,76,.6)';
+    });
+
+    el.addEventListener('mouseleave',()=>{
+      cur.style.width='12px';
+      cur.style.height='12px';
+      cur.style.background='var(--gold)';
+      ring.style.width='36px';
+      ring.style.height='36px';
+      ring.style.borderColor='rgba(201,168,76,.5)';
+    });
+  });
+}
+bindCursorHover();
+
+window.addEventListener('scroll',()=>{
+  document.getElementById('mainNav').classList.toggle('scrolled',scrollY>50);
+});
+
+function scrollToTracker(){
+  document.getElementById('tracker').scrollIntoView({behavior:'smooth'});
+}
+
+/* DATA */
+const data={
+  metro:{
+    name:'مترو الأنفاق', short:'مترو', icon:'fa-train-subway',
+    route:'الشهداء → جامعة القاهرة', start:'الشهداء', mid:'السادات', end:'جامعة القاهرة',
+    next:'السادات', eta:8, speed:60, price:10, priceRate:.4,
+    status:'في الموعد', progress:38, marker:{right:'66%',top:'28%'}, subtitle:'يتحرك الآن نحو السادات',
+    miniTimes:[['06:30','07:30'],['08:00','09:00'],['09:30','10:30'],['11:00','12:00'],['12:30','13:30'],['14:00','15:00']],
+    schedules:[
+      ['08:05','الشهداء → جامعة القاهرة','10 جنيه','الآن'],
+      ['08:13','العتبة → حلوان','8 جنيه','قريبًا'],
+      ['08:21','السادات → المرج الجديدة','10 جنيه','قريبًا'],
+      ['08:35','جامعة القاهرة → شبرا الخيمة','12 جنيه','متأخر'],
+      ['08:42','الجيزة → عدلي منصور','12 جنيه','قريبًا']
+    ]
+  },
+  bus:{
+    name:'أتوبيسات CTA', short:'أتوبيس', icon:'fa-bus',
+    route:'رمسيس → مدينة نصر', start:'رمسيس', mid:'العباسية', end:'مدينة نصر',
+    next:'العباسية', eta:18, speed:35, price:12, priceRate:.5,
+    status:'زحام متوسط', progress:26, marker:{right:'72%',top:'43%'}, subtitle:'يتحرك الآن عبر محور العباسية',
+    miniTimes:[['08:00','09:30'],['10:00','11:30'],['12:00','13:30'],['14:00','15:30'],['16:00','17:30'],['18:00','19:30']],
+    schedules:[
+      ['08:10','رمسيس → مدينة نصر','12 جنيه','الآن'],
+      ['08:24','التحرير → المعادي','10 جنيه','قريبًا'],
+      ['08:38','الدقي → الهرم','12 جنيه','متأخر'],
+      ['08:50','مكرم عبيد → رمسيس','15 جنيه','قريبًا'],
+      ['09:05','العباسية → التجمع','18 جنيه','قريبًا']
+    ]
+  },
+  train:{
+    name:'قطارات المحافظات', short:'قطار', icon:'fa-train',
+    route:'رمسيس → الإسكندرية', start:'رمسيس', mid:'طنطا', end:'الإسكندرية',
+    next:'طنطا', eta:45, speed:110, price:85, priceRate:.7,
+    status:'في الموعد', progress:52, marker:{right:'45%',top:'45%'}, subtitle:'يتحرك الآن نحو طنطا',
+    miniTimes:[['07:00','09:00'],['09:30','11:30'],['12:00','14:00'],['14:30','16:30'],['17:00','19:00'],['19:30','21:30']],
+    schedules:[
+      ['08:30','رمسيس → الإسكندرية','85 جنيه','الآن'],
+      ['09:00','رمسيس → المنصورة','65 جنيه','قريبًا'],
+      ['09:20','رمسيس → أسيوط','120 جنيه','قريبًا'],
+      ['09:45','الجيزة → بني سويف','55 جنيه','متأخر'],
+      ['10:15','رمسيس → الإسماعيلية','70 جنيه','قريبًا']
+    ]
+  },
+  mono:{
+    name:'المونوريل', short:'مونوريل', icon:'fa-road',
+    route:'الاستاد → العاصمة الإدارية', start:'الاستاد', mid:'المشير طنطاوي', end:'العاصمة الإدارية',
+    next:'المشير طنطاوي', eta:12, speed:55, price:20, priceRate:.6,
+    status:'في الموعد', progress:44, marker:{right:'54%',top:'34%'}, subtitle:'يتحرك الآن نحو المشير طنطاوي',
+    miniTimes:[['07:15','08:15'],['08:30','09:30'],['10:00','11:00'],['11:30','12:30'],['13:00','14:00'],['14:30','15:30']],
+    schedules:[
+      ['08:12','الاستاد → العاصمة الإدارية','20 جنيه','الآن'],
+      ['08:25','المشير → مدينة الفنون','20 جنيه','قريبًا'],
+      ['08:40','العاصمة → الاستاد','20 جنيه','قريبًا'],
+      ['08:55','مدينة نصر → العاصمة','22 جنيه','قريبًا'],
+      ['09:10','التجمع → العاصمة','18 جنيه','متأخر']
+    ]
+  },
+  microbus:{
+    name:'ميكروباص', short:'ميكروباص', icon:'fa-van-shuttle',
+    route:'الهرم → رمسيس', start:'الهرم', mid:'الدقي', end:'رمسيس',
+    next:'الدقي', eta:10, speed:42, price:15, priceRate:.55,
+    status:'زحام خفيف', progress:31, marker:{right:'70%',top:'63%'}, subtitle:'يتحرك الآن نحو الدقي',
+    miniTimes:[['08:07','08:40'],['08:16','08:55'],['08:28','09:05'],['08:39','09:20'],['08:52','09:35'],['09:10','09:55']],
+    schedules:[
+      ['08:07','الهرم → رمسيس','15 جنيه','الآن'],
+      ['08:16','فيصل → التحرير','12 جنيه','قريبًا'],
+      ['08:28','الدقي → شبرا','14 جنيه','قريبًا'],
+      ['08:39','رمسيس → المرج','18 جنيه','متأخر'],
+      ['08:52','الجيزة → المنيب','10 جنيه','قريبًا']
+    ]
+  }
+};
+
+let currentType='metro';
+let moveTimer=null;
+
+const ids={
+  heroVehicle:document.getElementById('heroVehicle'),
+  heroEta:document.getElementById('heroEta'),
+  heroStatus:document.getElementById('heroStatus'),
+  startStation:document.getElementById('startStation'),
+  midStation:document.getElementById('midStation'),
+  endStation:document.getElementById('endStation'),
+  mapMarker:document.getElementById('mapMarker'),
+  markerIcon:document.getElementById('markerIcon'),
+  activeRoute:document.getElementById('activeRoute'),
+  mapTitle:document.getElementById('mapTitle'),
+  mapSubtitle:document.getElementById('mapSubtitle'),
+  detailEta:document.getElementById('detailEta'),
+  detailSpeed:document.getElementById('detailSpeed'),
+  detailNext:document.getElementById('detailNext'),
+  detailPrice:document.getElementById('detailPrice'),
+  scheduleSubtitle:document.getElementById('scheduleSubtitle'),
+  scheduleList:document.getElementById('scheduleList'),
+  miniCards:document.getElementById('miniCards')
+};
+
+function setTransport(type){
+  currentType=type;
+  const item=data[type];
+
+  document.querySelectorAll('.transport-btn').forEach(btn=>{
+    btn.classList.toggle('active',btn.dataset.type===type);
+  });
+
+  document.getElementById('calcTransport').value=type;
+
+  ids.heroVehicle.textContent=item.short;
+  ids.heroEta.textContent=item.eta;
+  ids.heroStatus.textContent=item.status;
+
+  ids.startStation.textContent=item.start;
+  ids.midStation.textContent=item.mid;
+  ids.endStation.textContent=item.end;
+  ids.mapTitle.textContent=item.name;
+  ids.mapSubtitle.textContent=item.subtitle;
+  ids.markerIcon.className='fa-solid ' + item.icon;
+  ids.mapMarker.style.right=item.marker.right;
+  ids.mapMarker.style.top=item.marker.top;
+  ids.activeRoute.style.strokeDashoffset=900 - (item.progress * 7);
+
+  ids.detailEta.textContent=item.eta + ' دقائق';
+  ids.detailSpeed.textContent=item.speed + ' كم/س';
+  ids.detailNext.textContent=item.next;
+  ids.detailPrice.textContent=item.price + ' جنيه';
+  ids.scheduleSubtitle.textContent='مواعيد وهمية لـ ' + item.name;
+
+  renderSchedule(item.schedules);
+  highlightMiniCard(type);
+  showToast('تم تحديث التتبع: ' + item.name);
+  startFakeMovement();
+}
+
+function renderSchedule(schedules){
+  ids.scheduleList.innerHTML='';
+
+  schedules.forEach(row=>{
+    const stateClass=row[3]==='الآن' ? 'state-now' : row[3]==='متأخر' ? 'state-late' : 'state-soon';
+    const div=document.createElement('div');
+    div.className='trip-row';
+    div.innerHTML=
+      '<div class="trip-time">'+row[0]+'</div>'+
+      '<div class="trip-route"><strong>'+row[1]+'</strong><span>رحلة وهمية قابلة للتغيير حسب اختيارك</span></div>'+
+      '<div class="trip-price">'+row[2]+'</div>'+
+      '<div class="trip-state '+stateClass+'">'+row[3]+'</div>';
+    ids.scheduleList.appendChild(div);
+  });
+
+  bindCursorHover();
+}
+
+function renderMiniCards(){
+  ids.miniCards.innerHTML='';
+
+  Object.keys(data).forEach(type=>{
+    const item=data[type];
+    const card=document.createElement('div');
+    card.className='mini-card';
+    card.dataset.type=type;
+
+    const tableRows=item.miniTimes.map(t=>'<tr><td>'+t[0]+'</td><td>'+t[1]+'</td></tr>').join('');
+
+    card.innerHTML=
+      '<div class="mini-card-top">'+
+        '<div class="mini-card-icon"><i class="fa-solid '+item.icon+'"></i></div>'+
+        '<div><h4>'+item.name+'</h4><span>اضغط لعرض المواعيد</span></div>'+
+      '</div>'+
+      '<table class="mini-table"><tbody>'+tableRows+'</tbody></table>';
+
+    card.addEventListener('click',()=>{
+      setTransport(type);
+      document.getElementById('miniCards').scrollIntoView({behavior:'smooth',block:'center'});
+    });
+
+    ids.miniCards.appendChild(card);
+  });
+
+  bindCursorHover();
+}
+
+function highlightMiniCard(type){
+  document.querySelectorAll('.mini-card').forEach(card=>{
+    card.classList.toggle('active',card.dataset.type===type);
+  });
+}
+
+function shuffleSchedule(){
+  const item=data[currentType];
+  const base=item.schedules.map(r=>[...r]);
+  const minutes=Math.floor(Math.random()*9)+1;
+
+  const shuffled=base.map((row,index)=>{
+    const [h,m]=row[0].split(':').map(Number);
+    const date=new Date();
+    date.setHours(h,m + minutes + index*2);
+    const hh=String(date.getHours()).padStart(2,'0');
+    const mm=String(date.getMinutes()).padStart(2,'0');
+    return [hh+':'+mm,row[1],row[2],index===0?'الآن':index===3?'متأخر':'قريبًا'];
+  });
+
+  renderSchedule(shuffled);
+  showToast('تم تحديث مواعيد ' + item.name);
+}
+
+function startFakeMovement(){
+  clearInterval(moveTimer);
+  let baseProgress=data[currentType].progress;
+  let direction=1;
+
+  moveTimer=setInterval(()=>{
+    baseProgress += direction * (Math.random()*3 + 1);
+
+    if(baseProgress > 82){direction=-1;}
+    if(baseProgress < 22){direction=1;}
+
+    ids.activeRoute.style.strokeDashoffset=900 - (baseProgress * 7);
+
+    const current=data[currentType];
+    const driftX=(Math.random()*5-2.5);
+    const driftY=(Math.random()*5-2.5);
+    ids.mapMarker.style.transform='translate('+driftX+'px,'+driftY+'px)';
+    ids.detailSpeed.textContent=(current.speed + Math.floor(Math.random()*9-4)) + ' كم/س';
+  },2800);
+}
+
+document.querySelectorAll('.transport-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>setTransport(btn.dataset.type));
+});
+
+/* REAL MAP */
+let realMap;
+let routeLayer;
+let routeMarkers=[];
+
+function initRealMap(){
+  realMap=L.map('realMap',{zoomControl:true,scrollWheelZoom:false}).setView([30.0444,31.2357],6);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    maxZoom:19,
+    attribution:'© OpenStreetMap'
+  }).addTo(realMap);
+
+  setTimeout(()=>realMap.invalidateSize(),400);
+}
+
+async function geocode(place){
+  const url='https://nominatim.openstreetmap.org/search?format=json&limit=1&q='+encodeURIComponent(place + ', Egypt');
+  const res=await fetch(url,{headers:{'Accept':'application/json'}});
+  const result=await res.json();
+
+  if(!result || !result.length) return null;
+
+  return [parseFloat(result[0].lat),parseFloat(result[0].lon)];
+}
+
+async function createRealRoute(e){
+  e.preventDefault();
+
+  const name=document.getElementById('passengerName').value.trim();
+  const from=document.getElementById('fromPlace').value.trim();
+  const to=document.getElementById('toPlace').value.trim();
+  const type=document.getElementById('calcTransport').value;
+
+  if(!name || !from || !to){
+    showToast('اكتب الاسم ونقطة البداية والنهاية');
+    return;
+  }
+
+  showToast('جاري حساب الرحلة ورسم المسار...');
+
+  try{
+    const start=await geocode(from);
+    const end=await geocode(to);
+
+    if(!start || !end){
+      showToast('لم نتمكن من إيجاد أحد الأماكن. جرب اسم أوضح.');
+      return;
+    }
+
+    const url='https://router.project-osrm.org/route/v1/driving/'+start[1]+','+start[0]+';'+end[1]+','+end[0]+'?overview=full&geometries=geojson';
+    const res=await fetch(url);
+    const json=await res.json();
+
+    if(!json.routes || !json.routes.length){
+      showToast('تعذر حساب المسار بين النقطتين');
+      return;
+    }
+
+    const coords=json.routes[0].geometry.coordinates.map(c=>[c[1],c[0]]);
+
+    if(routeLayer) realMap.removeLayer(routeLayer);
+    routeMarkers.forEach(m=>realMap.removeLayer(m));
+    routeMarkers=[];
+
+    routeLayer=L.polyline(coords,{color:'#C9A84C',weight:6,opacity:.95}).addTo(realMap);
+    const startMarker=L.marker(start).addTo(realMap).bindPopup('نقطة البداية: '+from);
+    const endMarker=L.marker(end).addTo(realMap).bindPopup('نقطة الوصول: '+to);
+    routeMarkers.push(startMarker,endMarker);
+
+    realMap.fitBounds(routeLayer.getBounds(),{padding:[30,30]});
+
+    const distance=(json.routes[0].distance/1000);
+    const duration=(json.routes[0].duration/60);
+    const price=(distance * data[type].priceRate).toFixed(2);
+
+    document.getElementById('resName').textContent=name;
+    document.getElementById('resDistance').textContent=distance.toFixed(1) + ' كم';
+    document.getElementById('resDuration').textContent=Math.round(duration) + ' دقيقة';
+    document.getElementById('resPrice').textContent=price + ' جنيه';
+    document.getElementById('routeResult').classList.add('show');
+
+    setTransport(type);
+    showToast('تم حساب الرحلة بنجاح');
+  }catch(error){
+    showToast('حدث خطأ في حساب الرحلة. تأكد من اتصال الإنترنت.');
+  }
+}
+
+let toastTimer;
+function showToast(msg){
+  clearTimeout(toastTimer);
+  document.getElementById('toastMsg').textContent=msg;
+  const t=document.getElementById('toast');
+  t.classList.add('show');
+  toastTimer=setTimeout(()=>t.classList.remove('show'),3200);
+}
+
+renderMiniCards();
+setTransport('metro');
+initRealMap();
+</script>
+</body>
+</html>

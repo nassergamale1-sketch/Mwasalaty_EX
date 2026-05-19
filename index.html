@@ -1,0 +1,1663 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="مواصلاتي إكسبريس — منصة ذكية للمواصلات في مصر تشمل التتبع، المحفظة، الطلبة، مقارنة شركات السفر، الأخبار، العروض، وشات بوت للمساعدة.">
+<title>مواصلاتي إكسبريس — الرئيسية</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+:root{
+  --gold:#C9A84C;
+  --gold2:#E8C97A;
+  --gold3:#A07828;
+  --gold4:#6B4F14;
+  --cream:#F5EDD6;
+  --ink:#0C0A06;
+  --ink2:#181410;
+  --ink3:#221D14;
+  --ink4:#2E2718;
+  --sand:#8B7355;
+  --sand2:#C4A882;
+  --muted:#7A6E5E;
+  --muted2:#9E9282;
+  --border:rgba(201,168,76,0.15);
+  --border2:rgba(201,168,76,0.3);
+  --success:#72d572;
+  --danger:#ff6b6b;
+  --blue:#7AB0FF;
+  --r:16px;
+  --r2:24px;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;font-size:16px;}
+
+body{
+  font-family:'Tajawal',sans-serif;
+  background:var(--ink);
+  color:var(--cream);
+  overflow-x:hidden;
+  cursor:none;
+}
+
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none;
+  z-index:9997;
+  opacity:.4;
+}
+
+/* CURSOR */
+#cursor{
+  position:fixed;
+  width:12px;
+  height:12px;
+  background:var(--gold);
+  border-radius:50%;
+  pointer-events:none;
+  z-index:99999;
+  transform:translate(-50%,-50%);
+  transition:transform .1s,width .25s,height .25s,background .25s;
+  mix-blend-mode:screen;
+}
+
+#cursor-ring{
+  position:fixed;
+  width:36px;
+  height:36px;
+  border:1.5px solid rgba(201,168,76,0.5);
+  border-radius:50%;
+  pointer-events:none;
+  z-index:99998;
+  transform:translate(-50%,-50%);
+  transition:all .18s ease;
+}
+
+/* NAV */
+nav{
+  position:fixed;
+  top:0;
+  inset-inline:0;
+  z-index:1000;
+  height:72px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:0 60px;
+  transition:all .4s;
+}
+
+nav.scrolled{
+  background:rgba(12,10,6,0.92);
+  backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border);
+}
+
+.nav-logo{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  text-decoration:none;
+}
+
+.nav-logo-icon{
+  width:38px;
+  height:38px;
+  background:linear-gradient(135deg,var(--gold4),var(--gold));
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--ink);
+  position:relative;
+  overflow:hidden;
+}
+
+.nav-logo-icon::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.2),transparent);
+}
+
+.nav-logo-text{
+  font-size:17px;
+  font-weight:800;
+  color:var(--gold2);
+  letter-spacing:-.3px;
+}
+
+.nav-logo-text span{
+  color:var(--muted2);
+  font-weight:400;
+  font-size:13px;
+  display:block;
+  line-height:1;
+}
+
+.nav-links{
+  display:flex;
+  align-items:center;
+  gap:2px;
+}
+
+.nav-links a{
+  padding:8px 14px;
+  border-radius:8px;
+  font-size:14px;
+  font-weight:500;
+  color:var(--muted2);
+  text-decoration:none;
+  transition:all .2s;
+  position:relative;
+}
+
+.nav-links a::after{
+  content:'';
+  position:absolute;
+  bottom:4px;
+  right:50%;
+  left:50%;
+  height:1.5px;
+  background:var(--gold);
+  border-radius:2px;
+  transition:all .3s;
+}
+
+.nav-links a:hover{color:var(--cream);}
+.nav-links a:hover::after,.nav-links a.active::after{right:14px;left:14px;}
+.nav-links a.active{color:var(--gold2);}
+
+.nav-actions{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+
+.user-welcome{
+  min-height:40px;
+  padding:8px 16px;
+  border-radius:12px;
+  border:1px solid var(--border2);
+  background:rgba(201,168,76,.08);
+  color:var(--gold2);
+  display:flex;
+  align-items:center;
+  gap:9px;
+  font-size:14px;
+  font-weight:800;
+  backdrop-filter:blur(12px);
+}
+
+.user-welcome i{
+  color:var(--gold);
+  font-size:14px;
+}
+
+.user-welcome strong{
+  color:var(--cream);
+  font-weight:900;
+}
+
+
+.btn-ghost,
+.btn-primary{
+  border:none;
+  font-family:'Tajawal',sans-serif;
+  cursor:none;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+}
+
+.btn-ghost{
+  padding:9px 18px;
+  border-radius:9px;
+  font-size:14px;
+  font-weight:600;
+  border:1px solid var(--border2);
+  color:var(--sand2);
+  background:transparent;
+  transition:all .25s;
+}
+
+.btn-ghost:hover{
+  border-color:var(--gold);
+  color:var(--gold);
+  background:rgba(201,168,76,.06);
+}
+
+.btn-primary{
+  padding:9px 22px;
+  border-radius:9px;
+  font-size:14px;
+  font-weight:800;
+  background:linear-gradient(135deg,var(--gold3),var(--gold));
+  color:var(--ink);
+  transition:all .25s;
+  position:relative;
+  overflow:hidden;
+}
+
+.btn-primary::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.15),transparent);
+}
+
+.btn-primary:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 24px rgba(201,168,76,.3);
+}
+
+/* HERO */
+.hero{
+  position:relative;
+  min-height:100vh;
+  padding:140px 80px 80px;
+  display:flex;
+  align-items:center;
+  overflow:hidden;
+}
+
+.hero-bg-img{
+  position:absolute;
+  inset:0;
+  background:url('bg.jpg') center/cover no-repeat;
+  transform:scale(1.08);
+  animation:heroZoom 18s ease-in-out infinite alternate;
+}
+
+@keyframes heroZoom{
+  0%{transform:scale(1.08) translateX(0);}
+  100%{transform:scale(1.14) translateX(-20px);}
+}
+
+.hero-overlay{
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(to bottom,rgba(12,10,6,.34),rgba(12,10,6,.78) 68%,var(--ink) 100%),
+    linear-gradient(to left,rgba(12,10,6,.62),transparent 60%);
+}
+
+.hero-pattern{
+  position:absolute;
+  inset:0;
+  opacity:.06;
+  background-image:
+    repeating-linear-gradient(45deg,var(--gold) 0,var(--gold) 1px,transparent 0,transparent 50%),
+    repeating-linear-gradient(-45deg,var(--gold) 0,var(--gold) 1px,transparent 0,transparent 50%);
+  background-size:30px 30px;
+}
+
+.hero-inner{
+  width:100%;
+  max-width:1180px;
+  margin:auto;
+  position:relative;
+  z-index:2;
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:64px;
+  align-items:center;
+}
+
+.hero-eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:7px 20px;
+  border-radius:50px;
+  border:1px solid var(--border2);
+  background:rgba(201,168,76,.08);
+  backdrop-filter:blur(10px);
+  font-size:13px;
+  font-weight:700;
+  color:var(--gold2);
+  letter-spacing:.06em;
+  margin-bottom:26px;
+  animation:fadeUp .8s .2s both;
+}
+
+.hero-live-dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--gold);
+  box-shadow:0 0 0 0 rgba(201,168,76,.6);
+  animation:liveRing 2s infinite;
+}
+
+@keyframes liveRing{
+  0%{box-shadow:0 0 0 0 rgba(201,168,76,.6);}
+  70%{box-shadow:0 0 0 8px rgba(201,168,76,0);}
+  100%{box-shadow:0 0 0 0 rgba(201,168,76,0);}
+}
+
+.hero-title{
+  font-size:clamp(44px,6.4vw,84px);
+  font-weight:900;
+  line-height:1.05;
+  letter-spacing:-3px;
+  margin-bottom:22px;
+  animation:fadeUp .8s .35s both;
+}
+
+.hero-title em{
+  font-style:normal;
+  background:linear-gradient(90deg,var(--gold3),var(--gold2),var(--gold));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+
+.hero-sub{
+  font-size:17px;
+  font-weight:400;
+  color:var(--sand2);
+  line-height:1.9;
+  max-width:620px;
+  margin-bottom:30px;
+  animation:fadeUp .8s .5s both;
+}
+
+.hero-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  animation:fadeUp .8s .65s both;
+}
+
+.hero-panel{
+  background:rgba(18,15,9,.78);
+  backdrop-filter:blur(26px);
+  border:1px solid var(--border2);
+  border-radius:var(--r2);
+  padding:28px;
+  box-shadow:0 24px 70px rgba(0,0,0,.45);
+  animation:fadeUp .85s .55s both;
+}
+
+.hero-panel h3{
+  font-size:22px;
+  font-weight:900;
+  letter-spacing:-.5px;
+  margin-bottom:20px;
+}
+
+.hero-stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin-bottom:18px;
+}
+
+.hero-stat{
+  background:rgba(255,255,255,.04);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:17px 12px;
+  text-align:center;
+}
+
+.hero-stat strong{
+  display:block;
+  font-size:30px;
+  font-weight:900;
+  color:var(--gold2);
+  line-height:1;
+  margin-bottom:8px;
+}
+
+.hero-stat span{
+  display:block;
+  color:var(--muted2);
+  font-size:12px;
+  font-weight:800;
+}
+
+.quick-search{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:10px;
+}
+
+.quick-search input{
+  height:52px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.05);
+  color:var(--cream);
+  outline:none;
+  padding:0 16px;
+  font-family:'Tajawal',sans-serif;
+  font-size:14px;
+  font-weight:700;
+  cursor:none;
+}
+
+.quick-search input::placeholder{color:var(--muted);}
+
+.quick-search button{
+  height:52px;
+  border:none;
+  border-radius:14px;
+  padding:0 18px;
+  background:linear-gradient(135deg,var(--gold3),var(--gold));
+  color:var(--ink);
+  font-family:'Tajawal',sans-serif;
+  font-size:14px;
+  font-weight:900;
+  cursor:none;
+}
+
+/* COMMON */
+.main{
+  padding:90px 80px 100px;
+  background:var(--ink);
+}
+
+.wrap{
+  max-width:1180px;
+  margin:auto;
+}
+
+.block{
+  margin-bottom:60px;
+}
+
+.section-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:24px;
+  flex-wrap:wrap;
+  margin-bottom:30px;
+}
+
+.sec-label{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-size:11px;
+  font-weight:900;
+  color:var(--gold);
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  margin-bottom:14px;
+}
+
+.sec-label::before,
+.sec-label::after{
+  content:'';
+  display:block;
+  height:1px;
+  width:24px;
+  background:linear-gradient(90deg,transparent,var(--gold));
+}
+
+.sec-label::before{background:linear-gradient(270deg,transparent,var(--gold));}
+
+.sec-title{
+  font-size:clamp(30px,4vw,48px);
+  font-weight:900;
+  letter-spacing:-1.7px;
+  line-height:1.1;
+}
+
+.sec-title em{
+  font-style:normal;
+  background:linear-gradient(90deg,var(--gold3),var(--gold2));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+
+.sec-sub{
+  font-size:15px;
+  color:var(--muted2);
+  line-height:1.75;
+  max-width:570px;
+}
+
+.grid{
+  display:grid;
+  gap:18px;
+}
+
+.services-grid{
+  grid-template-columns:repeat(3,1fr);
+}
+
+.card{
+  background:var(--ink3);
+  border:1px solid var(--border);
+  border-radius:var(--r2);
+  padding:26px;
+  position:relative;
+  overflow:hidden;
+  transition:.35s cubic-bezier(.22,1,.36,1);
+}
+
+.card::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg,rgba(201,168,76,.075),transparent 60%);
+  opacity:0;
+  transition:.35s;
+}
+
+.card:hover{
+  transform:translateY(-6px);
+  border-color:var(--border2);
+  box-shadow:0 24px 56px rgba(0,0,0,.45);
+}
+
+.card:hover::before{opacity:1;}
+
+.card > *{
+  position:relative;
+  z-index:1;
+}
+
+.card-icon{
+  width:54px;
+  height:54px;
+  border-radius:16px;
+  background:rgba(201,168,76,.1);
+  border:1px solid var(--border2);
+  color:var(--gold);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:22px;
+  margin-bottom:20px;
+}
+
+.card h3{
+  font-size:21px;
+  font-weight:900;
+  margin-bottom:10px;
+  letter-spacing:-.5px;
+}
+
+.card p{
+  color:var(--muted2);
+  font-size:14px;
+  line-height:1.75;
+  font-weight:600;
+  margin-bottom:18px;
+}
+
+.card-link{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  color:var(--gold2);
+  text-decoration:none;
+  font-size:13px;
+  font-weight:900;
+  transition:.25s;
+}
+
+.card:hover .card-link{
+  gap:12px;
+  color:var(--gold);
+}
+
+.quick-grid{
+  grid-template-columns:repeat(4,1fr);
+}
+
+.quick-card{
+  background:rgba(255,255,255,.035);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:20px;
+  transition:.25s;
+}
+
+.quick-card:hover{
+  transform:translateY(-4px);
+  border-color:var(--border2);
+  background:rgba(201,168,76,.06);
+}
+
+.quick-card i{
+  width:44px;
+  height:44px;
+  border-radius:13px;
+  background:rgba(201,168,76,.1);
+  border:1px solid var(--border2);
+  color:var(--gold);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:19px;
+  margin-bottom:14px;
+}
+
+.quick-card h3{
+  font-size:16px;
+  font-weight:900;
+  margin-bottom:7px;
+}
+
+.quick-card p{
+  color:var(--muted2);
+  font-size:13px;
+  line-height:1.6;
+  font-weight:700;
+  margin-bottom:14px;
+}
+
+.offers-grid{
+  grid-template-columns:1.1fr .9fr .9fr;
+}
+
+.offer-card{
+  min-height:245px;
+  background:linear-gradient(145deg,var(--ink4),var(--ink3));
+  border:1px solid var(--border2);
+  border-radius:var(--r2);
+  padding:28px;
+  position:relative;
+  overflow:hidden;
+  transition:.35s;
+}
+
+.offer-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 24px 56px rgba(0,0,0,.45);
+}
+
+.offer-card::before{
+  content:'';
+  position:absolute;
+  width:260px;
+  height:260px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(201,168,76,.18),transparent 70%);
+  top:-90px;
+  left:-80px;
+}
+
+.offer-card > *{
+  position:relative;
+  z-index:1;
+}
+
+.offer-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:7px 12px;
+  border-radius:999px;
+  background:rgba(201,168,76,.12);
+  border:1px solid var(--border2);
+  color:var(--gold2);
+  font-size:12px;
+  font-weight:900;
+  margin-bottom:18px;
+}
+
+.offer-card h3{
+  font-size:25px;
+  font-weight:900;
+  margin-bottom:10px;
+  letter-spacing:-.7px;
+}
+
+.offer-card p{
+  color:var(--sand2);
+  font-size:14px;
+  line-height:1.8;
+  margin-bottom:22px;
+}
+
+.offer-code{
+  direction:ltr;
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:11px 15px;
+  border-radius:13px;
+  background:rgba(12,10,6,.42);
+  border:1px dashed var(--border2);
+  color:var(--gold2);
+  font-weight:900;
+  letter-spacing:1px;
+}
+
+.overview-layout{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:22px;
+}
+
+.panel{
+  background:var(--ink3);
+  border:1px solid var(--border);
+  border-radius:var(--r2);
+  padding:28px;
+  position:relative;
+  overflow:hidden;
+}
+
+.panel::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg,rgba(201,168,76,.055),transparent 60%);
+  pointer-events:none;
+}
+
+.panel > *{
+  position:relative;
+  z-index:1;
+}
+
+.panel h3{
+  font-size:22px;
+  font-weight:900;
+  margin-bottom:18px;
+}
+
+.steps{
+  display:flex;
+  flex-direction:column;
+}
+
+.step{
+  display:flex;
+  gap:16px;
+  padding:17px 0;
+  border-bottom:1px solid var(--border);
+}
+
+.step:first-of-type{padding-top:0;}
+.step:last-child{border-bottom:none;padding-bottom:0;}
+
+.step-num{
+  width:40px;
+  height:40px;
+  border-radius:12px;
+  background:rgba(201,168,76,.1);
+  border:1px solid var(--border2);
+  color:var(--gold);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:15px;
+  font-weight:900;
+  flex-shrink:0;
+}
+
+.step h4{
+  font-size:16px;
+  font-weight:900;
+  margin-bottom:5px;
+}
+
+.step p{
+  color:var(--muted2);
+  font-size:13px;
+  line-height:1.65;
+  font-weight:700;
+}
+
+.news-strip{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+}
+
+.news-mini{
+  background:rgba(255,255,255,.035);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:18px;
+  transition:.25s;
+}
+
+.news-mini:hover{
+  transform:translateY(-4px);
+  border-color:var(--border2);
+  background:rgba(201,168,76,.06);
+}
+
+.news-mini span{
+  display:inline-flex;
+  padding:5px 10px;
+  border-radius:999px;
+  background:rgba(201,168,76,.08);
+  color:var(--gold2);
+  border:1px solid var(--border);
+  font-size:11px;
+  font-weight:900;
+  margin-bottom:12px;
+}
+
+.news-mini h3{
+  font-size:15px;
+  line-height:1.5;
+  font-weight:900;
+  margin-bottom:8px;
+}
+
+.news-mini p{
+  color:var(--muted2);
+  font-size:12px;
+  line-height:1.6;
+  font-weight:700;
+}
+
+/* CHATBOT */
+.chat-toggle{
+  position:fixed;
+  bottom:26px;
+  right:26px;
+  width:62px;
+  height:62px;
+  border:none;
+  border-radius:20px;
+  background:linear-gradient(135deg,var(--gold3),var(--gold));
+  color:var(--ink);
+  box-shadow:0 20px 54px rgba(201,168,76,.34);
+  z-index:9998;
+  cursor:none;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:24px;
+  transition:.25s;
+}
+
+.chat-toggle:hover{
+  transform:translateY(-4px) scale(1.04);
+}
+
+.chat-widget{
+  position:fixed;
+  bottom:102px;
+  right:26px;
+  width:min(390px,calc(100vw - 36px));
+  height:540px;
+  background:rgba(18,15,9,.9);
+  border:1px solid var(--border2);
+  backdrop-filter:blur(24px);
+  border-radius:26px;
+  box-shadow:0 30px 90px rgba(0,0,0,.65);
+  z-index:9998;
+  overflow:hidden;
+  display:none;
+  flex-direction:column;
+}
+
+.chat-widget.open{
+  display:flex;
+  animation:fadeUp .35s both;
+}
+
+.chat-head{
+  padding:18px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  background:rgba(201,168,76,.06);
+}
+
+.chat-title{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.chat-avatar{
+  width:42px;
+  height:42px;
+  border-radius:14px;
+  background:linear-gradient(135deg,var(--gold4),var(--gold));
+  color:var(--ink);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+}
+
+.chat-title strong{
+  display:block;
+  font-size:15px;
+  font-weight:900;
+}
+
+.chat-title span{
+  display:block;
+  color:var(--muted2);
+  font-size:12px;
+  margin-top:2px;
+}
+
+.chat-close{
+  width:34px;
+  height:34px;
+  border:none;
+  border-radius:10px;
+  background:rgba(255,255,255,.06);
+  color:var(--muted2);
+  cursor:none;
+}
+
+.chat-body{
+  flex:1;
+  padding:16px;
+  overflow:auto;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.msg{
+  max-width:85%;
+  padding:11px 13px;
+  border-radius:16px;
+  font-size:13px;
+  line-height:1.6;
+  font-weight:700;
+}
+
+.msg.bot{
+  align-self:flex-start;
+  background:rgba(255,255,255,.06);
+  color:var(--sand2);
+  border:1px solid var(--border);
+  border-bottom-right-radius:5px;
+}
+
+.msg.user{
+  align-self:flex-end;
+  background:rgba(201,168,76,.13);
+  color:var(--gold2);
+  border:1px solid var(--border2);
+  border-bottom-left-radius:5px;
+}
+
+.chat-suggestions{
+  padding:0 16px 12px;
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.suggestion{
+  border:none;
+  border-radius:999px;
+  padding:7px 11px;
+  background:rgba(201,168,76,.08);
+  border:1px solid var(--border);
+  color:var(--gold2);
+  font-family:'Tajawal',sans-serif;
+  font-size:12px;
+  font-weight:800;
+  cursor:none;
+}
+
+.chat-input{
+  padding:14px;
+  border-top:1px solid var(--border);
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:10px;
+}
+
+.chat-input input{
+  height:46px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.055);
+  color:var(--cream);
+  outline:none;
+  padding:0 14px;
+  font-family:'Tajawal',sans-serif;
+  font-weight:700;
+  cursor:none;
+}
+
+.chat-input button{
+  width:46px;
+  height:46px;
+  border:none;
+  border-radius:14px;
+  background:linear-gradient(135deg,var(--gold3),var(--gold));
+  color:var(--ink);
+  cursor:none;
+  font-size:16px;
+}
+
+#toast{
+  position:fixed;
+  bottom:28px;
+  left:50%;
+  transform:translateX(-50%) translateY(16px);
+  background:var(--ink3);
+  border:1px solid var(--border2);
+  border-radius:14px;
+  padding:16px 28px;
+  font-size:15px;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  z-index:9999;
+  opacity:0;
+  pointer-events:none;
+  transition:all .4s cubic-bezier(.22,1,.36,1);
+  box-shadow:0 20px 60px rgba(0,0,0,.6);
+  max-width:430px;
+  width:90vw;
+}
+
+#toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+
+#toast i{
+  color:var(--gold);
+  font-size:18px;
+  flex-shrink:0;
+}
+
+footer{
+  background:var(--ink2);
+  border-top:1px solid var(--border);
+  padding:42px 80px;
+  text-align:center;
+}
+
+footer p{
+  color:var(--muted);
+  font-size:13px;
+}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(28px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+@media(max-width:1120px){
+  .hero-inner,
+  .overview-layout{grid-template-columns:1fr;}
+  .services-grid{grid-template-columns:repeat(2,1fr);}
+  .quick-grid,
+  .offers-grid,
+  .news-strip{grid-template-columns:repeat(2,1fr);}
+}
+
+@media(max-width:1024px){
+  nav{padding:0 28px;}
+  .nav-links{display:none;}
+  .hero{padding:130px 40px 70px;}
+  .main{padding:80px 40px 90px;}
+  footer{padding:38px 40px;}
+}
+
+@media(max-width:720px){
+  body{cursor:auto;}
+  #cursor,#cursor-ring{display:none;}
+  .hero{padding:118px 20px 60px;min-height:auto;}
+  .main{padding:64px 20px 80px;}
+  .hero-title{letter-spacing:-1.5px;}
+  .services-grid,
+  .quick-grid,
+  .offers-grid,
+  .news-strip,
+  .hero-stats,
+  .quick-search{grid-template-columns:1fr;}
+  .hero-actions{flex-direction:column;}
+  .btn-primary,.btn-ghost{width:100%;}
+  .nav-actions .btn-ghost{display:none;}
+  .chat-toggle{right:18px;bottom:18px;}
+  .chat-widget{right:18px;bottom:92px;height:500px;}
+  footer{padding:34px 20px;}
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<nav id="mainNav">
+  <a class="nav-logo" href="index.html">
+    <div class="nav-logo-icon">
+      <i class="fa-solid fa-route" style="position:relative;z-index:1;font-size:15px;"></i>
+    </div>
+    <div>
+      <div class="nav-logo-text">مواصلاتي إكسبريس</div>
+      <div class="nav-logo-text"><span>Smart Mobility Egypt</span></div>
+    </div>
+  </a>
+
+  <div class="nav-links">
+    <a href="index.html" class="active">الرئيسية</a>
+    <a href="services.html">الشركات</a>
+    <a href="tracking.html">التتبع</a>
+    <a href="wallet.html">المحفظة</a>
+    <a href="students.html">الطلبة</a>
+    <a href="news.html">الأخبار</a>
+  </div>
+
+  <div class="nav-actions">
+  
+    <div class="user-welcome" id="userWelcome">
+      <i class="fa-solid fa-user-check"></i>
+      <span>أهلاً، <strong id="welcomeName">زائر</strong></span>
+    </div>
+</div>
+</nav>
+
+<header class="hero" id="hero">
+  <div class="hero-bg-img"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-pattern"></div>
+
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow">
+        <div class="hero-live-dot"></div>
+        منصة مواصلات ذكية لكل رحلاتك
+      </div>
+
+      <h1 class="hero-title">
+        كل مواصلاتك<br>
+        في <em>مكان واحد</em>
+      </h1>
+
+      <p class="hero-sub">
+        مواصلاتي إكسبريس تجمع لك التتبع، مواعيد المواصلات، مقارنة شركات السفر، المحفظة الذكية، عروض الطلبة، الأخبار، وشات بوت يساعدك بسرعة.
+      </p>
+
+      <div class="hero-actions">
+        <a class="btn-ghost" href="wallet.html"><i class="fa-solid fa-wallet"></i> افتح المحفظة</a>
+      </div>
+    </div>
+
+    <div class="hero-panel">
+      <h3>استخدم المنصة بسرعة</h3>
+
+      <div class="hero-stats">
+        <div class="hero-stat"><strong>8+</strong><span>خدمات متاحة</span></div>
+        <div class="hero-stat"><strong>7</strong><span>شركات سفر</span></div>
+        <div class="hero-stat"><strong>24/7</strong><span>مساعدة فورية</span></div>
+      </div>
+
+      <div class="quick-search">
+        <input type="text" id="heroSearch" placeholder="عايز تعمل إيه؟ مثال: تتبع، عروض، محفظة">
+        <button onclick="quickSearch()">اذهب</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+  <div class="wrap">
+
+    <!-- ALL SERVICES -->
+    <section class="block" id="quick">
+      <div class="section-head">
+        <div>
+          <div class="sec-label">كل الخدمات</div>
+          <h2 class="sec-title">كل اللي تحتاجه <em>من أول ضغطة</em></h2>
+        </div>
+        <p class="sec-sub">
+          اختصرنا كل صفحات المشروع في كروت واضحة، علشان أي مستخدم يعرف يستخدم الموقع بسرعة.
+        </p>
+      </div>
+
+      <div class="grid services-grid">
+        <article class="card">
+          <div class="card-icon"><i class="fa-solid fa-location-crosshairs"></i></div>
+          <h3>التتبع والمواعيد</h3>
+          <p>اختار وسيلة المواصلات وشوف تتبع وهمي، مواعيد، وحساب رحلة على الخريطة.</p>
+          <a class="card-link" href="tracking.html">افتح التتبع <i class="fa-solid fa-arrow-left"></i></a>
+        </article>
+
+        <article class="card">
+          <div class="card-icon"><i class="fa-solid fa-code-compare"></i></div>
+          <h3>مقارنة شركات السفر</h3>
+          <p>قارن Blue Bus وSuperJet وEGBUS وReGo وSWVL وغيرها حسب السعر والمميزات.</p>
+          <a class="card-link" href="services.html">قارن الشركات <i class="fa-solid fa-arrow-left"></i></a>
+        </article>
+
+        <article class="card">
+          <div class="card-icon"><i class="fa-solid fa-wallet"></i></div>
+          <h3>المحفظة الذكية</h3>
+          <p>اشحن، اسحب، حوّل، وأضف بطاقة مع سجل عمليات محفوظ محليًا للتجربة.</p>
+          <a class="card-link" href="wallet.html">افتح المحفظة <i class="fa-solid fa-arrow-left"></i></a>
+        </article>
+
+        <article class="card">
+          <div class="card-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+          <h3>باقات الطلبة</h3>
+          <p>خصومات وباقات شهرية للطلاب مع نموذج تفعيل بيانات الطالب.</p>
+          <a class="card-link" href="students.html">باقات الطلبة <i class="fa-solid fa-arrow-left"></i></a>
+        </article>
+
+        <article class="card">
+          <div class="card-icon"><i class="fa-solid fa-newspaper"></i></div>
+          <h3>الأخبار والتنبيهات</h3>
+          <p>أخبار المواصلات والطرق والحوادث مع بحث وفلاتر وتنبيهات عاجلة.</p>
+          <a class="card-link" href="news.html">افتح الأخبار <i class="fa-solid fa-arrow-left"></i></a>
+        </article>
+
+        <article class="card">
+          <div class="card-icon"><i class="fa-solid fa-robot"></i></div>
+          <h3>الشات بوت</h3>
+          <p>مساعد سريع يجاوبك عن الخدمات، العروض، التتبع، والصفحات المتاحة.</p>
+          <a class="card-link" href="#" onclick="toggleChat();return false;">افتح المساعد <i class="fa-solid fa-arrow-left"></i></a>
+        </article>
+      </div>
+    </section>
+
+    <!-- QUICK ACTIONS -->
+    <section class="block">
+      <div class="section-head">
+        <div>
+          <div class="sec-label">إجراءات سريعة</div>
+          <h2 class="sec-title">حاجات سريعة لأي <em>مستخدم</em></h2>
+        </div>
+      </div>
+
+      <div class="grid quick-grid">
+        <div class="quick-card">
+          <i class="fa-solid fa-route"></i>
+          <h3>احسب رحلة</h3>
+          <p>روح لصفحة التتبع واحسب مسار وسعر تقديري بين مكانين.</p>
+          <a class="card-link" href="tracking.html">احسب الآن</a>
+        </div>
+
+        <div class="quick-card">
+          <i class="fa-solid fa-ticket"></i>
+          <h3>اعرف أفضل شركة</h3>
+          <p>قارن بين شركات السفر حسب السعر والراحة والتغطية.</p>
+          <a class="card-link" href="services.html">افتح المقارنة</a>
+        </div>
+
+        <div class="quick-card">
+          <i class="fa-solid fa-bolt"></i>
+          <h3>اشحن رصيدك</h3>
+          <p>افتح المحفظة واشحن أو حوّل رصيد للتجربة.</p>
+          <a class="card-link" href="wallet.html">شحن رصيد</a>
+        </div>
+
+        <div class="quick-card">
+          <i class="fa-solid fa-message"></i>
+          <h3>اسأل المساعد</h3>
+          <p>اكتب سؤالك والشات بوت يوجهك للخدمة المناسبة.</p>
+          <a class="card-link" href="#" onclick="toggleChat();return false;">اسأل الآن</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- OFFERS -->
+    <section class="block" id="offers">
+      <div class="section-head">
+        <div>
+          <div class="sec-label">العروض</div>
+          <h2 class="sec-title">عروض وخصومات <em>مميزة</em></h2>
+        </div>
+        <p class="sec-sub">عروض تجريبية داخل المشروع يمكن ربطها لاحقًا بنظام كوبونات حقيقي.</p>
+      </div>
+
+      <div class="grid offers-grid">
+        <article class="offer-card">
+          <div class="offer-badge"><i class="fa-solid fa-fire"></i> العرض الأقوى</div>
+          <h3>خصم ٣٠٪ على أول رحلة</h3>
+          <p>استخدم الكود لأول مرة عند حجز أو حساب رحلة داخل التطبيق.</p>
+          <div class="offer-code">FIRST30</div>
+        </article>
+
+        <article class="offer-card">
+          <div class="offer-badge"><i class="fa-solid fa-graduation-cap"></i> للطلبة</div>
+          <h3>اشتراك طالب مخفض</h3>
+          <p>وفّر في مشاوير الجامعة مع باقات شهرية وخصومات للطلاب.</p>
+          <div class="offer-code">STUDENT40</div>
+        </article>
+
+        <article class="offer-card">
+          <div class="offer-badge"><i class="fa-solid fa-wallet"></i> للمحفظة</div>
+          <h3>كاش باك على الشحن</h3>
+          <p>اشحن المحفظة واحصل على كاش باك تجريبي داخل حسابك.</p>
+          <div class="offer-code">CASHBACK10</div>
+        </article>
+      </div>
+    </section>
+
+    <!-- OVERVIEW -->
+    <section class="block">
+      <div class="section-head">
+        <div>
+          <div class="sec-label">مختصر المشروع</div>
+          <h2 class="sec-title">الموقع بيعمل <em>إيه؟</em></h2>
+        </div>
+      </div>
+
+      <div class="overview-layout">
+        <section class="panel">
+          <h3>رحلة المستخدم في ٤ خطوات</h3>
+
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">١</div>
+              <div><h4>اختار الخدمة</h4><p>تتبع، مقارنة شركات، محفظة، طلبة، أخبار، أو شات بوت.</p></div>
+            </div>
+
+            <div class="step">
+              <div class="step-num">٢</div>
+              <div><h4>اعرف المعلومات</h4><p>شوف المواعيد، الأسعار، العروض، أو أفضل شركة حسب احتياجك.</p></div>
+            </div>
+
+            <div class="step">
+              <div class="step-num">٣</div>
+              <div><h4>نفّذ بسرعة</h4><p>احسب رحلة، افتح المحفظة، قارن الشركات، أو فعّل باقة طالب.</p></div>
+            </div>
+
+            <div class="step">
+              <div class="step-num">٤</div>
+              <div><h4>احفظ بياناتك</h4><p>الصفحات التجريبية تحفظ بعض البيانات في localStorage لحين ربط Backend.</p></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h3>آخر التنبيهات المختصرة</h3>
+
+          <div class="news-strip">
+            <article class="news-mini">
+              <span>تتبع</span>
+              <h3>صفحة تتبع متطورة</h3>
+              <p>تتبع وهمي ومواعيد وخريطة لحساب الرحلة.</p>
+            </article>
+
+            <article class="news-mini">
+              <span>شركات</span>
+              <h3>مقارنة السفر</h3>
+              <p>صفحة جديدة تقارن شركات السفر الكبيرة في مصر.</p>
+            </article>
+
+            <article class="news-mini">
+              <span>عروض</span>
+              <h3>كوبونات تجريبية</h3>
+              <p>أكواد خصم جاهزة للعرض ويمكن ربطها بنظام حقيقي.</p>
+            </article>
+          </div>
+
+          <div style="margin-top:20px;">
+            <a class="btn-primary" href="news.html">افتح كل الأخبار</a>
+          </div>
+        </section>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<button class="chat-toggle" onclick="toggleChat()" aria-label="فتح الشات بوت">
+  <i class="fa-solid fa-robot"></i>
+</button>
+
+<section class="chat-widget" id="chatWidget" aria-label="شات بوت مواصلاتي">
+  <div class="chat-head">
+    <div class="chat-title">
+      <div class="chat-avatar"><i class="fa-solid fa-robot"></i></div>
+      <div>
+        <strong>مساعد مواصلاتي</strong>
+        <span>اسأل عن أي خدمة في الموقع</span>
+      </div>
+    </div>
+    <button class="chat-close" onclick="toggleChat()"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+
+  <div class="chat-body" id="chatBody">
+    <div class="msg bot">
+      أهلاً 👋 أنا مساعد مواصلاتي. أقدر أساعدك تفتح التتبع، المحفظة، الطلبة، الأخبار، أو مقارنة شركات السفر.
+    </div>
+  </div>
+
+  <div class="chat-suggestions">
+    <button class="suggestion" onclick="sendSuggestion('عايز أتتبع رحلة')">تتبع رحلة</button>
+    <button class="suggestion" onclick="sendSuggestion('عايز أقارن الشركات')">قارن الشركات</button>
+    <button class="suggestion" onclick="sendSuggestion('عروض الطلبة')">عروض الطلبة</button>
+    <button class="suggestion" onclick="sendSuggestion('المحفظة')">المحفظة</button>
+  </div>
+
+  <div class="chat-input">
+    <input type="text" id="chatInput" placeholder="اكتب سؤالك هنا..." onkeydown="if(event.key==='Enter') sendChat()">
+    <button onclick="sendChat()"><i class="fa-solid fa-paper-plane"></i></button>
+  </div>
+</section>
+
+<div id="toast"><i class="fa-solid fa-circle-check"></i><span id="toastMsg"></span></div>
+
+<footer>
+  <p>© ٢٠٢٦ مواصلاتي إكسبريس — Eng. Nasser Gamal. جميع الحقوق محفوظة.</p>
+</footer>
+
+<script>
+/* CURSOR */
+const cur=document.getElementById('cursor');
+const ring=document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;
+  my=e.clientY;
+  cur.style.left=mx+'px';
+  cur.style.top=my+'px';
+});
+
+function animRing(){
+  rx+=(mx-rx)*.14;
+  ry+=(my-ry)*.14;
+  ring.style.left=rx+'px';
+  ring.style.top=ry+'px';
+  requestAnimationFrame(animRing);
+}
+animRing();
+
+function bindCursorHover(){
+  document.querySelectorAll('a,button,.card,.quick-card,.offer-card,.panel,.news-mini,.chat-widget').forEach(el=>{
+    if(el.dataset.cursorBound) return;
+    el.dataset.cursorBound='1';
+
+    el.addEventListener('mouseenter',()=>{
+      cur.style.width='20px';
+      cur.style.height='20px';
+      cur.style.background='rgba(201,168,76,.5)';
+      ring.style.width='54px';
+      ring.style.height='54px';
+      ring.style.borderColor='rgba(201,168,76,.6)';
+    });
+
+    el.addEventListener('mouseleave',()=>{
+      cur.style.width='12px';
+      cur.style.height='12px';
+      cur.style.background='var(--gold)';
+      ring.style.width='36px';
+      ring.style.height='36px';
+      ring.style.borderColor='rgba(201,168,76,.5)';
+    });
+  });
+}
+bindCursorHover();
+
+window.addEventListener('scroll',()=>{
+  document.getElementById('mainNav').classList.toggle('scrolled',scrollY>50);
+});
+
+
+/* USER WELCOME */
+function setWelcomeName(){
+  const nameEl = document.getElementById('welcomeName');
+  if(!nameEl) return;
+
+  let user = null;
+
+  try{
+    user = JSON.parse(localStorage.getItem('mx_user') || 'null');
+  }catch(_){
+    user = null;
+  }
+
+  const savedName =
+    user && user.name
+      ? user.name
+      : localStorage.getItem('mx_user_name') || localStorage.getItem('userName') || '';
+
+  if(savedName){
+    nameEl.textContent = savedName;
+  }else{
+    nameEl.textContent = 'زائر';
+  }
+}
+
+setWelcomeName();
+
+/* QUICK SEARCH */
+function quickSearch(){
+  const q=document.getElementById('heroSearch').value.trim().toLowerCase();
+
+  if(!q){
+    showToast('اكتب اسم الخدمة أو اسأل الشات بوت');
+    return;
+  }
+
+  if(q.includes('تتبع') || q.includes('رحلة') || q.includes('مواعيد')){
+    window.location.href='tracking.html';
+  }else if(q.includes('شركة') || q.includes('شركات') || q.includes('سفر') || q.includes('قارن')){
+    window.location.href='services.html';
+  }else if(q.includes('محفظ') || q.includes('رصيد') || q.includes('شحن')){
+    window.location.href='wallet.html';
+  }else if(q.includes('طالب') || q.includes('طلبة') || q.includes('جامعة')){
+    window.location.href='students.html';
+  }else if(q.includes('خبر') || q.includes('اخبار') || q.includes('الأخبار')){
+    window.location.href='news.html';
+  }else{
+    toggleChat(true);
+    addMessage('user',q);
+    setTimeout(()=>botReply(q),400);
+  }
+}
+
+/* CHAT BOT */
+function toggleChat(forceOpen=false){
+  const widget=document.getElementById('chatWidget');
+
+  if(forceOpen){
+    widget.classList.add('open');
+    return;
+  }
+
+  widget.classList.toggle('open');
+}
+
+function addMessage(type,text){
+  const body=document.getElementById('chatBody');
+  const msg=document.createElement('div');
+  msg.className='msg ' + type;
+  msg.textContent=text;
+  body.appendChild(msg);
+  body.scrollTop=body.scrollHeight;
+}
+
+function sendSuggestion(text){
+  document.getElementById('chatInput').value=text;
+  sendChat();
+}
+
+function sendChat(){
+  const input=document.getElementById('chatInput');
+  const text=input.value.trim();
+
+  if(!text) return;
+
+  addMessage('user',text);
+  input.value='';
+
+  setTimeout(()=>botReply(text),450);
+}
+
+function botReply(text){
+  const t=text.toLowerCase();
+  let reply='';
+
+  if(t.includes('تتبع') || t.includes('رحلة') || t.includes('مواعيد')){
+    reply='افتح صفحة التتبع من هنا: tracking.html — هتلاقي تتبع وهمي، مواعيد، وحساب رحلة على الخريطة.';
+    addMessage('bot',reply);
+    addBotLink('افتح التتبع','tracking.html');
+  }else if(t.includes('شركة') || t.includes('شركات') || t.includes('سفر') || t.includes('قارن')){
+    reply='صفحة الشركات فيها مقارنة بين Blue Bus وSuperJet وEGBUS وReGo وSWVL وغيرهم حسب السعر والمميزات والعيوب.';
+    addMessage('bot',reply);
+    addBotLink('قارن الشركات','services.html');
+  }else if(t.includes('محفظ') || t.includes('رصيد') || t.includes('شحن')){
+    reply='المحفظة تقدر منها تشحن، تسحب، تحول، وتضيف بطاقة بشكل تجريبي.';
+    addMessage('bot',reply);
+    addBotLink('افتح المحفظة','wallet.html');
+  }else if(t.includes('طالب') || t.includes('طلبة') || t.includes('جامعة')){
+    reply='صفحة الطلبة فيها باقات وخصومات ونموذج تفعيل اشتراك طالب.';
+    addMessage('bot',reply);
+    addBotLink('باقات الطلبة','students.html');
+  }else if(t.includes('عرض') || t.includes('خصم') || t.includes('كود')){
+    reply='العروض الحالية: FIRST30 لأول رحلة، STUDENT40 للطلبة، CASHBACK10 للمحفظة.';
+    addMessage('bot',reply);
+  }else if(t.includes('خبر') || t.includes('اخبار') || t.includes('الأخبار')){
+    reply='صفحة الأخبار فيها تنبيهات المواصلات والطرق والحوادث مع فلاتر وبحث.';
+    addMessage('bot',reply);
+    addBotLink('افتح الأخبار','news.html');
+  }else{
+    reply='أقدر أساعدك في: التتبع، مقارنة الشركات، المحفظة، الطلبة، الأخبار، أو العروض. اكتب اسم الخدمة اللي محتاجها.';
+    addMessage('bot',reply);
+  }
+}
+
+function addBotLink(label,url){
+  const body=document.getElementById('chatBody');
+  const wrap=document.createElement('div');
+  wrap.className='msg bot';
+  wrap.innerHTML='<a href="'+url+'" style="color:var(--gold2);font-weight:900;text-decoration:none;">'+label+' ←</a>';
+  body.appendChild(wrap);
+  body.scrollTop=body.scrollHeight;
+}
+
+/* TOAST */
+let toastTimer;
+function showToast(msg){
+  clearTimeout(toastTimer);
+  document.getElementById('toastMsg').textContent=msg;
+  const t=document.getElementById('toast');
+  t.classList.add('show');
+  toastTimer=setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+document.getElementById('heroSearch').addEventListener('keydown',e=>{
+  if(e.key==='Enter') quickSearch();
+});
+</script>
+</body>
+</html>
