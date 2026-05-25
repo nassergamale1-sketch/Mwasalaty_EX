@@ -97,7 +97,7 @@ body{
 }
 
 .login-shell{
-  width:min(455px,100%);
+  width:min(500px,100%);
   animation:fadeUp .75s cubic-bezier(.22,1,.36,1) both;
 }
 
@@ -296,9 +296,11 @@ body{
   color:var(--gold);
   font-size:15px;
   opacity:.92;
+  z-index:2;
 }
 
-.input-box input{
+.input-box input,
+.input-box select{
   width:100%;
   height:52px;
   border:none;
@@ -319,15 +321,45 @@ body{
   font-weight:500;
 }
 
-.input-box input:focus{
+.input-box input:focus,
+.input-box select:focus{
   border-color:var(--gold);
   background:rgba(201,168,76,.07);
   box-shadow:0 0 0 4px rgba(201,168,76,.1);
 }
 
-.input-box input.invalid{
+.input-box input.invalid,
+.input-box select.invalid{
   border-color:rgba(255,107,107,.82);
   box-shadow:0 0 0 4px rgba(255,107,107,.08);
+}
+
+.input-box select{
+  appearance:none;
+  -webkit-appearance:none;
+  cursor:pointer;
+  background-color:#221D14;
+  color:#F5EDD6;
+}
+
+.input-box select option{
+  background:#181410;
+  color:#F5EDD6;
+  font-weight:700;
+}
+
+.input-box select option:first-child{
+  color:#C4A882;
+}
+
+.select-arrow{
+  position:absolute;
+  left:17px;
+  top:50%;
+  transform:translateY(-50%);
+  color:var(--gold2);
+  font-size:13px;
+  pointer-events:none;
 }
 
 .ltr-input{
@@ -357,6 +389,98 @@ body{
   color:var(--danger);
   font-size:12px;
   font-weight:700;
+}
+
+.role-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.role-card{
+  position:relative;
+  min-height:82px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.11);
+  background:rgba(255,255,255,.055);
+  padding:14px;
+  cursor:pointer;
+  transition:.25s;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.role-card input{
+  position:absolute;
+  opacity:0;
+  pointer-events:none;
+}
+
+.role-icon{
+  width:42px;
+  height:42px;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(201,168,76,.1);
+  border:1px solid rgba(201,168,76,.24);
+  color:var(--gold);
+  font-size:17px;
+  flex-shrink:0;
+}
+
+.role-card strong{
+  display:block;
+  color:var(--cream);
+  font-size:14px;
+  font-weight:900;
+  margin-bottom:3px;
+}
+
+.role-card span{
+  display:block;
+  color:var(--muted2);
+  font-size:11px;
+  font-weight:700;
+  line-height:1.5;
+}
+
+.role-card:has(input:checked){
+  border-color:var(--gold);
+  background:rgba(201,168,76,.1);
+  box-shadow:0 0 0 4px rgba(201,168,76,.08);
+}
+
+.owner-fields{
+  display:none;
+  padding:14px;
+  border-radius:20px;
+  border:1px solid rgba(201,168,76,.22);
+  background:rgba(201,168,76,.055);
+}
+
+.owner-fields.show{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  animation:fadeUp .35s cubic-bezier(.22,1,.36,1) both;
+}
+
+.owner-note{
+  color:var(--sand2);
+  font-size:12px;
+  font-weight:700;
+  line-height:1.7;
+  display:flex;
+  align-items:flex-start;
+  gap:8px;
+}
+
+.owner-note i{
+  color:var(--gold);
+  margin-top:3px;
 }
 
 .otp-modal{
@@ -570,6 +694,7 @@ body{
   outline:none;
   transition:.25s;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
+  padding:0;
 }
 
 .otp-input:focus{
@@ -733,6 +858,7 @@ body{
     font-size:32px;
   }
 
+  .role-grid,
   .social-grid{
     grid-template-columns:1fr;
   }
@@ -747,23 +873,10 @@ body{
     height:45px;
     font-size:19px;
   }
-
-  .demo-code-box{
-    top:14px;
-    padding:12px;
-  }
-
-  .demo-code{
-    font-size:23px;
-    letter-spacing:4px;
-  }
-
-  .demo-hint{
-    display:none;
-  }
 }
 </style>
 </head>
+
 <body>
 
 <div class="page-bg"></div>
@@ -790,7 +903,7 @@ body{
           دخول سريع بكود تحقق
         </div>
         <h1>تسجيل <em>الدخول</em></h1>
-        <p>اكتب اسمك ورقم موبايلك، سيظهر لك كود تحقق على الشاشة لتدخل به فورًا.</p>
+        <p>اكتب اسمك ورقم موبايلك، ثم اختار هل أنت راكب أم صاحب عربية.</p>
       </div>
 
       <div class="alert" id="formAlert" role="alert"></div>
@@ -833,7 +946,103 @@ body{
           <div class="error-msg" id="phoneError"></div>
         </div>
 
-        
+        <div class="field">
+          <label>نوع الحساب</label>
+
+          <div class="role-grid">
+            <label class="role-card">
+              <input type="radio" name="accountRole" value="passenger" checked>
+              <div class="role-icon">
+                <i class="fa-solid fa-person-walking-luggage"></i>
+              </div>
+              <div>
+                <strong>راكب</strong>
+                <span>أستخدم التطبيق للحجز والتتبع</span>
+              </div>
+            </label>
+
+            <label class="role-card">
+              <input type="radio" name="accountRole" value="owner">
+              <div class="role-icon">
+                <i class="fa-solid fa-car-side"></i>
+              </div>
+              <div>
+                <strong>صاحب عربية</strong>
+                <span>أسجل عربيتي وأشتغل عليها</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="owner-fields" id="ownerFields">
+
+          <div class="owner-note">
+            <i class="fa-solid fa-circle-info"></i>
+            <span>املأ بيانات العربية لو أنت صاحب عربية. البيانات محفوظة محليًا للتجربة لحين ربطها بباك إند.</span>
+          </div>
+
+          <div class="field">
+            <label for="carType">نوع العربية</label>
+            <div class="input-box">
+              <i class="fa-solid fa-car main-icon" aria-hidden="true"></i>
+              <select id="carType" name="carType">
+                <option value="">اختار نوع العربية</option>
+                <option value="ملاكي">ملاكي</option>
+                <option value="ميكروباص">ميكروباص</option>
+                <option value="فان">فان</option>
+                <option value="أتوبيس صغير">أتوبيس صغير</option>
+                <option value="أتوبيس">أتوبيس</option>
+              </select>
+              <i class="fa-solid fa-chevron-down select-arrow"></i>
+            </div>
+            <div class="error-msg" id="carTypeError"></div>
+          </div>
+
+          <div class="field">
+            <label for="carPlate">رقم اللوحة</label>
+            <div class="input-box">
+              <i class="fa-solid fa-id-card main-icon" aria-hidden="true"></i>
+              <input
+                id="carPlate"
+                name="carPlate"
+                type="text"
+                placeholder="مثال: أ ب ج 1234"
+              >
+            </div>
+            <div class="error-msg" id="carPlateError"></div>
+          </div>
+
+          <div class="field">
+            <label for="carSeats">عدد المقاعد المتاحة</label>
+            <div class="input-box">
+              <i class="fa-solid fa-chair main-icon" aria-hidden="true"></i>
+              <input
+                id="carSeats"
+                name="carSeats"
+                type="number"
+                min="1"
+                max="60"
+                placeholder="مثال: 4"
+              >
+            </div>
+            <div class="error-msg" id="carSeatsError"></div>
+          </div>
+
+          <div class="field">
+            <label for="carRoute">خط السير</label>
+            <div class="input-box">
+              <i class="fa-solid fa-route main-icon" aria-hidden="true"></i>
+              <input
+                id="carRoute"
+                name="carRoute"
+                type="text"
+                placeholder="مثال: مدينة نصر - رمسيس"
+              >
+            </div>
+            <div class="error-msg" id="carRouteError"></div>
+          </div>
+
+        </div>
 
         <button class="submit-btn" type="submit" id="submitBtn">
           إرسال كود الدخول
@@ -909,23 +1118,18 @@ body{
 <script>
 /*
   =======================================================
-  LOGIN DEMO + REAL BACKEND READY
+  LOGIN DEMO + ROLES
   =======================================================
 
-  الصفحة الحالية صفحة واحدة كاملة للتجربة:
-  - المستخدم يكتب الاسم ورقم الهاتف.
-  - يتم توليد كود ظاهر على الشاشة.
-  - المستخدم يكتب الكود.
-  - عند نجاح التحقق يتم حفظ بياناته وتحويله للـ index.html.
+  نوع الحساب:
+  - passenger = راكب
+  - owner = صاحب عربية
 
-  عند تحويلها لنظام حقيقي 100%:
-  لا تولد الكود في Frontend.
-  استخدم API من السيرفر:
-
-  POST /api/auth/otp/send
-  POST /api/auth/otp/verify
-  GET  /api/auth/google
-  GET  /api/auth/facebook
+  البيانات تتحفظ في:
+  - mx_auth_token
+  - mx_user
+  - mx_user_role
+  - mx_registered_cars
 */
 
 const REDIRECT_AFTER_LOGIN = 'index.html';
@@ -950,6 +1154,18 @@ const newCodeBtn = document.getElementById('newCodeBtn');
 const otpInputs = Array.from(document.querySelectorAll('.otp-input'));
 const googleLoginBtn = document.getElementById('googleLoginBtn');
 const facebookLoginBtn = document.getElementById('facebookLoginBtn');
+
+const roleInputs = Array.from(document.querySelectorAll('input[name="accountRole"]'));
+const ownerFields = document.getElementById('ownerFields');
+const carTypeInput = document.getElementById('carType');
+const carPlateInput = document.getElementById('carPlate');
+const carSeatsInput = document.getElementById('carSeats');
+const carRouteInput = document.getElementById('carRoute');
+
+const carTypeError = document.getElementById('carTypeError');
+const carPlateError = document.getElementById('carPlateError');
+const carSeatsError = document.getElementById('carSeatsError');
+const carRouteError = document.getElementById('carRouteError');
 
 let generatedCode = '';
 let codeCreated = false;
@@ -983,6 +1199,93 @@ function normalizeEgyptPhone(value){
 function isValidEgyptPhone(value){
   const phone = normalizeEgyptPhone(value);
   return /^\+201[0125][0-9]{8}$/.test(phone);
+}
+
+function getSelectedRole(){
+  const selected = roleInputs.find(input=>input.checked);
+  return selected ? selected.value : 'passenger';
+}
+
+function toggleOwnerFields(){
+  const role = getSelectedRole();
+
+  if(role === 'owner'){
+    ownerFields.classList.add('show');
+  }else{
+    ownerFields.classList.remove('show');
+    clearOwnerErrors();
+  }
+
+  generatedCode = '';
+  codeCreated = false;
+  submitBtn.innerHTML = 'إرسال كود الدخول';
+  clearOtp();
+  closeOtpModal();
+}
+
+function clearOwnerErrors(){
+  carTypeError.textContent = '';
+  carPlateError.textContent = '';
+  carSeatsError.textContent = '';
+  carRouteError.textContent = '';
+
+  carTypeInput.classList.remove('invalid');
+  carPlateInput.classList.remove('invalid');
+  carSeatsInput.classList.remove('invalid');
+  carRouteInput.classList.remove('invalid');
+}
+
+function validateOwnerFields(){
+  let valid = true;
+
+  clearOwnerErrors();
+
+  if(getSelectedRole() !== 'owner'){
+    return true;
+  }
+
+  const carType = carTypeInput.value.trim();
+  const carPlate = carPlateInput.value.trim();
+  const carSeats = carSeatsInput.value.trim();
+  const carRoute = carRouteInput.value.trim();
+
+  if(!carType){
+    carTypeError.textContent = 'اختار نوع العربية';
+    carTypeInput.classList.add('invalid');
+    valid = false;
+  }
+
+  if(!carPlate){
+    carPlateError.textContent = 'رقم اللوحة مطلوب';
+    carPlateInput.classList.add('invalid');
+    valid = false;
+  }else if(carPlate.length < 4){
+    carPlateError.textContent = 'اكتب رقم لوحة صحيح';
+    carPlateInput.classList.add('invalid');
+    valid = false;
+  }
+
+  if(!carSeats){
+    carSeatsError.textContent = 'عدد المقاعد مطلوب';
+    carSeatsInput.classList.add('invalid');
+    valid = false;
+  }else if(Number(carSeats) < 1 || Number(carSeats) > 60){
+    carSeatsError.textContent = 'عدد المقاعد يجب أن يكون من 1 إلى 60';
+    carSeatsInput.classList.add('invalid');
+    valid = false;
+  }
+
+  if(!carRoute){
+    carRouteError.textContent = 'خط السير مطلوب';
+    carRouteInput.classList.add('invalid');
+    valid = false;
+  }else if(carRoute.length < 3){
+    carRouteError.textContent = 'اكتب خط سير أوضح';
+    carRouteInput.classList.add('invalid');
+    valid = false;
+  }
+
+  return valid;
 }
 
 function getOtpCode(){
@@ -1045,21 +1348,48 @@ function validateMainFields(){
     valid = false;
   }
 
-  return valid;
+  return valid && validateOwnerFields();
 }
 
 function saveLoginSession(){
+  const role = getSelectedRole();
+
   const user = {
     name: fullNameInput.value.trim(),
     phone: normalizeEgyptPhone(phoneInput.value.trim()),
+    role: role,
+    roleLabel: role === 'owner' ? 'صاحب عربية' : 'راكب',
     loginMethod: 'phone_demo_code',
     loggedAt: new Date().toISOString()
   };
+
+  if(role === 'owner'){
+    user.ownerProfile = {
+      ownerName: fullNameInput.value.trim(),
+      ownerPhone: normalizeEgyptPhone(phoneInput.value.trim()),
+      carType: carTypeInput.value.trim(),
+      carPlate: carPlateInput.value.trim(),
+      carSeats: Number(carSeatsInput.value),
+      carRoute: carRouteInput.value.trim(),
+      carStatus: 'pending_review'
+    };
+
+    const cars = JSON.parse(localStorage.getItem('mx_registered_cars') || '[]');
+
+    cars.push({
+      id: 'car_' + Date.now(),
+      ...user.ownerProfile,
+      createdAt: new Date().toISOString()
+    });
+
+    localStorage.setItem('mx_registered_cars',JSON.stringify(cars));
+  }
 
   const fakeToken = 'mx_demo_' + Date.now() + '_' + Math.random().toString(36).slice(2);
 
   localStorage.setItem('mx_auth_token',fakeToken);
   localStorage.setItem('mx_user',JSON.stringify(user));
+  localStorage.setItem('mx_user_role',role);
 }
 
 phoneInput.addEventListener('input',()=>{
@@ -1074,6 +1404,22 @@ phoneInput.addEventListener('input',()=>{
 
 fullNameInput.addEventListener('input',()=>{
   if(fullNameInput.classList.contains('invalid')) validateMainFields();
+});
+
+roleInputs.forEach(input=>{
+  input.addEventListener('change',toggleOwnerFields);
+});
+
+[carTypeInput,carPlateInput,carSeatsInput,carRouteInput].forEach(input=>{
+  input.addEventListener('input',()=>{
+    generatedCode = '';
+    codeCreated = false;
+    submitBtn.innerHTML = 'إرسال كود الدخول';
+
+    if(getSelectedRole() === 'owner'){
+      validateOwnerFields();
+    }
+  });
 });
 
 otpInputs.forEach((input,index)=>{
@@ -1112,7 +1458,7 @@ copyCodeBtn.addEventListener('click',async()=>{
   try{
     await navigator.clipboard.writeText(generatedCode);
     copyCodeBtn.textContent = 'تم النسخ ✓';
-    setTimeout(()=>copyCodeBtn.textContent='نسخ الكود',1200);
+    setTimeout(()=>copyCodeBtn.textContent='نسخ',1200);
   }catch(_){
     showAlert('error','لم يتم النسخ تلقائيًا، انسخ الكود يدويًا.');
   }
@@ -1124,7 +1470,7 @@ form.addEventListener('submit',e=>{
   otpError.textContent = '';
 
   if(!validateMainFields()){
-    showAlert('error','راجع الاسم ورقم الهاتف وحاول مرة أخرى.');
+    showAlert('error','راجع البيانات المطلوبة وحاول مرة أخرى.');
     return;
   }
 
@@ -1159,7 +1505,9 @@ function verifyEnteredCode(){
   setTimeout(()=>{
     saveLoginSession();
     verifyCodeBtn.innerHTML = '<i class="fa-solid fa-circle-check"></i> تم التحقق';
-    showAlert('success','تم تسجيل الدخول بنجاح. جاري تحويلك...');
+
+    const roleText = getSelectedRole() === 'owner' ? 'كصاحب عربية' : 'كراكب';
+    showAlert('success','تم تسجيل الدخول ' + roleText + ' بنجاح. جاري تحويلك...');
 
     setTimeout(()=>{
       window.location.href = REDIRECT_AFTER_LOGIN;
@@ -1170,6 +1518,12 @@ function verifyEnteredCode(){
 verifyCodeBtn.addEventListener('click',verifyEnteredCode);
 
 newCodeBtn.addEventListener('click',()=>{
+  if(!validateMainFields()){
+    closeOtpModal();
+    showAlert('error','راجع البيانات المطلوبة قبل إنشاء كود جديد.');
+    return;
+  }
+
   createCode();
   otpError.textContent = '';
 });
@@ -1191,6 +1545,8 @@ googleLoginBtn.addEventListener('click',()=>{
 facebookLoginBtn.addEventListener('click',()=>{
   window.location.href = FACEBOOK_AUTH_URL;
 });
+
+toggleOwnerFields();
 </script>
 
 </body>
