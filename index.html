@@ -3,1159 +3,1110 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="مواصلاتي إكسبريس — منصة ذكية للمواصلات في مصر تشمل التتبع، المحفظة، الطلبة، مقارنة شركات السفر، الأخبار، العروض، وشات بوت للمساعدة.">
-<title>مواصلاتي إكسبريس — الرئيسية</title>
+<meta name="description" content="مواصلاتي إكسبريس — منصة ذكية للمواصلات في مصر: بحث AI، تتبع، محفظة، مقارنة شركات، عروض، شات بوت.">
+<title>مواصلاتي إكسبريس — Smart Mobility Egypt</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
-:root{
-  --gold:#C9A84C;
-  --gold2:#E8C97A;
-  --gold3:#A07828;
-  --gold4:#6B4F14;
-  --cream:#F5EDD6;
-  --ink:#0C0A06;
-  --ink2:#181410;
-  --ink3:#221D14;
-  --ink4:#2E2718;
-  --sand:#8B7355;
-  --sand2:#C4A882;
-  --muted:#7A6E5E;
-  --muted2:#9E9282;
-  --border:rgba(201,168,76,0.15);
-  --border2:rgba(201,168,76,0.3);
-  --success:#72d572;
-  --danger:#ff6b6b;
-  --blue:#7AB0FF;
-  --r:16px;
-  --r2:24px;
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+:root {
+  --gold:   #C9A84C;
+  --gold2:  #E8C97A;
+  --gold3:  #A07828;
+  --gold4:  #6B4F14;
+  --cream:  #F5EDD6;
+  --ink:    #0C0A06;
+  --ink2:   #181410;
+  --ink3:   #221D14;
+  --ink4:   #2E2718;
+  --sand:   #8B7355;
+  --sand2:  #C4A882;
+  --muted:  #7A6E5E;
+  --muted2: #9E9282;
+  --border:  rgba(201,168,76,.12);
+  --border2: rgba(201,168,76,.28);
+  --green:  #4ade80;
+  --blue:   #60a5fa;
+  --orange: #fb923c;
+  --purple: #c084fc;
+  --r:  14px;
+  --r2: 20px;
+  --nav-h: 68px;
+  --max-w: 1200px;
 }
 
-*{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;font-size:16px;}
-
-body{
-  font-family:'Tajawal',sans-serif;
-  background:var(--ink);
-  color:var(--cream);
-  overflow-x:hidden;
-  cursor:none;
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Tajawal', sans-serif;
+  background: var(--ink);
+  color: var(--cream);
+  overflow-x: hidden;
+  min-height: 100vh;
 }
 
-body::before{
-  content:'';
-  position:fixed;
-  inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events:none;
-  z-index:9997;
-  opacity:.4;
+/* Noise texture */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 9997; opacity: .32;
 }
 
-/* CURSOR */
-#cursor{
-  position:fixed;
-  width:12px;
-  height:12px;
-  background:var(--gold);
-  border-radius:50%;
-  pointer-events:none;
-  z-index:99999;
-  transform:translate(-50%,-50%);
-  transition:transform .1s,width .25s,height .25s,background .25s;
-  mix-blend-mode:screen;
-}
-
-#cursor-ring{
-  position:fixed;
-  width:36px;
-  height:36px;
-  border:1.5px solid rgba(201,168,76,0.5);
-  border-radius:50%;
-  pointer-events:none;
-  z-index:99998;
-  transform:translate(-50%,-50%);
-  transition:all .18s ease;
-}
-
-/* NAV */
-nav{
-  position:fixed;
-  top:0;
-  inset-inline:0;
-  z-index:1000;
-  height:72px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:0 60px;
-  transition:all .4s;
-}
-
-nav.scrolled{
-  background:rgba(12,10,6,0.92);
-  backdrop-filter:blur(24px);
-  border-bottom:1px solid var(--border);
-}
-
-.nav-logo{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  text-decoration:none;
-}
-
-.nav-logo-icon{
-  width:38px;
-  height:38px;
-  background:linear-gradient(135deg,var(--gold4),var(--gold));
-  border-radius:10px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:var(--ink);
-  position:relative;
-  overflow:hidden;
-}
-
-.nav-logo-icon::after{
-  content:'';
-  position:absolute;
-  inset:0;
-  background:linear-gradient(135deg,rgba(255,255,255,.2),transparent);
-}
-
-.nav-logo-text{
-  font-size:17px;
-  font-weight:800;
-  color:var(--gold2);
-  letter-spacing:-.3px;
-}
-
-.nav-logo-text span{
-  color:var(--muted2);
-  font-weight:400;
-  font-size:13px;
-  display:block;
-  line-height:1;
-}
-
-.nav-links{
-  display:flex;
-  align-items:center;
-  gap:2px;
-}
-
-.nav-links a{
-  padding:8px 14px;
-  border-radius:8px;
-  font-size:14px;
-  font-weight:500;
-  color:var(--muted2);
-  text-decoration:none;
-  transition:all .2s;
-  position:relative;
-}
-
-.nav-links a::after{
-  content:'';
-  position:absolute;
-  bottom:4px;
-  right:50%;
-  left:50%;
-  height:1.5px;
-  background:var(--gold);
-  border-radius:2px;
-  transition:all .3s;
-}
-
-.nav-links a:hover{color:var(--cream);}
-.nav-links a:hover::after,.nav-links a.active::after{right:14px;left:14px;}
-.nav-links a.active{color:var(--gold2);}
-
-.nav-actions{
-  display:flex;
-  gap:10px;
-  align-items:center;
-}
-
-.user-welcome{
-  min-height:40px;
-  padding:8px 16px;
-  border-radius:12px;
-  border:1px solid var(--border2);
-  background:rgba(201,168,76,.08);
-  color:var(--gold2);
-  display:flex;
-  align-items:center;
-  gap:9px;
-  font-size:14px;
-  font-weight:800;
-  backdrop-filter:blur(12px);
-}
-
-.user-welcome i{
-  color:var(--gold);
-  font-size:14px;
-}
-
-.user-welcome strong{
-  color:var(--cream);
-  font-weight:900;
-}
-
-
-.btn-ghost,
-.btn-primary{
-  border:none;
-  font-family:'Tajawal',sans-serif;
-  cursor:none;
-  text-decoration:none;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-}
-
-.btn-ghost{
-  padding:9px 18px;
-  border-radius:9px;
-  font-size:14px;
-  font-weight:600;
-  border:1px solid var(--border2);
-  color:var(--sand2);
-  background:transparent;
-  transition:all .25s;
-}
-
-.btn-ghost:hover{
-  border-color:var(--gold);
-  color:var(--gold);
-  background:rgba(201,168,76,.06);
-}
-
-.btn-primary{
-  padding:9px 22px;
-  border-radius:9px;
-  font-size:14px;
-  font-weight:800;
-  background:linear-gradient(135deg,var(--gold3),var(--gold));
-  color:var(--ink);
-  transition:all .25s;
-  position:relative;
-  overflow:hidden;
-}
-
-.btn-primary::before{
-  content:'';
-  position:absolute;
-  inset:0;
-  background:linear-gradient(135deg,rgba(255,255,255,.15),transparent);
-}
-
-.btn-primary:hover{
-  transform:translateY(-2px);
-  box-shadow:0 8px 24px rgba(201,168,76,.3);
-}
-
-/* HERO */
-.hero{
-  position:relative;
-  min-height:100vh;
-  padding:140px 80px 80px;
-  display:flex;
-  align-items:center;
-  overflow:hidden;
-}
-
-.hero-bg-img{
-  position:absolute;
-  inset:0;
-  background:url('bg.jpg') center/cover no-repeat;
-  transform:scale(1.08);
-  animation:heroZoom 18s ease-in-out infinite alternate;
-}
-
-@keyframes heroZoom{
-  0%{transform:scale(1.08) translateX(0);}
-  100%{transform:scale(1.14) translateX(-20px);}
-}
-
-.hero-overlay{
-  position:absolute;
-  inset:0;
+/* Ambient glow */
+.bg-glow {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
   background:
-    linear-gradient(to bottom,rgba(12,10,6,.34),rgba(12,10,6,.78) 68%,var(--ink) 100%),
-    linear-gradient(to left,rgba(12,10,6,.62),transparent 60%);
+    radial-gradient(ellipse 70% 55% at 15% 5%,  rgba(201,168,76,.055) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 45% at 85% 90%, rgba(96,165,250,.04)  0%, transparent 65%);
 }
 
-.hero-pattern{
-  position:absolute;
-  inset:0;
-  opacity:.06;
+/* Custom cursor — desktop only */
+@media (pointer: fine) {
+  body { cursor: none; }
+  #cursor {
+    position: fixed; width: 10px; height: 10px;
+    background: var(--gold); border-radius: 50%;
+    pointer-events: none; z-index: 99999;
+    transform: translate(-50%, -50%);
+    transition: width .2s, height .2s, background .2s;
+    mix-blend-mode: screen;
+  }
+  #cursor-ring {
+    position: fixed; width: 34px; height: 34px;
+    border: 1.5px solid rgba(201,168,76,.4); border-radius: 50%;
+    pointer-events: none; z-index: 99998;
+    transform: translate(-50%, -50%);
+    transition: all .16s ease;
+  }
+  a, button, .card, .quick-card, .offer-card, .transport-card { cursor: none; }
+}
+
+/* ============================================================
+   NAV
+   ============================================================ */
+nav {
+  position: fixed; top: 0; inset-inline: 0;
+  z-index: 1000; height: var(--nav-h);
+  display: flex; align-items: center;
+  padding: 0 40px; gap: 18px;
+  transition: background .4s, border-color .4s;
+}
+nav.scrolled {
+  background: rgba(12,10,6,.93);
+  backdrop-filter: blur(28px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo { display: flex; align-items: center; gap: 11px; text-decoration: none; flex-shrink: 0; }
+.nav-logo-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: linear-gradient(135deg, var(--gold4), var(--gold));
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ink); font-size: 14px; position: relative; overflow: hidden;
+}
+.nav-logo-icon::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,.18), transparent);
+}
+.nav-logo-text { font-size: 15px; font-weight: 900; color: var(--gold2); line-height: 1.1; }
+.nav-logo-sub  { font-size: 11px; color: var(--muted); font-weight: 500; }
+
+.nav-search { flex: 1; max-width: 420px; position: relative; }
+.nav-search input {
+  width: 100%; height: 40px; border-radius: 999px;
+  border: 1px solid var(--border2);
+  background: rgba(255,255,255,.05);
+  color: var(--cream); outline: none;
+  padding: 0 44px 0 16px;
+  font-family: 'Tajawal', sans-serif; font-size: 13px; font-weight: 600;
+  transition: border-color .25s, background .25s;
+}
+.nav-search input::placeholder { color: var(--muted); }
+.nav-search input:focus { border-color: var(--gold); background: rgba(201,168,76,.07); }
+.nav-search-btn {
+  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  background: none; border: none;
+  color: var(--muted2); font-size: 13px;
+  transition: color .2s;
+}
+.nav-search input:focus ~ .nav-search-btn,
+.nav-search-btn:hover { color: var(--gold); }
+
+.nav-links { display: flex; align-items: center; gap: 2px; margin-right: auto; }
+.nav-links a {
+  padding: 7px 13px; border-radius: 8px;
+  font-size: 13.5px; font-weight: 600;
+  color: var(--muted2); text-decoration: none;
+  transition: color .2s, background .2s; white-space: nowrap;
+}
+.nav-links a:hover { color: var(--cream); background: rgba(255,255,255,.04); }
+.nav-links a.active { color: var(--gold2); }
+
+/* AI Search nav button */
+.nav-ai-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 16px; border-radius: 999px;
+  border: 1px solid var(--border2);
+  background: rgba(201,168,76,.08);
+  color: var(--gold2); font-size: 13px; font-weight: 800;
+  text-decoration: none; white-space: nowrap;
+  transition: all .2s;
+}
+.nav-ai-btn:hover { background: rgba(201,168,76,.15); border-color: var(--gold); }
+.nav-ai-btn i { color: var(--gold); }
+
+.nav-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.user-badge {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 14px; border-radius: 999px;
+  border: 1px solid var(--border2);
+  background: rgba(201,168,76,.07);
+  color: var(--gold2); font-size: 13px; font-weight: 700; white-space: nowrap;
+}
+.user-badge i { color: var(--gold); font-size: 12px; }
+
+.nav-hamburger {
+  display: none; width: 40px; height: 40px; border-radius: 10px;
+  border: 1px solid var(--border2); background: transparent;
+  color: var(--sand2); font-size: 16px;
+  align-items: center; justify-content: center; flex-shrink: 0;
+}
+
+/* Mobile menu */
+.mobile-menu {
+  display: none; position: fixed; top: 0; inset-inline: 0;
+  z-index: 999;
+  background: rgba(12,10,6,.97); backdrop-filter: blur(28px);
+  padding: var(--nav-h) 24px 32px;
+  flex-direction: column; gap: 6px;
+  border-bottom: 1px solid var(--border);
+  animation: slideDown .3s ease both;
+}
+.mobile-menu.open { display: flex; }
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.mobile-menu a {
+  padding: 14px 16px; border-radius: 12px;
+  font-size: 16px; font-weight: 700;
+  color: var(--sand2); text-decoration: none;
+  border: 1px solid transparent;
+  transition: all .2s;
+  display: flex; align-items: center; gap: 12px;
+}
+.mobile-menu a i { width: 20px; text-align: center; color: var(--gold); }
+.mobile-menu a:hover, .mobile-menu a.active {
+  color: var(--cream); background: rgba(201,168,76,.07); border-color: var(--border);
+}
+.mobile-menu-search { position: relative; margin-bottom: 8px; }
+.mobile-menu-search input {
+  width: 100%; height: 48px; border-radius: 14px;
+  border: 1px solid var(--border2);
+  background: rgba(255,255,255,.05);
+  color: var(--cream); outline: none; padding: 0 50px 0 16px;
+  font-family: 'Tajawal', sans-serif; font-size: 15px; font-weight: 600;
+}
+.mobile-menu-search input::placeholder { color: var(--muted); }
+.mobile-menu-search-btn {
+  position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+  background: linear-gradient(135deg, var(--gold3), var(--gold));
+  border: none; width: 32px; height: 32px; border-radius: 10px;
+  color: var(--ink); font-size: 13px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+  position: relative; min-height: 100vh;
+  padding: calc(var(--nav-h) + 70px) 60px 80px;
+  display: flex; align-items: center; overflow: hidden;
+}
+.hero-bg-img {
+  position: absolute; inset: 0;
+  background: url('bg.jpg') center / cover no-repeat;
+  animation: heroZoom 22s ease-in-out infinite alternate;
+}
+@keyframes heroZoom {
+  0%   { transform: scale(1.06) translateX(0); }
+  100% { transform: scale(1.12) translateX(-16px); }
+}
+.hero-overlay {
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(to bottom, rgba(12,10,6,.3), rgba(12,10,6,.82) 70%, var(--ink) 100%),
+    linear-gradient(to left, rgba(12,10,6,.55), transparent 55%);
+}
+.hero-pattern {
+  position: absolute; inset: 0; opacity: .04;
   background-image:
-    repeating-linear-gradient(45deg,var(--gold) 0,var(--gold) 1px,transparent 0,transparent 50%),
-    repeating-linear-gradient(-45deg,var(--gold) 0,var(--gold) 1px,transparent 0,transparent 50%);
-  background-size:30px 30px;
-}
-
-.hero-inner{
-  width:100%;
-  max-width:1180px;
-  margin:auto;
-  position:relative;
-  z-index:2;
-  display:grid;
-  grid-template-columns:1.1fr .9fr;
-  gap:64px;
-  align-items:center;
-}
-
-.hero-eyebrow{
-  display:inline-flex;
-  align-items:center;
-  gap:10px;
-  padding:7px 20px;
-  border-radius:50px;
-  border:1px solid var(--border2);
-  background:rgba(201,168,76,.08);
-  backdrop-filter:blur(10px);
-  font-size:13px;
-  font-weight:700;
-  color:var(--gold2);
-  letter-spacing:.06em;
-  margin-bottom:26px;
-  animation:fadeUp .8s .2s both;
-}
-
-.hero-live-dot{
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:var(--gold);
-  box-shadow:0 0 0 0 rgba(201,168,76,.6);
-  animation:liveRing 2s infinite;
-}
-
-@keyframes liveRing{
-  0%{box-shadow:0 0 0 0 rgba(201,168,76,.6);}
-  70%{box-shadow:0 0 0 8px rgba(201,168,76,0);}
-  100%{box-shadow:0 0 0 0 rgba(201,168,76,0);}
-}
-
-.hero-title{
-  font-size:clamp(44px,6.4vw,84px);
-  font-weight:900;
-  line-height:1.05;
-  letter-spacing:-3px;
-  margin-bottom:22px;
-  animation:fadeUp .8s .35s both;
-}
-
-.hero-title em{
-  font-style:normal;
-  background:linear-gradient(90deg,var(--gold3),var(--gold2),var(--gold));
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  background-clip:text;
-}
-
-.hero-sub{
-  font-size:17px;
-  font-weight:400;
-  color:var(--sand2);
-  line-height:1.9;
-  max-width:620px;
-  margin-bottom:30px;
-  animation:fadeUp .8s .5s both;
-}
-
-.hero-actions{
-  display:flex;
-  flex-wrap:wrap;
-  gap:12px;
-  animation:fadeUp .8s .65s both;
-}
-
-.hero-panel{
-  background:rgba(18,15,9,.78);
-  backdrop-filter:blur(26px);
-  border:1px solid var(--border2);
-  border-radius:var(--r2);
-  padding:28px;
-  box-shadow:0 24px 70px rgba(0,0,0,.45);
-  animation:fadeUp .85s .55s both;
-}
-
-.hero-panel h3{
-  font-size:22px;
-  font-weight:900;
-  letter-spacing:-.5px;
-  margin-bottom:20px;
-}
-
-.hero-stats{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px;
-  margin-bottom:18px;
-}
-
-.hero-stat{
-  background:rgba(255,255,255,.04);
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:17px 12px;
-  text-align:center;
-}
-
-.hero-stat strong{
-  display:block;
-  font-size:30px;
-  font-weight:900;
-  color:var(--gold2);
-  line-height:1;
-  margin-bottom:8px;
-}
-
-.hero-stat span{
-  display:block;
-  color:var(--muted2);
-  font-size:12px;
-  font-weight:800;
-}
-
-.quick-search{
-  display:grid;
-  grid-template-columns:1fr auto;
-  gap:10px;
-}
-
-.quick-search input{
-  height:52px;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,.1);
-  background:rgba(255,255,255,.05);
-  color:var(--cream);
-  outline:none;
-  padding:0 16px;
-  font-family:'Tajawal',sans-serif;
-  font-size:14px;
-  font-weight:700;
-  cursor:none;
-}
-
-.quick-search input::placeholder{color:var(--muted);}
-
-.quick-search button{
-  height:52px;
-  border:none;
-  border-radius:14px;
-  padding:0 18px;
-  background:linear-gradient(135deg,var(--gold3),var(--gold));
-  color:var(--ink);
-  font-family:'Tajawal',sans-serif;
-  font-size:14px;
-  font-weight:900;
-  cursor:none;
-}
-
-/* COMMON */
-.main{
-  padding:90px 80px 100px;
-  background:var(--ink);
-}
-
-.wrap{
-  max-width:1180px;
-  margin:auto;
-}
-
-.block{
-  margin-bottom:60px;
-}
-
-.section-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-end;
-  gap:24px;
-  flex-wrap:wrap;
-  margin-bottom:30px;
-}
-
-.sec-label{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  font-size:11px;
-  font-weight:900;
-  color:var(--gold);
-  letter-spacing:.14em;
-  text-transform:uppercase;
-  margin-bottom:14px;
-}
-
-.sec-label::before,
-.sec-label::after{
-  content:'';
-  display:block;
-  height:1px;
-  width:24px;
-  background:linear-gradient(90deg,transparent,var(--gold));
-}
-
-.sec-label::before{background:linear-gradient(270deg,transparent,var(--gold));}
-
-.sec-title{
-  font-size:clamp(30px,4vw,48px);
-  font-weight:900;
-  letter-spacing:-1.7px;
-  line-height:1.1;
-}
-
-.sec-title em{
-  font-style:normal;
-  background:linear-gradient(90deg,var(--gold3),var(--gold2));
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  background-clip:text;
-}
-
-.sec-sub{
-  font-size:15px;
-  color:var(--muted2);
-  line-height:1.75;
-  max-width:570px;
-}
-
-.grid{
-  display:grid;
-  gap:18px;
-}
-
-.services-grid{
-  grid-template-columns:repeat(3,1fr);
-}
-
-.card{
-  background:var(--ink3);
-  border:1px solid var(--border);
-  border-radius:var(--r2);
-  padding:26px;
-  position:relative;
-  overflow:hidden;
-  transition:.35s cubic-bezier(.22,1,.36,1);
-}
-
-.card::before{
-  content:'';
-  position:absolute;
-  inset:0;
-  background:linear-gradient(135deg,rgba(201,168,76,.075),transparent 60%);
-  opacity:0;
-  transition:.35s;
-}
-
-.card:hover{
-  transform:translateY(-6px);
-  border-color:var(--border2);
-  box-shadow:0 24px 56px rgba(0,0,0,.45);
-}
-
-.card:hover::before{opacity:1;}
-
-.card > *{
-  position:relative;
-  z-index:1;
-}
-
-.card-icon{
-  width:54px;
-  height:54px;
-  border-radius:16px;
-  background:rgba(201,168,76,.1);
-  border:1px solid var(--border2);
-  color:var(--gold);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:22px;
-  margin-bottom:20px;
-}
-
-.card h3{
-  font-size:21px;
-  font-weight:900;
-  margin-bottom:10px;
-  letter-spacing:-.5px;
-}
-
-.card p{
-  color:var(--muted2);
-  font-size:14px;
-  line-height:1.75;
-  font-weight:600;
-  margin-bottom:18px;
-}
-
-.card-link{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  color:var(--gold2);
-  text-decoration:none;
-  font-size:13px;
-  font-weight:900;
-  transition:.25s;
-}
-
-.card:hover .card-link{
-  gap:12px;
-  color:var(--gold);
-}
-
-.quick-grid{
-  grid-template-columns:repeat(4,1fr);
-}
-
-.quick-card{
-  background:rgba(255,255,255,.035);
-  border:1px solid var(--border);
-  border-radius:18px;
-  padding:20px;
-  transition:.25s;
-}
-
-.quick-card:hover{
-  transform:translateY(-4px);
-  border-color:var(--border2);
-  background:rgba(201,168,76,.06);
-}
-
-.quick-card i{
-  width:44px;
-  height:44px;
-  border-radius:13px;
-  background:rgba(201,168,76,.1);
-  border:1px solid var(--border2);
-  color:var(--gold);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:19px;
-  margin-bottom:14px;
-}
-
-.quick-card h3{
-  font-size:16px;
-  font-weight:900;
-  margin-bottom:7px;
-}
-
-.quick-card p{
-  color:var(--muted2);
-  font-size:13px;
-  line-height:1.6;
-  font-weight:700;
-  margin-bottom:14px;
-}
-
-.offers-grid{
-  grid-template-columns:1.1fr .9fr .9fr;
-}
-
-.offer-card{
-  min-height:245px;
-  background:linear-gradient(145deg,var(--ink4),var(--ink3));
-  border:1px solid var(--border2);
-  border-radius:var(--r2);
-  padding:28px;
-  position:relative;
-  overflow:hidden;
-  transition:.35s;
-}
-
-.offer-card:hover{
-  transform:translateY(-6px);
-  box-shadow:0 24px 56px rgba(0,0,0,.45);
-}
-
-.offer-card::before{
-  content:'';
-  position:absolute;
-  width:260px;
-  height:260px;
-  border-radius:50%;
-  background:radial-gradient(circle,rgba(201,168,76,.18),transparent 70%);
-  top:-90px;
-  left:-80px;
-}
-
-.offer-card > *{
-  position:relative;
-  z-index:1;
-}
-
-.offer-badge{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  padding:7px 12px;
-  border-radius:999px;
-  background:rgba(201,168,76,.12);
-  border:1px solid var(--border2);
-  color:var(--gold2);
-  font-size:12px;
-  font-weight:900;
-  margin-bottom:18px;
-}
-
-.offer-card h3{
-  font-size:25px;
-  font-weight:900;
-  margin-bottom:10px;
-  letter-spacing:-.7px;
-}
-
-.offer-card p{
-  color:var(--sand2);
-  font-size:14px;
-  line-height:1.8;
-  margin-bottom:22px;
-}
-
-.offer-code{
-  direction:ltr;
-  display:inline-flex;
-  align-items:center;
-  gap:10px;
-  padding:11px 15px;
-  border-radius:13px;
-  background:rgba(12,10,6,.42);
-  border:1px dashed var(--border2);
-  color:var(--gold2);
-  font-weight:900;
-  letter-spacing:1px;
-}
-
-.overview-layout{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:22px;
-}
-
-.panel{
-  background:var(--ink3);
-  border:1px solid var(--border);
-  border-radius:var(--r2);
-  padding:28px;
-  position:relative;
-  overflow:hidden;
-}
-
-.panel::before{
-  content:'';
-  position:absolute;
-  inset:0;
-  background:linear-gradient(135deg,rgba(201,168,76,.055),transparent 60%);
-  pointer-events:none;
-}
-
-.panel > *{
-  position:relative;
-  z-index:1;
-}
-
-.panel h3{
-  font-size:22px;
-  font-weight:900;
-  margin-bottom:18px;
-}
-
-.steps{
-  display:flex;
-  flex-direction:column;
-}
-
-.step{
-  display:flex;
-  gap:16px;
-  padding:17px 0;
-  border-bottom:1px solid var(--border);
-}
-
-.step:first-of-type{padding-top:0;}
-.step:last-child{border-bottom:none;padding-bottom:0;}
-
-.step-num{
-  width:40px;
-  height:40px;
-  border-radius:12px;
-  background:rgba(201,168,76,.1);
-  border:1px solid var(--border2);
-  color:var(--gold);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:15px;
-  font-weight:900;
-  flex-shrink:0;
-}
-
-.step h4{
-  font-size:16px;
-  font-weight:900;
-  margin-bottom:5px;
-}
-
-.step p{
-  color:var(--muted2);
-  font-size:13px;
-  line-height:1.65;
-  font-weight:700;
-}
-
-.news-strip{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:14px;
-}
-
-.news-mini{
-  background:rgba(255,255,255,.035);
-  border:1px solid var(--border);
-  border-radius:18px;
-  padding:18px;
-  transition:.25s;
-}
-
-.news-mini:hover{
-  transform:translateY(-4px);
-  border-color:var(--border2);
-  background:rgba(201,168,76,.06);
-}
-
-.news-mini span{
-  display:inline-flex;
-  padding:5px 10px;
-  border-radius:999px;
-  background:rgba(201,168,76,.08);
-  color:var(--gold2);
-  border:1px solid var(--border);
-  font-size:11px;
-  font-weight:900;
-  margin-bottom:12px;
-}
-
-.news-mini h3{
-  font-size:15px;
-  line-height:1.5;
-  font-weight:900;
-  margin-bottom:8px;
-}
-
-.news-mini p{
-  color:var(--muted2);
-  font-size:12px;
-  line-height:1.6;
-  font-weight:700;
-}
-
-/* CHATBOT */
-.chat-toggle{
-  position:fixed;
-  bottom:26px;
-  right:26px;
-  width:62px;
-  height:62px;
-  border:none;
-  border-radius:20px;
-  background:linear-gradient(135deg,var(--gold3),var(--gold));
-  color:var(--ink);
-  box-shadow:0 20px 54px rgba(201,168,76,.34);
-  z-index:9998;
-  cursor:none;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:24px;
-  transition:.25s;
-}
-
-.chat-toggle:hover{
-  transform:translateY(-4px) scale(1.04);
-}
-
-.chat-widget{
-  position:fixed;
-  bottom:102px;
-  right:26px;
-  width:min(390px,calc(100vw - 36px));
-  height:540px;
-  background:rgba(18,15,9,.9);
-  border:1px solid var(--border2);
-  backdrop-filter:blur(24px);
-  border-radius:26px;
-  box-shadow:0 30px 90px rgba(0,0,0,.65);
-  z-index:9998;
-  overflow:hidden;
-  display:none;
-  flex-direction:column;
-}
-
-.chat-widget.open{
-  display:flex;
-  animation:fadeUp .35s both;
-}
-
-.chat-head{
-  padding:18px;
-  border-bottom:1px solid var(--border);
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  background:rgba(201,168,76,.06);
-}
-
-.chat-title{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.chat-avatar{
-  width:42px;
-  height:42px;
-  border-radius:14px;
-  background:linear-gradient(135deg,var(--gold4),var(--gold));
-  color:var(--ink);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:18px;
-}
-
-.chat-title strong{
-  display:block;
-  font-size:15px;
-  font-weight:900;
-}
-
-.chat-title span{
-  display:block;
-  color:var(--muted2);
-  font-size:12px;
-  margin-top:2px;
-}
-
-.chat-close{
-  width:34px;
-  height:34px;
-  border:none;
-  border-radius:10px;
-  background:rgba(255,255,255,.06);
-  color:var(--muted2);
-  cursor:none;
-}
-
-.chat-body{
-  flex:1;
-  padding:16px;
-  overflow:auto;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-
-.msg{
-  max-width:85%;
-  padding:11px 13px;
-  border-radius:16px;
-  font-size:13px;
-  line-height:1.6;
-  font-weight:700;
-}
-
-.msg.bot{
-  align-self:flex-start;
-  background:rgba(255,255,255,.06);
-  color:var(--sand2);
-  border:1px solid var(--border);
-  border-bottom-right-radius:5px;
-}
-
-.msg.user{
-  align-self:flex-end;
-  background:rgba(201,168,76,.13);
-  color:var(--gold2);
-  border:1px solid var(--border2);
-  border-bottom-left-radius:5px;
-}
-
-.chat-suggestions{
-  padding:0 16px 12px;
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-}
-
-.suggestion{
-  border:none;
-  border-radius:999px;
-  padding:7px 11px;
-  background:rgba(201,168,76,.08);
-  border:1px solid var(--border);
-  color:var(--gold2);
-  font-family:'Tajawal',sans-serif;
-  font-size:12px;
-  font-weight:800;
-  cursor:none;
-}
-
-.chat-input{
-  padding:14px;
-  border-top:1px solid var(--border);
-  display:grid;
-  grid-template-columns:1fr auto;
-  gap:10px;
-}
-
-.chat-input input{
-  height:46px;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,.1);
-  background:rgba(255,255,255,.055);
-  color:var(--cream);
-  outline:none;
-  padding:0 14px;
-  font-family:'Tajawal',sans-serif;
-  font-weight:700;
-  cursor:none;
-}
-
-.chat-input button{
-  width:46px;
-  height:46px;
-  border:none;
-  border-radius:14px;
-  background:linear-gradient(135deg,var(--gold3),var(--gold));
-  color:var(--ink);
-  cursor:none;
-  font-size:16px;
-}
-
-#toast{
-  position:fixed;
-  bottom:28px;
-  left:50%;
-  transform:translateX(-50%) translateY(16px);
-  background:var(--ink3);
-  border:1px solid var(--border2);
-  border-radius:14px;
-  padding:16px 28px;
-  font-size:15px;
-  font-weight:700;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  z-index:9999;
-  opacity:0;
-  pointer-events:none;
-  transition:all .4s cubic-bezier(.22,1,.36,1);
-  box-shadow:0 20px 60px rgba(0,0,0,.6);
-  max-width:430px;
-  width:90vw;
-}
-
-#toast.show{
-  opacity:1;
-  transform:translateX(-50%) translateY(0);
-}
-
-#toast i{
-  color:var(--gold);
-  font-size:18px;
-  flex-shrink:0;
-}
-
-footer{
-  background:var(--ink2);
-  border-top:1px solid var(--border);
-  padding:42px 80px;
-  text-align:center;
-}
-
-footer p{
-  color:var(--muted);
-  font-size:13px;
-}
-
-@keyframes fadeUp{
-  from{opacity:0;transform:translateY(28px);}
-  to{opacity:1;transform:translateY(0);}
-}
-
-@media(max-width:1120px){
-  .hero-inner,
-  .overview-layout{grid-template-columns:1fr;}
-  .services-grid{grid-template-columns:repeat(2,1fr);}
-  .quick-grid,
-  .offers-grid,
-  .news-strip{grid-template-columns:repeat(2,1fr);}
-}
-
-@media(max-width:1024px){
-  nav{padding:0 28px;}
-  .nav-links{display:none;}
-  .hero{padding:130px 40px 70px;}
-  .main{padding:80px 40px 90px;}
-  footer{padding:38px 40px;}
-}
-
-@media(max-width:720px){
-  body{cursor:auto;}
-  #cursor,#cursor-ring{display:none;}
-  .hero{padding:118px 20px 60px;min-height:auto;}
-  .main{padding:64px 20px 80px;}
-  .hero-title{letter-spacing:-1.5px;}
-  .services-grid,
-  .quick-grid,
-  .offers-grid,
-  .news-strip,
-  .hero-stats,
-  .quick-search{grid-template-columns:1fr;}
-  .hero-actions{flex-direction:column;}
-  .btn-primary,.btn-ghost{width:100%;}
-  .nav-actions .btn-ghost{display:none;}
-  .chat-toggle{right:18px;bottom:18px;}
-  .chat-widget{right:18px;bottom:92px;height:500px;}
-  footer{padding:34px 20px;}
+    repeating-linear-gradient(45deg,  var(--gold) 0, var(--gold) 1px, transparent 0, transparent 50%),
+    repeating-linear-gradient(-45deg, var(--gold) 0, var(--gold) 1px, transparent 0, transparent 50%);
+  background-size: 28px 28px;
+}
+.hero-inner {
+  width: 100%; max-width: var(--max-w); margin: auto;
+  position: relative; z-index: 2;
+  display: grid; grid-template-columns: 1.15fr .85fr;
+  gap: 60px; align-items: center;
+}
+
+/* Hero eyebrow */
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 6px 18px; border-radius: 999px;
+  border: 1px solid var(--border2);
+  background: rgba(201,168,76,.08); backdrop-filter: blur(10px);
+  font-size: 12.5px; font-weight: 700; color: var(--gold2);
+  letter-spacing: .05em; margin-bottom: 24px;
+  animation: fadeUp .8s .2s both;
+}
+.hero-live-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 0 0 rgba(201,168,76,.6);
+  animation: liveRing 2s infinite;
+}
+@keyframes liveRing {
+  0%   { box-shadow: 0 0 0 0  rgba(201,168,76,.6); }
+  70%  { box-shadow: 0 0 0 8px rgba(201,168,76,0); }
+  100% { box-shadow: 0 0 0 0  rgba(201,168,76,0); }
+}
+.hero-title {
+  font-size: clamp(40px, 6vw, 78px);
+  font-weight: 900; line-height: 1.06;
+  letter-spacing: -2.5px; margin-bottom: 20px;
+  animation: fadeUp .8s .35s both;
+}
+.hero-title em {
+  font-style: normal;
+  background: linear-gradient(90deg, var(--gold3), var(--gold2), var(--gold));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.hero-sub {
+  font-size: 16px; color: var(--sand2); line-height: 1.9;
+  max-width: 600px; margin-bottom: 28px;
+  animation: fadeUp .8s .5s both;
+}
+.hero-btns { display: flex; flex-wrap: wrap; gap: 12px; animation: fadeUp .8s .65s both; }
+
+/* Hero big search */
+.hero-search-wrap { margin-bottom: 28px; animation: fadeUp .8s .55s both; }
+.hero-search-wrap > p { font-size: 13px; color: var(--muted2); font-weight: 600; margin-bottom: 10px; }
+.hero-search-bar {
+  display: flex; align-items: center;
+  background: rgba(20,16,10,.84); backdrop-filter: blur(20px);
+  border: 1px solid var(--border2); border-radius: 16px; overflow: hidden;
+  transition: border-color .25s;
+}
+.hero-search-bar:focus-within { border-color: var(--gold); }
+.hero-search-bar input {
+  flex: 1; height: 58px; border: none; background: none;
+  color: var(--cream); outline: none; padding: 0 20px;
+  font-family: 'Tajawal', sans-serif; font-size: 15px; font-weight: 600;
+}
+.hero-search-bar input::placeholder { color: var(--muted); }
+.hero-search-bar .divider { width: 1px; height: 30px; background: var(--border2); }
+.hero-search-bar button {
+  height: 58px; padding: 0 24px; border: none;
+  background: linear-gradient(135deg, var(--gold3), var(--gold));
+  color: var(--ink); font-family: 'Tajawal', sans-serif;
+  font-size: 14px; font-weight: 900;
+  display: flex; align-items: center; gap: 8px; white-space: nowrap;
+  transition: opacity .2s;
+}
+.hero-search-bar button:hover { opacity: .88; }
+.hero-search-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.hero-tag {
+  padding: 5px 12px; border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.04);
+  color: var(--muted2); font-size: 12px; font-weight: 700;
+  cursor: pointer; transition: all .2s;
+}
+.hero-tag:hover { border-color: var(--gold); color: var(--gold2); }
+
+/* Hero panel */
+.hero-panel {
+  background: rgba(18,15,9,.82); backdrop-filter: blur(26px);
+  border: 1px solid var(--border2); border-radius: var(--r2);
+  padding: 28px;
+  box-shadow: 0 24px 70px rgba(0,0,0,.5);
+  animation: fadeUp .85s .5s both;
+}
+.hero-panel-title { font-size: 20px; font-weight: 900; letter-spacing: -.5px; margin-bottom: 18px; }
+.hero-stats {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 10px; margin-bottom: 20px;
+}
+.hero-stat {
+  background: rgba(255,255,255,.04); border: 1px solid var(--border);
+  border-radius: 14px; padding: 16px 10px; text-align: center;
+}
+.hero-stat strong { display: block; font-size: 28px; font-weight: 900; color: var(--gold2); line-height: 1; margin-bottom: 6px; }
+.hero-stat span   { display: block; color: var(--muted2); font-size: 11.5px; font-weight: 800; }
+
+.panel-links { display: flex; flex-direction: column; gap: 10px; }
+.panel-link {
+  display: flex; align-items: center; gap: 12px;
+  padding: 13px 14px; border-radius: 14px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.03);
+  text-decoration: none; color: var(--cream);
+  transition: all .25s;
+}
+.panel-link:hover { border-color: var(--border2); background: rgba(201,168,76,.07); }
+.panel-link-icon {
+  width: 38px; height: 38px; border-radius: 11px;
+  background: rgba(201,168,76,.1); border: 1px solid var(--border2);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gold); font-size: 15px; flex-shrink: 0;
+}
+.panel-link-text { flex: 1; }
+.panel-link-text strong { display: block; font-size: 13.5px; font-weight: 900; }
+.panel-link-text span  { font-size: 11.5px; color: var(--muted2); font-weight: 600; }
+.panel-link i.arrow { color: var(--muted); font-size: 11px; margin-right: auto; }
+.panel-link:hover i.arrow { color: var(--gold); }
+
+/* ============================================================
+   MAIN
+   ============================================================ */
+.main { padding: 80px 60px 100px; background: var(--ink); position: relative; z-index: 1; }
+.wrap { max-width: var(--max-w); margin: auto; }
+.block { margin-bottom: 72px; }
+
+/* Section header */
+.section-head {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  gap: 24px; flex-wrap: wrap; margin-bottom: 32px;
+}
+.sec-label {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 11px; font-weight: 900; color: var(--gold);
+  letter-spacing: .14em; text-transform: uppercase; margin-bottom: 12px;
+}
+.sec-label::before, .sec-label::after {
+  content: ''; display: block; height: 1px; width: 22px;
+  background: linear-gradient(90deg, transparent, var(--gold));
+}
+.sec-label::before { background: linear-gradient(270deg, transparent, var(--gold)); }
+.sec-title {
+  font-size: clamp(26px, 3.5vw, 44px);
+  font-weight: 900; letter-spacing: -1.5px; line-height: 1.1;
+}
+.sec-title em {
+  font-style: normal;
+  background: linear-gradient(90deg, var(--gold3), var(--gold2));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.sec-sub { font-size: 14.5px; color: var(--muted2); line-height: 1.75; max-width: 520px; }
+.see-all {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 9px 18px; border-radius: 999px;
+  border: 1px solid var(--border2); color: var(--gold2);
+  font-size: 13px; font-weight: 800; text-decoration: none;
+  transition: all .2s; white-space: nowrap;
+}
+.see-all:hover { background: rgba(201,168,76,.08); border-color: var(--gold); }
+
+/* ============================================================
+   AI SEARCH SECTION
+   ============================================================ */
+#ai-search-section {
+  background: rgba(22,18,12,.75);
+  border: 1px solid var(--border2);
+  border-radius: 28px;
+  padding: 40px;
+  position: relative; overflow: hidden;
+  box-shadow: 0 32px 80px rgba(0,0,0,.5);
+  backdrop-filter: blur(20px);
+}
+#ai-search-section::before {
+  content: '';
+  position: absolute; top: -60px; right: -60px;
+  width: 260px; height: 260px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(201,168,76,.1), transparent 70%);
+  pointer-events: none;
+}
+.ai-section-header {
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 28px; flex-wrap: wrap;
+}
+.ai-section-icon {
+  width: 56px; height: 56px; border-radius: 17px;
+  background: linear-gradient(135deg, var(--gold4), var(--gold));
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ink); font-size: 22px; flex-shrink: 0;
+  position: relative; overflow: hidden;
+}
+.ai-section-icon::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,.18), transparent);
+}
+.ai-section-title { font-size: 24px; font-weight: 900; margin-bottom: 4px; letter-spacing: -.6px; }
+.ai-section-sub   { font-size: 13px; color: var(--muted2); font-weight: 600; }
+.ai-live-badge {
+  margin-right: auto;
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 6px 14px; border-radius: 999px;
+  border: 1px solid var(--border2); background: rgba(201,168,76,.08);
+  color: var(--gold2); font-size: 12px; font-weight: 800;
+}
+
+/* Search tabs */
+.search-tabs {
+  display: flex; border-bottom: 1px solid var(--border);
+  background: rgba(255,255,255,.02); border-radius: 14px 14px 0 0;
+  overflow: hidden;
+  margin-bottom: 0;
+}
+.tab-btn {
+  flex: 1; padding: 15px 8px; border: none; background: none;
+  font-family: 'Tajawal', sans-serif; font-size: 14px; font-weight: 700;
+  color: var(--muted2); cursor: pointer; transition: all .2s;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  border-bottom: 2px solid transparent; margin-bottom: -1px;
+}
+.tab-btn.active { color: var(--gold2); border-bottom-color: var(--gold); }
+.tab-btn:hover:not(.active) { color: var(--cream); }
+
+/* Search box */
+.search-box-inner {
+  background: rgba(12,10,6,.6);
+  border: 1px solid var(--border2); border-top: none;
+  border-radius: 0 0 18px 18px;
+  padding: 26px;
+}
+
+/* Destination input */
+.dest-input-wrap { position: relative; margin-bottom: 16px; }
+.dest-input-wrap label {
+  display: block; font-size: 11px; font-weight: 800;
+  color: var(--gold); letter-spacing: .08em; margin-bottom: 8px;
+}
+.dest-input-wrap input {
+  width: 100%; height: 56px; border-radius: 14px;
+  border: 1px solid var(--border2);
+  background: rgba(255,255,255,.05);
+  color: var(--cream); outline: none;
+  padding: 0 50px 0 18px;
+  font-family: 'Tajawal', sans-serif; font-size: 15px; font-weight: 600;
+  transition: border-color .25s;
+}
+.dest-input-wrap input:focus { border-color: var(--gold); }
+.dest-input-wrap input::placeholder { color: var(--muted); }
+.dest-input-icon {
+  position: absolute; left: 16px; bottom: 17px;
+  color: var(--muted2); font-size: 15px; pointer-events: none;
+}
+
+/* Route row */
+.route-row {
+  display: grid; grid-template-columns: 1fr auto 1fr;
+  gap: 0; align-items: center; margin-bottom: 16px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--border2); border-radius: 16px; overflow: hidden;
+}
+.route-field { position: relative; }
+.route-field label {
+  display: block; font-size: 11px; font-weight: 800;
+  color: var(--gold); letter-spacing: .08em;
+  padding: 12px 16px 0;
+}
+.route-field input {
+  width: 100%; height: 52px; border: none; background: none;
+  color: var(--cream); outline: none;
+  padding: 4px 16px 12px;
+  font-family: 'Tajawal', sans-serif; font-size: 15px; font-weight: 600;
+}
+.route-field input::placeholder { color: var(--muted); }
+.swap-btn {
+  width: 44px; height: 44px; border: 1px solid var(--border2); border-radius: 12px;
+  background: rgba(201,168,76,.08); color: var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 16px; transition: all .2s; flex-shrink: 0; margin: 0 4px;
+}
+.swap-btn:hover { background: rgba(201,168,76,.16); transform: rotate(180deg); }
+
+/* Location row */
+.location-row { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.locate-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 16px; border-radius: 12px;
+  border: 1px solid var(--border2); background: rgba(96,165,250,.08);
+  color: var(--blue); font-family: 'Tajawal', sans-serif;
+  font-size: 13px; font-weight: 800; cursor: pointer; transition: all .2s;
+}
+.locate-btn:hover { background: rgba(96,165,250,.15); border-color: var(--blue); }
+.loc-status { font-size: 12px; color: var(--muted2); font-weight: 600; }
+.loc-status.found { color: var(--green); }
+.loc-status.error { color: #f87171; }
+
+/* Quick suggestions */
+.suggestions-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+.sugg-chip {
+  padding: 7px 14px; border-radius: 999px;
+  border: 1px solid var(--border); background: rgba(255,255,255,.03);
+  color: var(--muted2); font-size: 12.5px; font-weight: 700;
+  cursor: pointer; transition: all .2s;
+}
+.sugg-chip:hover { border-color: var(--gold); color: var(--gold2); background: rgba(201,168,76,.06); }
+
+/* Search submit */
+.search-submit {
+  width: 100%; height: 56px; border: none; border-radius: 14px;
+  background: linear-gradient(135deg, var(--gold3), var(--gold2));
+  color: var(--ink); font-family: 'Tajawal', sans-serif;
+  font-size: 17px; font-weight: 900; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  transition: all .25s; position: relative; overflow: hidden;
+}
+.search-submit::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,.15), transparent);
+}
+.search-submit:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(201,168,76,.35); }
+.search-submit:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+/* ============================================================
+   RESULTS
+   ============================================================ */
+.results-area { margin-top: 28px; }
+
+/* Loading */
+.loading-state { text-align: center; padding: 48px 20px; }
+.loader-ring {
+  width: 52px; height: 52px;
+  border: 3px solid var(--border); border-top-color: var(--gold);
+  border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-state p { color: var(--muted2); font-size: 15px; font-weight: 700; }
+.loading-steps { display: flex; flex-direction: column; gap: 8px; max-width: 300px; margin: 20px auto 0; }
+.loading-step {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 14px; border-radius: 10px;
+  background: rgba(255,255,255,.03); border: 1px solid var(--border);
+  font-size: 12.5px; font-weight: 700; color: var(--muted2); transition: all .3s;
+}
+.loading-step.active { color: var(--gold2); border-color: var(--border2); background: rgba(201,168,76,.06); }
+.loading-step.done  { color: var(--green); }
+.loading-step i { font-size: 13px; width: 16px; text-align: center; }
+
+/* Error */
+.empty-state { text-align: center; padding: 48px 20px; }
+.empty-icon {
+  width: 68px; height: 68px; border-radius: 20px;
+  background: rgba(201,168,76,.08); border: 1px solid var(--border2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px; color: var(--gold); margin: 0 auto 20px;
+}
+.empty-state h3 { font-size: 20px; font-weight: 900; margin-bottom: 8px; }
+.empty-state p { color: var(--muted2); font-size: 14px; line-height: 1.75; }
+
+/* Results cards */
+.results-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 18px; flex-wrap: wrap; gap: 12px;
+}
+.results-title { font-size: 20px; font-weight: 900; letter-spacing: -.5px; }
+.results-meta  { font-size: 13px; color: var(--muted2); font-weight: 600; }
+
+.dest-card {
+  background: rgba(22,18,12,.85); border: 1px solid var(--border2);
+  border-radius: 18px; padding: 22px; margin-bottom: 18px; backdrop-filter: blur(16px);
+}
+.dest-header { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 4px; }
+.dest-icon {
+  width: 48px; height: 48px; border-radius: 13px; flex-shrink: 0;
+  background: linear-gradient(135deg, var(--gold4), var(--gold));
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ink); font-size: 18px;
+}
+.dest-name { font-size: 19px; font-weight: 900; margin-bottom: 4px; }
+.dest-desc { font-size: 13px; color: var(--sand2); line-height: 1.7; }
+
+.compare-bar { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+.filter-btn {
+  padding: 7px 14px; border-radius: 999px;
+  border: 1px solid var(--border); background: rgba(255,255,255,.03);
+  color: var(--muted2); font-size: 12.5px; font-weight: 700;
+  cursor: pointer; transition: all .2s;
+}
+.filter-btn.active { border-color: var(--gold); color: var(--gold2); background: rgba(201,168,76,.08); }
+
+.transport-grid { display: flex; flex-direction: column; gap: 12px; }
+.transport-card {
+  background: rgba(22,18,12,.85); border: 1px solid var(--border);
+  border-radius: 16px; overflow: hidden; transition: .3s cubic-bezier(.22,1,.36,1);
+  backdrop-filter: blur(14px);
+}
+.transport-card:hover { border-color: var(--border2); transform: translateY(-3px); box-shadow: 0 14px 40px rgba(0,0,0,.4); }
+.transport-card.best { border-color: rgba(201,168,76,.4); }
+.transport-head {
+  padding: 17px 18px; display: flex; align-items: center; gap: 13px; cursor: pointer;
+}
+.t-icon {
+  width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; font-size: 18px;
+}
+.t-icon.bus      { background: rgba(96,165,250,.12); color: var(--blue); }
+.t-icon.metro    { background: rgba(192,132,252,.12); color: var(--purple); }
+.t-icon.taxi     { background: rgba(251,146,60,.12);  color: var(--orange); }
+.t-icon.minibus  { background: rgba(74,222,128,.12);  color: var(--green); }
+.t-icon.microbus { background: rgba(251,191,36,.12);  color: #fbbf24; }
+.t-icon.uber     { background: rgba(255,255,255,.08); color: var(--cream); }
+.t-info { flex: 1; }
+.t-name  { font-size: 15.5px; font-weight: 900; margin-bottom: 3px; }
+.t-route { font-size: 12px; color: var(--muted2); font-weight: 600; }
+.t-badges { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+.t-badge {
+  padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 800;
+}
+.t-badge.best-pick { background: rgba(201,168,76,.15); border: 1px solid var(--border2); color: var(--gold2); }
+.t-badge.cheap  { background: rgba(74,222,128,.12); border: 1px solid rgba(74,222,128,.3); color: var(--green); }
+.t-badge.fast   { background: rgba(96,165,250,.12); border: 1px solid rgba(96,165,250,.3); color: var(--blue); }
+.t-badge.ac     { background: rgba(192,132,252,.12); border: 1px solid rgba(192,132,252,.3); color: var(--purple); }
+.t-price { text-align: left; flex-shrink: 0; }
+.t-price strong { display: block; font-size: 19px; font-weight: 900; color: var(--gold2); line-height: 1; }
+.t-price span   { font-size: 11px; color: var(--muted2); font-weight: 600; }
+.t-toggle { color: var(--muted); font-size: 13px; margin-right: 4px; transition: transform .3s; }
+.transport-card.open .t-toggle { transform: rotate(180deg); }
+
+.transport-details {
+  display: none; padding: 0 18px 18px;
+  border-top: 1px solid var(--border);
+}
+.transport-card.open .transport-details { display: block; animation: fadeIn .25s ease; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.details-grid {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 10px; margin-bottom: 14px; padding-top: 14px;
+}
+.detail-stat {
+  background: rgba(255,255,255,.04); border: 1px solid var(--border);
+  border-radius: 12px; padding: 12px; text-align: center;
+}
+.detail-stat strong { display: block; font-size: 17px; font-weight: 900; color: var(--cream); margin-bottom: 4px; }
+.detail-stat span   { font-size: 11px; color: var(--muted2); font-weight: 700; }
+.steps-list { margin-bottom: 14px; }
+.steps-list h4 { font-size: 13px; font-weight: 900; color: var(--gold); margin-bottom: 8px; letter-spacing: .05em; }
+.step-item {
+  display: flex; gap: 12px; padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+.step-item:last-child { border-bottom: none; }
+.step-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gold); margin-top: 6px; flex-shrink: 0; }
+.step-item p { font-size: 13px; font-weight: 700; line-height: 1.6; color: var(--sand2); }
+.stop-card {
+  background: rgba(96,165,250,.06); border: 1px solid rgba(96,165,250,.2);
+  border-radius: 14px; padding: 12px 14px;
+  display: flex; align-items: center; gap: 12px; margin-bottom: 12px;
+}
+.stop-card i { color: var(--blue); font-size: 15px; flex-shrink: 0; }
+.stop-card div strong { display: block; font-size: 13px; font-weight: 900; }
+.stop-card div span  { font-size: 12px; color: var(--muted2); font-weight: 600; }
+
+.tips-card {
+  background: rgba(22,18,12,.85); border: 1px solid var(--border);
+  border-radius: 18px; padding: 20px; margin-top: 14px;
+}
+.tips-card h3 { font-size: 15px; font-weight: 900; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.tips-card h3 i { color: var(--gold); }
+.tips-list { display: flex; flex-direction: column; gap: 8px; }
+.tip-item { display: flex; gap: 10px; font-size: 13px; color: var(--sand2); font-weight: 600; line-height: 1.65; }
+.tip-bullet {
+  width: 20px; height: 20px; border-radius: 6px; flex-shrink: 0;
+  background: rgba(201,168,76,.1); border: 1px solid var(--border2);
+  color: var(--gold); font-size: 10px;
+  display: flex; align-items: center; justify-content: center; margin-top: 2px;
+}
+
+/* ============================================================
+   SERVICES GRID
+   ============================================================ */
+.services-grid {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 16px;
+}
+.card {
+  background: var(--ink3); border: 1px solid var(--border);
+  border-radius: var(--r2); padding: 26px;
+  position: relative; overflow: hidden;
+  transition: .35s cubic-bezier(.22,1,.36,1);
+  text-decoration: none; display: flex; flex-direction: column;
+}
+.card::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(201,168,76,.07), transparent 60%);
+  opacity: 0; transition: .35s;
+}
+.card:hover { transform: translateY(-5px); border-color: var(--border2); box-shadow: 0 20px 50px rgba(0,0,0,.4); }
+.card:hover::before { opacity: 1; }
+.card > * { position: relative; z-index: 1; }
+.card-icon {
+  width: 52px; height: 52px; border-radius: 15px;
+  background: rgba(201,168,76,.1); border: 1px solid var(--border2);
+  color: var(--gold); display: flex; align-items: center; justify-content: center;
+  font-size: 20px; margin-bottom: 18px;
+}
+.card h3 { font-size: 19px; font-weight: 900; margin-bottom: 9px; letter-spacing: -.4px; color: var(--cream); }
+.card p  { color: var(--muted2); font-size: 13.5px; line-height: 1.75; font-weight: 600; margin-bottom: 20px; flex: 1; }
+.card-link {
+  display: inline-flex; align-items: center; gap: 7px;
+  color: var(--gold2); font-size: 13px; font-weight: 900; transition: .25s;
+}
+.card:hover .card-link { gap: 11px; color: var(--gold); }
+
+/* ============================================================
+   QUICK ACTIONS
+   ============================================================ */
+.quick-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+.quick-card {
+  background: rgba(255,255,255,.03); border: 1px solid var(--border);
+  border-radius: 18px; padding: 22px; transition: .25s;
+  text-decoration: none; display: flex; flex-direction: column;
+}
+.quick-card:hover { transform: translateY(-4px); border-color: var(--border2); background: rgba(201,168,76,.05); }
+.quick-icon {
+  width: 44px; height: 44px; border-radius: 13px;
+  background: rgba(201,168,76,.1); border: 1px solid var(--border2);
+  color: var(--gold); display: flex; align-items: center; justify-content: center;
+  font-size: 18px; margin-bottom: 14px;
+}
+.quick-card h3 { font-size: 15.5px; font-weight: 900; margin-bottom: 6px; color: var(--cream); }
+.quick-card p  { color: var(--muted2); font-size: 12.5px; line-height: 1.65; font-weight: 600; margin-bottom: 14px; flex: 1; }
+.quick-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--gold2); font-size: 12.5px; font-weight: 900;
+  text-decoration: none; transition: .2s;
+}
+.quick-card:hover .quick-link { gap: 10px; color: var(--gold); }
+
+/* ============================================================
+   OFFERS
+   ============================================================ */
+.offers-grid { display: grid; grid-template-columns: 1.1fr .9fr .9fr; gap: 16px; }
+.offer-card {
+  min-height: 220px;
+  background: linear-gradient(145deg, var(--ink4), var(--ink3));
+  border: 1px solid var(--border2); border-radius: var(--r2);
+  padding: 28px; position: relative; overflow: hidden; transition: .35s;
+}
+.offer-card:hover { transform: translateY(-5px); box-shadow: 0 22px 50px rgba(0,0,0,.45); }
+.offer-card::before {
+  content: ''; position: absolute;
+  width: 240px; height: 240px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(201,168,76,.16), transparent 70%);
+  top: -80px; left: -70px;
+}
+.offer-card > * { position: relative; z-index: 1; }
+.offer-badge {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 6px 12px; border-radius: 999px;
+  background: rgba(201,168,76,.1); border: 1px solid var(--border2);
+  color: var(--gold2); font-size: 11.5px; font-weight: 900; margin-bottom: 16px;
+}
+.offer-card h3 { font-size: 22px; font-weight: 900; margin-bottom: 9px; letter-spacing: -.6px; }
+.offer-card p  { color: var(--sand2); font-size: 13.5px; line-height: 1.8; margin-bottom: 20px; }
+.offer-code {
+  direction: ltr; display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 14px; border-radius: 12px;
+  background: rgba(12,10,6,.4); border: 1.5px dashed rgba(201,168,76,.4);
+  color: var(--gold2); font-weight: 900; letter-spacing: 1.5px; font-size: 14px;
+}
+.copy-btn {
+  margin-right: 6px; padding: 3px 7px; border-radius: 7px;
+  border: 1px solid var(--border2); background: rgba(201,168,76,.08);
+  color: var(--gold); font-size: 11px; cursor: pointer; transition: .2s;
+}
+.copy-btn:hover { background: rgba(201,168,76,.15); }
+
+/* ============================================================
+   OVERVIEW
+   ============================================================ */
+.overview-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.panel {
+  background: var(--ink3); border: 1px solid var(--border);
+  border-radius: var(--r2); padding: 28px; position: relative; overflow: hidden;
+}
+.panel::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(201,168,76,.05), transparent 60%);
+  pointer-events: none;
+}
+.panel > * { position: relative; z-index: 1; }
+.panel h3 { font-size: 20px; font-weight: 900; margin-bottom: 18px; }
+.steps { display: flex; flex-direction: column; }
+.step { display: flex; gap: 14px; padding: 15px 0; border-bottom: 1px solid var(--border); }
+.step:first-of-type { padding-top: 0; }
+.step:last-child { border-bottom: none; padding-bottom: 0; }
+.step-num {
+  width: 38px; height: 38px; border-radius: 11px;
+  background: rgba(201,168,76,.1); border: 1px solid var(--border2);
+  color: var(--gold); display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 900; flex-shrink: 0;
+}
+.step h4 { font-size: 15px; font-weight: 900; margin-bottom: 4px; }
+.step p  { color: var(--muted2); font-size: 12.5px; line-height: 1.6; font-weight: 600; }
+.news-mini {
+  background: rgba(255,255,255,.03); border: 1px solid var(--border);
+  border-radius: 14px; padding: 16px; transition: .25s;
+  text-decoration: none; display: block; margin-bottom: 10px;
+}
+.news-mini:last-child { margin-bottom: 0; }
+.news-mini:hover { transform: translateY(-3px); border-color: var(--border2); background: rgba(201,168,76,.05); }
+.news-tag {
+  display: inline-flex; padding: 4px 9px; border-radius: 999px;
+  background: rgba(201,168,76,.08); color: var(--gold2);
+  border: 1px solid var(--border); font-size: 10.5px; font-weight: 900; margin-bottom: 8px;
+}
+.news-mini h3 { font-size: 14px; line-height: 1.5; font-weight: 900; margin-bottom: 4px; color: var(--cream); }
+.news-mini p  { color: var(--muted2); font-size: 12px; line-height: 1.6; font-weight: 600; }
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn-primary, .btn-ghost {
+  border: none; font-family: 'Tajawal', sans-serif;
+  text-decoration: none; display: inline-flex;
+  align-items: center; justify-content: center; gap: 8px;
+  font-weight: 800; font-size: 14px; border-radius: 11px;
+  transition: all .25s; padding: 11px 22px;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--gold3), var(--gold));
+  color: var(--ink); position: relative; overflow: hidden;
+}
+.btn-primary::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,.14), transparent);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,168,76,.3); }
+.btn-ghost {
+  border: 1px solid var(--border2); color: var(--sand2); background: transparent;
+}
+.btn-ghost:hover { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,.05); }
+
+/* ============================================================
+   CHATBOT
+   ============================================================ */
+.chat-toggle {
+  position: fixed; bottom: 24px; right: 24px;
+  width: 60px; height: 60px; border: none; border-radius: 18px;
+  background: linear-gradient(135deg, var(--gold3), var(--gold));
+  color: var(--ink); box-shadow: 0 16px 48px rgba(201,168,76,.32);
+  z-index: 9998; font-size: 22px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .25s;
+}
+.chat-toggle:hover { transform: translateY(-3px) scale(1.04); }
+.chat-widget {
+  position: fixed; bottom: 98px; right: 24px;
+  width: min(380px, calc(100vw - 32px)); height: 520px;
+  background: rgba(18,15,9,.94); backdrop-filter: blur(26px);
+  border: 1px solid var(--border2); border-radius: 24px;
+  box-shadow: 0 28px 80px rgba(0,0,0,.6);
+  z-index: 9998; overflow: hidden;
+  display: none; flex-direction: column;
+}
+.chat-widget.open { display: flex; animation: fadeUp .3s both; }
+.chat-head {
+  padding: 16px; border-bottom: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(201,168,76,.05);
+}
+.chat-title { display: flex; align-items: center; gap: 11px; }
+.chat-avatar {
+  width: 40px; height: 40px; border-radius: 13px;
+  background: linear-gradient(135deg, var(--gold4), var(--gold));
+  color: var(--ink); display: flex; align-items: center; justify-content: center; font-size: 16px;
+}
+.chat-title strong { display: block; font-size: 14px; font-weight: 900; }
+.chat-title span   { display: block; color: var(--muted2); font-size: 11.5px; margin-top: 2px; }
+.chat-close {
+  width: 32px; height: 32px; border: none; border-radius: 9px;
+  background: rgba(255,255,255,.06); color: var(--muted2); font-size: 15px;
+  display: flex; align-items: center; justify-content: center;
+}
+.chat-body { flex: 1; padding: 14px; overflow: auto; display: flex; flex-direction: column; gap: 9px; }
+.msg {
+  max-width: 84%; padding: 10px 13px; border-radius: 14px;
+  font-size: 13px; line-height: 1.65; font-weight: 600;
+}
+.msg.bot  { align-self: flex-start; background: rgba(255,255,255,.06); color: var(--sand2); border: 1px solid var(--border); border-bottom-right-radius: 4px; }
+.msg.user { align-self: flex-end; background: rgba(201,168,76,.13); color: var(--gold2); border: 1px solid var(--border2); border-bottom-left-radius: 4px; }
+.chat-suggestions { padding: 0 14px 10px; display: flex; gap: 7px; flex-wrap: wrap; }
+.suggestion {
+  border: 1px solid var(--border); border-radius: 999px;
+  padding: 6px 11px; background: rgba(201,168,76,.07);
+  color: var(--gold2); font-family: 'Tajawal', sans-serif;
+  font-size: 12px; font-weight: 800; transition: .2s;
+}
+.suggestion:hover { border-color: var(--gold); background: rgba(201,168,76,.12); }
+.chat-input {
+  padding: 12px; border-top: 1px solid var(--border);
+  display: grid; grid-template-columns: 1fr auto; gap: 8px;
+}
+.chat-input input {
+  height: 44px; border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.1);
+  background: rgba(255,255,255,.05);
+  color: var(--cream); outline: none; padding: 0 13px;
+  font-family: 'Tajawal', sans-serif; font-weight: 600; font-size: 13px;
+}
+.chat-input button {
+  width: 44px; height: 44px; border: none; border-radius: 12px;
+  background: linear-gradient(135deg, var(--gold3), var(--gold));
+  color: var(--ink); font-size: 15px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+#toast {
+  position: fixed; bottom: 26px; left: 50%;
+  transform: translateX(-50%) translateY(14px);
+  background: var(--ink3); border: 1px solid var(--border2);
+  border-radius: 13px; padding: 14px 24px;
+  font-size: 14px; font-weight: 700;
+  display: flex; align-items: center; gap: 10px;
+  z-index: 9999; opacity: 0; pointer-events: none;
+  transition: all .4s cubic-bezier(.22,1,.36,1);
+  box-shadow: 0 20px 60px rgba(0,0,0,.6);
+  max-width: 400px; width: 90vw;
+}
+#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+#toast i { color: var(--gold); font-size: 16px; flex-shrink: 0; }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer {
+  background: var(--ink2); border-top: 1px solid var(--border); padding: 60px;
+}
+.footer-inner {
+  max-width: var(--max-w); margin: auto;
+  display: grid; grid-template-columns: 1.4fr repeat(3,1fr); gap: 48px;
+}
+.footer-brand .nav-logo { margin-bottom: 16px; display: inline-flex; }
+.footer-brand p { font-size: 13px; color: var(--muted); line-height: 1.8; max-width: 260px; }
+.footer-col h4  { font-size: 14px; font-weight: 900; color: var(--sand2); margin-bottom: 14px; }
+.footer-col a {
+  display: block; font-size: 13px; color: var(--muted);
+  text-decoration: none; padding: 4px 0; transition: color .2s;
+}
+.footer-col a:hover { color: var(--gold2); }
+.footer-bottom {
+  max-width: var(--max-w); margin: 40px auto 0;
+  padding-top: 24px; border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 16px; flex-wrap: wrap;
+}
+.footer-bottom p { font-size: 12.5px; color: var(--muted); }
+.footer-social { display: flex; gap: 10px; }
+.footer-social a {
+  width: 36px; height: 36px; border-radius: 10px;
+  border: 1px solid var(--border2); background: rgba(255,255,255,.04);
+  color: var(--muted2); font-size: 14px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s; text-decoration: none;
+}
+.footer-social a:hover { border-color: var(--gold); color: var(--gold); }
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1100px) {
+  .hero-inner, .overview-layout { grid-template-columns: 1fr; }
+  .services-grid { grid-template-columns: repeat(2,1fr); }
+  .quick-grid, .offers-grid { grid-template-columns: repeat(2,1fr); }
+  .footer-inner { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .nav-search { display: none; }
+}
+@media (max-width: 960px) {
+  nav { padding: 0 24px; }
+  .nav-links { display: none; }
+  .nav-ai-btn span { display: none; }
+  .nav-hamburger { display: flex; }
+  .hero { padding: calc(var(--nav-h) + 50px) 32px 60px; }
+  .main { padding: 60px 32px 80px; }
+  footer { padding: 48px 32px; }
+}
+@media (max-width: 640px) {
+  .hero { padding: calc(var(--nav-h) + 28px) 18px 48px; }
+  .main { padding: 48px 18px 70px; }
+  .hero-inner { gap: 36px; }
+  .services-grid, .quick-grid, .offers-grid, .hero-stats { grid-template-columns: 1fr; }
+  .overview-layout { grid-template-columns: 1fr; }
+  .hero-title { letter-spacing: -1.5px; }
+  .hero-btns { flex-direction: column; }
+  .hero-btns .btn-primary, .hero-btns .btn-ghost { width: 100%; }
+  .hero-search-bar button span { display: none; }
+  .footer-inner { grid-template-columns: 1fr; }
+  footer { padding: 36px 18px; }
+  .footer-bottom { flex-direction: column; text-align: center; }
+  .chat-toggle { right: 16px; bottom: 16px; }
+  .chat-widget { right: 16px; bottom: 90px; height: 480px; }
+  .route-row { grid-template-columns: 1fr; }
+  .swap-btn { display: none; }
+  .details-grid { grid-template-columns: repeat(2,1fr); }
+  #ai-search-section { padding: 24px 18px; }
+  .search-tabs .tab-btn { font-size: 12.5px; padding: 12px 6px; }
 }
 </style>
 </head>
 <body>
-
+<div class="bg-glow"></div>
 <div id="cursor"></div>
 <div id="cursor-ring"></div>
 
+<!-- ============================================================
+     NAV
+     ============================================================ -->
 <nav id="mainNav">
-  <a class="nav-logo" href="index.html">
+  <a class="nav-logo" href="#">
     <div class="nav-logo-icon">
-      <i class="fa-solid fa-route" style="position:relative;z-index:1;font-size:15px;"></i>
+      <i class="fa-solid fa-route" style="position:relative;z-index:1;font-size:13px;"></i>
     </div>
     <div>
       <div class="nav-logo-text">مواصلاتي إكسبريس</div>
-      <div class="nav-logo-text"><span>Smart Mobility Egypt</span></div>
+      <div class="nav-logo-sub">Smart Mobility Egypt</div>
     </div>
   </a>
 
+  <div class="nav-search">
+    <input type="text" id="navSearchInput" placeholder="ابحث عن خدمة... تتبع، عروض، شركات"
+      onkeydown="if(event.key==='Enter') doQuickNav(this.value)">
+    <button class="nav-search-btn" onclick="doQuickNav(document.getElementById('navSearchInput').value)">
+      <i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+  </div>
+
   <div class="nav-links">
-    <a href="index.html" class="active">الرئيسية</a>
+    <a href="#" class="active">الرئيسية</a>
     <a href="services.html">الشركات</a>
     <a href="tracking.html">التتبع</a>
     <a href="wallet.html">المحفظة</a>
@@ -1164,192 +1115,392 @@ footer p{
   </div>
 
   <div class="nav-actions">
-  
-    <div class="user-welcome" id="userWelcome">
+    <!-- AI Search shortcut -->
+    <a class="nav-ai-btn" href="#ai-search-section" onclick="smoothScrollTo('ai-search-section')">
+      <i class="fa-solid fa-robot"></i> <span>بحث AI</span>
+    </a>
+    <div class="user-badge">
       <i class="fa-solid fa-user-check"></i>
-      <span>أهلاً، <strong id="welcomeName">زائر</strong></span>
+      أهلاً، <strong id="welcomeName">زائر</strong>
     </div>
-</div>
+    <button class="nav-hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()" aria-label="القائمة">
+      <i class="fa-solid fa-bars" id="hamburgerIcon"></i>
+    </button>
+  </div>
 </nav>
 
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-search">
+    <input type="text" id="mobileSearch" placeholder="ابحث..."
+      onkeydown="if(event.key==='Enter'){doQuickNav(this.value);toggleMobileMenu();}">
+    <button class="mobile-menu-search-btn"
+      onclick="doQuickNav(document.getElementById('mobileSearch').value);toggleMobileMenu();">
+      <i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+  </div>
+  <a href="#" class="active"><i class="fa-solid fa-house"></i> الرئيسية</a>
+  <a href="#ai-search-section" onclick="toggleMobileMenu()"><i class="fa-solid fa-robot"></i> بحث AI للمواصلات</a>
+  <a href="services.html"><i class="fa-solid fa-code-compare"></i> الشركات</a>
+  <a href="tracking.html"><i class="fa-solid fa-location-crosshairs"></i> التتبع</a>
+  <a href="wallet.html"><i class="fa-solid fa-wallet"></i> المحفظة</a>
+  <a href="students.html"><i class="fa-solid fa-graduation-cap"></i> الطلبة</a>
+  <a href="news.html"><i class="fa-solid fa-newspaper"></i> الأخبار</a>
+</div>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
 <header class="hero" id="hero">
   <div class="hero-bg-img"></div>
   <div class="hero-overlay"></div>
   <div class="hero-pattern"></div>
 
   <div class="hero-inner">
+    <!-- Left: Text + Search -->
     <div>
       <div class="hero-eyebrow">
         <div class="hero-live-dot"></div>
-        منصة مواصلات ذكية لكل رحلاتك
+        منصة مواصلات ذكية لكل رحلاتك في مصر
       </div>
 
       <h1 class="hero-title">
-        كل مواصلاتك<br>
-        في <em>مكان واحد</em>
+        كل مواصلاتك<br>في <em>مكان واحد</em>
       </h1>
 
       <p class="hero-sub">
-        مواصلاتي إكسبريس تجمع لك التتبع، مواعيد المواصلات، مقارنة شركات السفر، المحفظة الذكية، عروض الطلبة، الأخبار، وشات بوت يساعدك بسرعة.
+        تتبع، قارن، ادفع، واستفد من عروض المواصلات — وابحث عن أي وجهة بالذكاء الاصطناعي.
       </p>
 
-      <div class="hero-actions">
-        <a class="btn-ghost" href="wallet.html"><i class="fa-solid fa-wallet"></i> افتح المحفظة</a>
+      <div class="hero-search-wrap">
+        <p><i class="fa-solid fa-magnifying-glass" style="color:var(--gold);margin-left:6px;"></i> ابحث بسرعة</p>
+        <div class="hero-search-bar">
+          <input type="text" id="heroSearch" placeholder="تتبع رحلة، قارن شركات، عروض الطلبة...">
+          <div class="divider"></div>
+          <button onclick="doQuickNav(document.getElementById('heroSearch').value)">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>ابحث</span>
+          </button>
+        </div>
+        <div class="hero-search-tags">
+          <span class="hero-tag" onclick="doQuickNav('تتبع')">تتبع رحلة</span>
+          <span class="hero-tag" onclick="doQuickNav('شركات')">مقارنة شركات</span>
+          <span class="hero-tag" onclick="doQuickNav('محفظة')">المحفظة</span>
+          <span class="hero-tag" onclick="doQuickNav('طلبة')">باقات طلبة</span>
+          <span class="hero-tag" onclick="smoothScrollTo('ai-search-section')">🤖 بحث AI مواصلات</span>
+        </div>
+      </div>
+
+      <div class="hero-btns">
+        <a class="btn-primary" href="tracking.html"><i class="fa-solid fa-location-crosshairs"></i> تتبع رحلة</a>
+        <a class="btn-ghost" href="services.html"><i class="fa-solid fa-code-compare"></i> قارن الشركات</a>
+        <a class="btn-ghost" onclick="smoothScrollTo('ai-search-section')" href="#ai-search-section">
+          <i class="fa-solid fa-robot"></i> بحث AI
+        </a>
       </div>
     </div>
 
+    <!-- Right: Panel -->
     <div class="hero-panel">
-      <h3>استخدم المنصة بسرعة</h3>
-
+      <div class="hero-panel-title">استخدم المنصة بسرعة</div>
       <div class="hero-stats">
         <div class="hero-stat"><strong>8+</strong><span>خدمات متاحة</span></div>
         <div class="hero-stat"><strong>7</strong><span>شركات سفر</span></div>
         <div class="hero-stat"><strong>24/7</strong><span>مساعدة فورية</span></div>
       </div>
-
-      <div class="quick-search">
-        <input type="text" id="heroSearch" placeholder="عايز تعمل إيه؟ مثال: تتبع، عروض، محفظة">
-        <button onclick="quickSearch()">اذهب</button>
+      <div class="panel-links">
+        <a class="panel-link" onclick="smoothScrollTo('ai-search-section')" href="#ai-search-section">
+          <div class="panel-link-icon"><i class="fa-solid fa-robot"></i></div>
+          <div class="panel-link-text">
+            <strong>بحث AI للمواصلات</strong>
+            <span>أسعار، مسارات، وأقرب موقف</span>
+          </div>
+          <i class="fa-solid fa-chevron-left arrow"></i>
+        </a>
+        <a class="panel-link" href="tracking.html">
+          <div class="panel-link-icon"><i class="fa-solid fa-location-crosshairs"></i></div>
+          <div class="panel-link-text">
+            <strong>التتبع والمواعيد</strong>
+            <span>تتبع وهمي + حساب رحلة</span>
+          </div>
+          <i class="fa-solid fa-chevron-left arrow"></i>
+        </a>
+        <a class="panel-link" href="services.html">
+          <div class="panel-link-icon"><i class="fa-solid fa-code-compare"></i></div>
+          <div class="panel-link-text">
+            <strong>مقارنة الشركات</strong>
+            <span>Blue Bus, SuperJet, SWVL...</span>
+          </div>
+          <i class="fa-solid fa-chevron-left arrow"></i>
+        </a>
+        <a class="panel-link" href="wallet.html">
+          <div class="panel-link-icon"><i class="fa-solid fa-wallet"></i></div>
+          <div class="panel-link-text">
+            <strong>المحفظة الذكية</strong>
+            <span>شحن، سحب، تحويل</span>
+          </div>
+          <i class="fa-solid fa-chevron-left arrow"></i>
+        </a>
       </div>
     </div>
   </div>
 </header>
 
+<!-- ============================================================
+     MAIN CONTENT
+     ============================================================ -->
 <main class="main">
   <div class="wrap">
 
-    <!-- ALL SERVICES -->
-    <section class="block" id="quick">
+    <!-- ══════════════════════════════
+         AI TRANSPORT SEARCH SECTION
+         ══════════════════════════════ -->
+    <section class="block" id="ai-search-section-wrapper">
+      <div class="section-head">
+        <div>
+          <div class="sec-label">ذكاء اصطناعي</div>
+          <h2 class="sec-title">ابحث عن وجهتك <em>بالـ AI</em></h2>
+        </div>
+        <p class="sec-sub">اكتب أي مكان في مصر وهيطلع لك كل وسائل المواصلات، الأسعار، والمواقف القريبة.</p>
+      </div>
+
+      <div id="ai-search-section">
+        <!-- Header -->
+        <div class="ai-section-header">
+          <div class="ai-section-icon">
+            <i class="fa-solid fa-robot" style="position:relative;z-index:1;"></i>
+          </div>
+          <div>
+            <div class="ai-section-title">بحث المواصلات الذكي</div>
+            <div class="ai-section-sub">AI يحلل المسارات والأسعار في ثواني</div>
+          </div>
+          <div class="ai-live-badge">
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;
+              box-shadow:0 0 0 0 rgba(74,222,128,.5);animation:pulse 2s infinite;"></span>
+            مباشر
+          </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="search-tabs">
+          <button class="tab-btn active" onclick="switchTab('destination')" id="tab-destination">
+            <i class="fa-solid fa-location-dot"></i> وجهة محددة
+          </button>
+          <button class="tab-btn" onclick="switchTab('route')" id="tab-route">
+            <i class="fa-solid fa-route"></i> من — إلى
+          </button>
+          <button class="tab-btn" onclick="switchTab('nearby')" id="tab-nearby">
+            <i class="fa-solid fa-map-pin"></i> المواقف القريبة
+          </button>
+        </div>
+
+        <!-- Search box body -->
+        <div class="search-box-inner">
+
+          <!-- PANEL: Destination -->
+          <div id="panel-destination">
+            <div class="dest-input-wrap">
+              <label>وجهتك فين؟</label>
+              <input id="dest-input" type="text"
+                placeholder="مثال: القاهرة الجديدة، مول مصر، الأزهر، المطار..."
+                onkeydown="if(event.key==='Enter') runAISearch()">
+              <i class="fa-solid fa-magnifying-glass dest-input-icon"></i>
+            </div>
+            <div class="location-row">
+              <button class="locate-btn" onclick="getLocation()">
+                <i class="fa-solid fa-crosshairs"></i> تحديد موقعي الحالي
+              </button>
+              <span class="loc-status" id="loc-status">لم يتم تحديد الموقع بعد</span>
+            </div>
+            <div class="suggestions-row">
+              <span class="sugg-chip" onclick="fillDest('مول مصر')">مول مصر</span>
+              <span class="sugg-chip" onclick="fillDest('المطار')">المطار</span>
+              <span class="sugg-chip" onclick="fillDest('القاهرة الجديدة')">القاهرة الجديدة</span>
+              <span class="sugg-chip" onclick="fillDest('الأزهر')">الأزهر</span>
+              <span class="sugg-chip" onclick="fillDest('أكتوبر')">أكتوبر</span>
+              <span class="sugg-chip" onclick="fillDest('التحرير')">التحرير</span>
+              <span class="sugg-chip" onclick="fillDest('العاصمة الإدارية')">العاصمة الإدارية</span>
+            </div>
+          </div>
+
+          <!-- PANEL: Route -->
+          <div id="panel-route" style="display:none;">
+            <div class="route-row">
+              <div class="route-field">
+                <label>من</label>
+                <input id="from-input" type="text" placeholder="نقطة البداية...">
+              </div>
+              <button class="swap-btn" onclick="swapInputs()" title="عكس الاتجاه">
+                <i class="fa-solid fa-arrow-right-arrow-left"></i>
+              </button>
+              <div class="route-field">
+                <label>إلى</label>
+                <input id="to-input" type="text" placeholder="الوجهة...">
+              </div>
+            </div>
+            <div class="location-row">
+              <button class="locate-btn" onclick="getLocation()">
+                <i class="fa-solid fa-crosshairs"></i> استخدم موقعي كنقطة بداية
+              </button>
+              <span class="loc-status" id="loc-status-route">لم يتم تحديد الموقع</span>
+            </div>
+          </div>
+
+          <!-- PANEL: Nearby -->
+          <div id="panel-nearby" style="display:none;">
+            <div style="text-align:center;padding:12px 0 18px;">
+              <div style="font-size:15px;font-weight:700;color:var(--sand2);margin-bottom:14px;">
+                هنعرض أقرب المواقف والمحطات منك فوراً
+              </div>
+              <button class="locate-btn" onclick="getLocation(true)" style="margin:0 auto;display:inline-flex;">
+                <i class="fa-solid fa-crosshairs"></i> حدد موقعي دلوقتي
+              </button>
+              <div style="margin-top:10px;">
+                <span class="loc-status" id="loc-status-nearby">في انتظار الموقع...</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Submit -->
+          <button class="search-submit" id="searchBtn" onclick="runAISearch()">
+            <i class="fa-solid fa-robot"></i>
+            <span id="searchBtnText">ابحث بالـ AI</span>
+          </button>
+        </div>
+
+        <!-- Results area (inside AI section) -->
+        <div id="aiResultsArea" style="display:none;margin-top:24px;"></div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════
+         SERVICES
+         ══════════════════════════════ -->
+    <section class="block" id="services">
       <div class="section-head">
         <div>
           <div class="sec-label">كل الخدمات</div>
           <h2 class="sec-title">كل اللي تحتاجه <em>من أول ضغطة</em></h2>
         </div>
-        <p class="sec-sub">
-          اختصرنا كل صفحات المشروع في كروت واضحة، علشان أي مستخدم يعرف يستخدم الموقع بسرعة.
-        </p>
+        <p class="sec-sub">اختصرنا كل خدمات المشروع في كروت واضحة، علشان تستخدم الموقع بسرعة.</p>
       </div>
 
-      <div class="grid services-grid">
+      <div class="services-grid">
+        <article class="card">
+          <div class="card-icon"><i class="fa-solid fa-robot"></i></div>
+          <h3>بحث AI للمواصلات</h3>
+          <p>اكتب وجهتك والـ AI يطلع لك كل الوسائل المتاحة، الأسعار، وأقرب موقف من مكانك.</p>
+          <a class="card-link" href="#ai-search-section-wrapper" onclick="smoothScrollTo('ai-search-section-wrapper')">
+            ابحث الآن <i class="fa-solid fa-arrow-left"></i>
+          </a>
+        </article>
         <article class="card">
           <div class="card-icon"><i class="fa-solid fa-location-crosshairs"></i></div>
           <h3>التتبع والمواعيد</h3>
           <p>اختار وسيلة المواصلات وشوف تتبع وهمي، مواعيد، وحساب رحلة على الخريطة.</p>
           <a class="card-link" href="tracking.html">افتح التتبع <i class="fa-solid fa-arrow-left"></i></a>
         </article>
-
         <article class="card">
           <div class="card-icon"><i class="fa-solid fa-code-compare"></i></div>
           <h3>مقارنة شركات السفر</h3>
           <p>قارن Blue Bus وSuperJet وEGBUS وReGo وSWVL وغيرها حسب السعر والمميزات.</p>
           <a class="card-link" href="services.html">قارن الشركات <i class="fa-solid fa-arrow-left"></i></a>
         </article>
-
         <article class="card">
           <div class="card-icon"><i class="fa-solid fa-wallet"></i></div>
           <h3>المحفظة الذكية</h3>
-          <p>اشحن، اسحب، حوّل، وأضف بطاقة مع سجل عمليات محفوظ محليًا للتجربة.</p>
+          <p>اشحن، اسحب، حوّل، وأضف بطاقة مع سجل عمليات محفوظ للتجربة.</p>
           <a class="card-link" href="wallet.html">افتح المحفظة <i class="fa-solid fa-arrow-left"></i></a>
         </article>
-
         <article class="card">
           <div class="card-icon"><i class="fa-solid fa-graduation-cap"></i></div>
           <h3>باقات الطلبة</h3>
           <p>خصومات وباقات شهرية للطلاب مع نموذج تفعيل بيانات الطالب.</p>
           <a class="card-link" href="students.html">باقات الطلبة <i class="fa-solid fa-arrow-left"></i></a>
         </article>
-
         <article class="card">
           <div class="card-icon"><i class="fa-solid fa-newspaper"></i></div>
           <h3>الأخبار والتنبيهات</h3>
           <p>أخبار المواصلات والطرق والحوادث مع بحث وفلاتر وتنبيهات عاجلة.</p>
           <a class="card-link" href="news.html">افتح الأخبار <i class="fa-solid fa-arrow-left"></i></a>
         </article>
-
-        <article class="card">
-          <div class="card-icon"><i class="fa-solid fa-robot"></i></div>
-          <h3>الشات بوت</h3>
-          <p>مساعد سريع يجاوبك عن الخدمات، العروض، التتبع، والصفحات المتاحة.</p>
-          <a class="card-link" href="#" onclick="toggleChat();return false;">افتح المساعد <i class="fa-solid fa-arrow-left"></i></a>
-        </article>
       </div>
     </section>
 
-    <!-- QUICK ACTIONS -->
+    <!-- ══════════════════════════════
+         QUICK ACTIONS
+         ══════════════════════════════ -->
     <section class="block">
       <div class="section-head">
         <div>
           <div class="sec-label">إجراءات سريعة</div>
-          <h2 class="sec-title">حاجات سريعة لأي <em>مستخدم</em></h2>
+          <h2 class="sec-title">اعمل اللي محتاجه <em>على طول</em></h2>
         </div>
       </div>
-
-      <div class="grid quick-grid">
-        <div class="quick-card">
-          <i class="fa-solid fa-route"></i>
+      <div class="quick-grid">
+        <a class="quick-card" href="#ai-search-section-wrapper" onclick="smoothScrollTo('ai-search-section-wrapper')">
+          <div class="quick-icon"><i class="fa-solid fa-robot"></i></div>
+          <h3>ابحث بالـ AI</h3>
+          <p>اكتب وجهتك وشوف كل المواصلات المتاحة.</p>
+          <span class="quick-link">ابحث الآن <i class="fa-solid fa-arrow-left"></i></span>
+        </a>
+        <a class="quick-card" href="tracking.html">
+          <div class="quick-icon"><i class="fa-solid fa-route"></i></div>
           <h3>احسب رحلة</h3>
-          <p>روح لصفحة التتبع واحسب مسار وسعر تقديري بين مكانين.</p>
-          <a class="card-link" href="tracking.html">احسب الآن</a>
-        </div>
-
-        <div class="quick-card">
-          <i class="fa-solid fa-ticket"></i>
+          <p>احسب مسار وسعر تقديري بين مكانين.</p>
+          <span class="quick-link">احسب الآن <i class="fa-solid fa-arrow-left"></i></span>
+        </a>
+        <a class="quick-card" href="services.html">
+          <div class="quick-icon"><i class="fa-solid fa-ticket"></i></div>
           <h3>اعرف أفضل شركة</h3>
-          <p>قارن بين شركات السفر حسب السعر والراحة والتغطية.</p>
-          <a class="card-link" href="services.html">افتح المقارنة</a>
-        </div>
-
-        <div class="quick-card">
-          <i class="fa-solid fa-bolt"></i>
-          <h3>اشحن رصيدك</h3>
-          <p>افتح المحفظة واشحن أو حوّل رصيد للتجربة.</p>
-          <a class="card-link" href="wallet.html">شحن رصيد</a>
-        </div>
-
-        <div class="quick-card">
-          <i class="fa-solid fa-message"></i>
+          <p>قارن بين شركات السفر حسب السعر والراحة.</p>
+          <span class="quick-link">افتح المقارنة <i class="fa-solid fa-arrow-left"></i></span>
+        </a>
+        <a class="quick-card" href="#" onclick="toggleChat();return false;">
+          <div class="quick-icon"><i class="fa-solid fa-message"></i></div>
           <h3>اسأل المساعد</h3>
           <p>اكتب سؤالك والشات بوت يوجهك للخدمة المناسبة.</p>
-          <a class="card-link" href="#" onclick="toggleChat();return false;">اسأل الآن</a>
-        </div>
+          <span class="quick-link">اسأل الآن <i class="fa-solid fa-arrow-left"></i></span>
+        </a>
       </div>
     </section>
 
-    <!-- OFFERS -->
+    <!-- ══════════════════════════════
+         OFFERS
+         ══════════════════════════════ -->
     <section class="block" id="offers">
       <div class="section-head">
         <div>
           <div class="sec-label">العروض</div>
           <h2 class="sec-title">عروض وخصومات <em>مميزة</em></h2>
         </div>
-        <p class="sec-sub">عروض تجريبية داخل المشروع يمكن ربطها لاحقًا بنظام كوبونات حقيقي.</p>
+        <p class="sec-sub">عروض تجريبية يمكن ربطها لاحقًا بنظام كوبونات حقيقي.</p>
       </div>
-
-      <div class="grid offers-grid">
+      <div class="offers-grid">
         <article class="offer-card">
           <div class="offer-badge"><i class="fa-solid fa-fire"></i> العرض الأقوى</div>
           <h3>خصم ٣٠٪ على أول رحلة</h3>
           <p>استخدم الكود لأول مرة عند حجز أو حساب رحلة داخل التطبيق.</p>
-          <div class="offer-code">FIRST30</div>
+          <div class="offer-code">FIRST30 <button class="copy-btn" onclick="copyCode('FIRST30')"><i class="fa-solid fa-copy"></i></button></div>
         </article>
-
         <article class="offer-card">
           <div class="offer-badge"><i class="fa-solid fa-graduation-cap"></i> للطلبة</div>
           <h3>اشتراك طالب مخفض</h3>
           <p>وفّر في مشاوير الجامعة مع باقات شهرية وخصومات للطلاب.</p>
-          <div class="offer-code">STUDENT40</div>
+          <div class="offer-code">STUDENT40 <button class="copy-btn" onclick="copyCode('STUDENT40')"><i class="fa-solid fa-copy"></i></button></div>
         </article>
-
         <article class="offer-card">
           <div class="offer-badge"><i class="fa-solid fa-wallet"></i> للمحفظة</div>
           <h3>كاش باك على الشحن</h3>
           <p>اشحن المحفظة واحصل على كاش باك تجريبي داخل حسابك.</p>
-          <div class="offer-code">CASHBACK10</div>
+          <div class="offer-code">CASHBACK10 <button class="copy-btn" onclick="copyCode('CASHBACK10')"><i class="fa-solid fa-copy"></i></button></div>
         </article>
       </div>
     </section>
 
-    <!-- OVERVIEW -->
+    <!-- ══════════════════════════════
+         OVERVIEW
+         ══════════════════════════════ -->
     <section class="block">
       <div class="section-head">
         <div>
@@ -1357,58 +1508,47 @@ footer p{
           <h2 class="sec-title">الموقع بيعمل <em>إيه؟</em></h2>
         </div>
       </div>
-
       <div class="overview-layout">
         <section class="panel">
           <h3>رحلة المستخدم في ٤ خطوات</h3>
-
           <div class="steps">
             <div class="step">
               <div class="step-num">١</div>
-              <div><h4>اختار الخدمة</h4><p>تتبع، مقارنة شركات، محفظة، طلبة، أخبار، أو شات بوت.</p></div>
+              <div><h4>ابحث بالـ AI</h4><p>اكتب وجهتك والـ AI يحلل ويطلع لك كل المواصلات المتاحة.</p></div>
             </div>
-
             <div class="step">
               <div class="step-num">٢</div>
-              <div><h4>اعرف المعلومات</h4><p>شوف المواعيد، الأسعار، العروض، أو أفضل شركة حسب احتياجك.</p></div>
+              <div><h4>اختار الخدمة</h4><p>تتبع، مقارنة شركات، محفظة، طلبة، أخبار، أو شات بوت.</p></div>
             </div>
-
             <div class="step">
               <div class="step-num">٣</div>
               <div><h4>نفّذ بسرعة</h4><p>احسب رحلة، افتح المحفظة، قارن الشركات، أو فعّل باقة طالب.</p></div>
             </div>
-
             <div class="step">
               <div class="step-num">٤</div>
-              <div><h4>احفظ بياناتك</h4><p>الصفحات التجريبية تحفظ بعض البيانات في localStorage لحين ربط Backend.</p></div>
+              <div><h4>احفظ بياناتك</h4><p>الصفحات التجريبية تحفظ البيانات في localStorage لحين ربط Backend.</p></div>
             </div>
           </div>
         </section>
 
         <section class="panel">
-          <h3>آخر التنبيهات المختصرة</h3>
-
-          <div class="news-strip">
-            <article class="news-mini">
-              <span>تتبع</span>
-              <h3>صفحة تتبع متطورة</h3>
-              <p>تتبع وهمي ومواعيد وخريطة لحساب الرحلة.</p>
-            </article>
-
-            <article class="news-mini">
-              <span>شركات</span>
-              <h3>مقارنة السفر</h3>
-              <p>صفحة جديدة تقارن شركات السفر الكبيرة في مصر.</p>
-            </article>
-
-            <article class="news-mini">
-              <span>عروض</span>
-              <h3>كوبونات تجريبية</h3>
-              <p>أكواد خصم جاهزة للعرض ويمكن ربطها بنظام حقيقي.</p>
-            </article>
-          </div>
-
-          <div style="margin-top:20px;">
+          <h3>آخر التحديثات</h3>
+          <a class="news-mini" href="#ai-search-section-wrapper" onclick="smoothScrollTo('ai-search-section-wrapper')">
+            <div class="news-tag">جديد ✨</div>
+            <h3>بحث AI مدمج للمواصلات</h3>
+            <p>بحث ذكي عن وسائل النقل بالوجهة أو المسار مع تحديد الموقع.</p>
+          </a>
+          <a class="news-mini" href="tracking.html">
+            <div class="news-tag">تتبع</div>
+            <h3>صفحة تتبع متطورة</h3>
+            <p>تتبع وهمي ومواعيد وخريطة لحساب الرحلة.</p>
+          </a>
+          <a class="news-mini" href="services.html">
+            <div class="news-tag">شركات</div>
+            <h3>مقارنة شركات السفر</h3>
+            <p>قارن Blue Bus وSuperJet وEGBUS وغيرهم.</p>
+          </a>
+          <div style="margin-top:14px;">
             <a class="btn-primary" href="news.html">افتح كل الأخبار</a>
           </div>
         </section>
@@ -1418,11 +1558,14 @@ footer p{
   </div>
 </main>
 
+<!-- ============================================================
+     CHATBOT
+     ============================================================ -->
 <button class="chat-toggle" onclick="toggleChat()" aria-label="فتح الشات بوت">
   <i class="fa-solid fa-robot"></i>
 </button>
 
-<section class="chat-widget" id="chatWidget" aria-label="شات بوت مواصلاتي">
+<section class="chat-widget" id="chatWidget">
   <div class="chat-head">
     <div class="chat-title">
       <div class="chat-avatar"><i class="fa-solid fa-robot"></i></div>
@@ -1433,230 +1576,674 @@ footer p{
     </div>
     <button class="chat-close" onclick="toggleChat()"><i class="fa-solid fa-xmark"></i></button>
   </div>
-
   <div class="chat-body" id="chatBody">
-    <div class="msg bot">
-      أهلاً 👋 أنا مساعد مواصلاتي. أقدر أساعدك تفتح التتبع، المحفظة، الطلبة، الأخبار، أو مقارنة شركات السفر.
-    </div>
+    <div class="msg bot">أهلاً 👋 أنا مساعد مواصلاتي. أقدر أساعدك تفتح التتبع، المحفظة، الطلبة، الأخبار، أو تبحث عن مواصلات بالـ AI.</div>
   </div>
-
   <div class="chat-suggestions">
+    <button class="suggestion" onclick="sendSuggestion('ابحث عن مواصلات')">بحث AI</button>
     <button class="suggestion" onclick="sendSuggestion('عايز أتتبع رحلة')">تتبع رحلة</button>
     <button class="suggestion" onclick="sendSuggestion('عايز أقارن الشركات')">قارن الشركات</button>
     <button class="suggestion" onclick="sendSuggestion('عروض الطلبة')">عروض الطلبة</button>
-    <button class="suggestion" onclick="sendSuggestion('المحفظة')">المحفظة</button>
   </div>
-
   <div class="chat-input">
-    <input type="text" id="chatInput" placeholder="اكتب سؤالك هنا..." onkeydown="if(event.key==='Enter') sendChat()">
+    <input type="text" id="chatInput" placeholder="اكتب سؤالك هنا..."
+      onkeydown="if(event.key==='Enter') sendChat()">
     <button onclick="sendChat()"><i class="fa-solid fa-paper-plane"></i></button>
   </div>
 </section>
 
 <div id="toast"><i class="fa-solid fa-circle-check"></i><span id="toastMsg"></span></div>
 
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
 <footer>
-  <p>© ٢٠٢٦ مواصلاتي إكسبريس — Eng. Nasser Gamal. جميع الحقوق محفوظة.</p>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a class="nav-logo" href="#">
+        <div class="nav-logo-icon">
+          <i class="fa-solid fa-route" style="position:relative;z-index:1;font-size:13px;"></i>
+        </div>
+        <div>
+          <div class="nav-logo-text">مواصلاتي إكسبريس</div>
+          <div class="nav-logo-sub">Smart Mobility Egypt</div>
+        </div>
+      </a>
+      <p>منصة ذكية للمواصلات في مصر — تتبع، قارن، ادفع، ابحث بالـ AI، واستفد من العروض.</p>
+    </div>
+    <div class="footer-col">
+      <h4>الخدمات</h4>
+      <a href="#ai-search-section-wrapper" onclick="smoothScrollTo('ai-search-section-wrapper')">بحث AI للمواصلات</a>
+      <a href="tracking.html">التتبع والمواعيد</a>
+      <a href="services.html">مقارنة الشركات</a>
+      <a href="wallet.html">المحفظة الذكية</a>
+      <a href="students.html">باقات الطلبة</a>
+    </div>
+    <div class="footer-col">
+      <h4>المحتوى</h4>
+      <a href="news.html">الأخبار والتنبيهات</a>
+      <a href="#offers">العروض والخصومات</a>
+      <a href="#" onclick="toggleChat();return false;">الشات بوت</a>
+    </div>
+    <div class="footer-col">
+      <h4>التواصل</h4>
+      <a href="#">عن المشروع</a>
+      <a href="#">تواصل معنا</a>
+      <a href="#">سياسة الخصوصية</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© ٢٠٢٦ مواصلاتي إكسبريس — Eng. Nasser Gamal. جميع الحقوق محفوظة.</p>
+    <div class="footer-social">
+      <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+      <a href="#" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+      <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+    </div>
+  </div>
 </footer>
 
-<script>
-/* CURSOR */
-const cur=document.getElementById('cursor');
-const ring=document.getElementById('cursor-ring');
-let mx=0,my=0,rx=0,ry=0;
-
-document.addEventListener('mousemove',e=>{
-  mx=e.clientX;
-  my=e.clientY;
-  cur.style.left=mx+'px';
-  cur.style.top=my+'px';
-});
-
-function animRing(){
-  rx+=(mx-rx)*.14;
-  ry+=(my-ry)*.14;
-  ring.style.left=rx+'px';
-  ring.style.top=ry+'px';
-  requestAnimationFrame(animRing);
+<!-- ============================================================
+     JAVASCRIPT — UNIFIED
+     ============================================================ -->
+<style>
+@keyframes pulse {
+  0%   { box-shadow: 0 0 0 0  rgba(74,222,128,.5); }
+  70%  { box-shadow: 0 0 0 8px rgba(74,222,128,0); }
+  100% { box-shadow: 0 0 0 0  rgba(74,222,128,0); }
 }
-animRing();
-
-function bindCursorHover(){
-  document.querySelectorAll('a,button,.card,.quick-card,.offer-card,.panel,.news-mini,.chat-widget').forEach(el=>{
-    if(el.dataset.cursorBound) return;
-    el.dataset.cursorBound='1';
-
-    el.addEventListener('mouseenter',()=>{
-      cur.style.width='20px';
-      cur.style.height='20px';
-      cur.style.background='rgba(201,168,76,.5)';
-      ring.style.width='54px';
-      ring.style.height='54px';
-      ring.style.borderColor='rgba(201,168,76,.6)';
+</style>
+<script>
+/* ═══════════════════════════════════════
+   CURSOR
+   ═══════════════════════════════════════ */
+(function () {
+  const cur  = document.getElementById('cursor');
+  const ring = document.getElementById('cursor-ring');
+  if (!cur || !ring) return;
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cur.style.left = mx + 'px'; cur.style.top = my + 'px';
+  });
+  (function anim() {
+    rx += (mx - rx) * .14; ry += (my - ry) * .14;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(anim);
+  })();
+  document.querySelectorAll('a,button,.card,.quick-card,.offer-card,.transport-card').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cur.style.width = '18px'; cur.style.height = '18px';
+      cur.style.background = 'rgba(201,168,76,.5)';
+      ring.style.width = '50px'; ring.style.height = '50px';
     });
-
-    el.addEventListener('mouseleave',()=>{
-      cur.style.width='12px';
-      cur.style.height='12px';
-      cur.style.background='var(--gold)';
-      ring.style.width='36px';
-      ring.style.height='36px';
-      ring.style.borderColor='rgba(201,168,76,.5)';
+    el.addEventListener('mouseleave', () => {
+      cur.style.width = '10px'; cur.style.height = '10px';
+      cur.style.background = 'var(--gold)';
+      ring.style.width = '34px'; ring.style.height = '34px';
     });
   });
-}
-bindCursorHover();
+})();
 
-window.addEventListener('scroll',()=>{
-  document.getElementById('mainNav').classList.toggle('scrolled',scrollY>50);
+/* ═══════════════════════════════════════
+   NAV SCROLL
+   ═══════════════════════════════════════ */
+window.addEventListener('scroll', () => {
+  document.getElementById('mainNav').classList.toggle('scrolled', scrollY > 40);
 });
 
+/* ═══════════════════════════════════════
+   SMOOTH SCROLL HELPER
+   ═══════════════════════════════════════ */
+function smoothScrollTo(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
 
-/* USER WELCOME */
-function setWelcomeName(){
-  const nameEl = document.getElementById('welcomeName');
-  if(!nameEl) return;
+/* ═══════════════════════════════════════
+   WELCOME NAME
+   ═══════════════════════════════════════ */
+(function () {
+  const el = document.getElementById('welcomeName');
+  if (!el) return;
+  try {
+    const user = JSON.parse(localStorage.getItem('mx_user') || 'null');
+    el.textContent = (user && user.name) || localStorage.getItem('mx_user_name') || 'زائر';
+  } catch (_) { el.textContent = 'زائر'; }
+})();
 
-  let user = null;
+/* ═══════════════════════════════════════
+   MOBILE MENU
+   ═══════════════════════════════════════ */
+let menuOpen = false;
+function toggleMobileMenu() {
+  menuOpen = !menuOpen;
+  document.getElementById('mobileMenu').classList.toggle('open', menuOpen);
+  document.getElementById('hamburgerIcon').className = menuOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
+}
 
-  try{
-    user = JSON.parse(localStorage.getItem('mx_user') || 'null');
-  }catch(_){
-    user = null;
-  }
-
-  const savedName =
-    user && user.name
-      ? user.name
-      : localStorage.getItem('mx_user_name') || localStorage.getItem('userName') || '';
-
-  if(savedName){
-    nameEl.textContent = savedName;
-  }else{
-    nameEl.textContent = 'زائر';
+/* ═══════════════════════════════════════
+   QUICK NAV (hero/nav search)
+   ═══════════════════════════════════════ */
+function doQuickNav(q) {
+  q = (q || '').trim().toLowerCase();
+  if (!q) { showToast('اكتب اسم الخدمة'); return; }
+  if (q.includes('تتبع') || q.includes('رحلة') || q.includes('مواعيد')) {
+    window.location.href = 'tracking.html';
+  } else if (q.includes('شركة') || q.includes('شركات') || q.includes('سفر') || q.includes('قارن')) {
+    window.location.href = 'services.html';
+  } else if (q.includes('محفظ') || q.includes('رصيد') || q.includes('شحن')) {
+    window.location.href = 'wallet.html';
+  } else if (q.includes('طالب') || q.includes('طلبة') || q.includes('جامعة')) {
+    window.location.href = 'students.html';
+  } else if (q.includes('خبر') || q.includes('اخبار')) {
+    window.location.href = 'news.html';
+  } else if (q.includes('عرض') || q.includes('خصم') || q.includes('كود')) {
+    document.getElementById('offers').scrollIntoView({ behavior: 'smooth' });
+  } else if (q.includes('ai') || q.includes('ذكاء') || q.includes('بحث') || q.includes('وجهة') || q.includes('مواصل')) {
+    smoothScrollTo('ai-search-section-wrapper');
+    setTimeout(() => {
+      const inp = document.getElementById('dest-input');
+      if (inp) { inp.value = q; inp.focus(); }
+    }, 700);
+  } else {
+    smoothScrollTo('ai-search-section-wrapper');
+    setTimeout(() => {
+      const inp = document.getElementById('dest-input');
+      if (inp) { inp.value = q; runAISearch(); }
+    }, 700);
   }
 }
 
-setWelcomeName();
-
-/* QUICK SEARCH */
-function quickSearch(){
-  const q=document.getElementById('heroSearch').value.trim().toLowerCase();
-
-  if(!q){
-    showToast('اكتب اسم الخدمة أو اسأل الشات بوت');
-    return;
-  }
-
-  if(q.includes('تتبع') || q.includes('رحلة') || q.includes('مواعيد')){
-    window.location.href='tracking.html';
-  }else if(q.includes('شركة') || q.includes('شركات') || q.includes('سفر') || q.includes('قارن')){
-    window.location.href='services.html';
-  }else if(q.includes('محفظ') || q.includes('رصيد') || q.includes('شحن')){
-    window.location.href='wallet.html';
-  }else if(q.includes('طالب') || q.includes('طلبة') || q.includes('جامعة')){
-    window.location.href='students.html';
-  }else if(q.includes('خبر') || q.includes('اخبار') || q.includes('الأخبار')){
-    window.location.href='news.html';
-  }else{
-    toggleChat(true);
-    addMessage('user',q);
-    setTimeout(()=>botReply(q),400);
-  }
+/* ═══════════════════════════════════════
+   COPY CODE
+   ═══════════════════════════════════════ */
+function copyCode(code) {
+  navigator.clipboard.writeText(code).then(() => showToast('تم نسخ الكود: ' + code));
 }
 
-/* CHAT BOT */
-function toggleChat(forceOpen=false){
-  const widget=document.getElementById('chatWidget');
-
-  if(forceOpen){
-    widget.classList.add('open');
-    return;
-  }
-
-  widget.classList.toggle('open');
+/* ═══════════════════════════════════════
+   CHATBOT
+   ═══════════════════════════════════════ */
+function toggleChat(forceOpen = false) {
+  const w = document.getElementById('chatWidget');
+  if (forceOpen) { w.classList.add('open'); return; }
+  w.classList.toggle('open');
 }
-
-function addMessage(type,text){
-  const body=document.getElementById('chatBody');
-  const msg=document.createElement('div');
-  msg.className='msg ' + type;
-  msg.textContent=text;
-  body.appendChild(msg);
-  body.scrollTop=body.scrollHeight;
+function addMessage(type, text) {
+  const body = document.getElementById('chatBody');
+  const div = document.createElement('div');
+  div.className = 'msg ' + type;
+  div.textContent = text;
+  body.appendChild(div);
+  body.scrollTop = body.scrollHeight;
 }
-
-function sendSuggestion(text){
-  document.getElementById('chatInput').value=text;
+function sendSuggestion(text) {
+  document.getElementById('chatInput').value = text;
   sendChat();
 }
-
-function sendChat(){
-  const input=document.getElementById('chatInput');
-  const text=input.value.trim();
-
-  if(!text) return;
-
-  addMessage('user',text);
-  input.value='';
-
-  setTimeout(()=>botReply(text),450);
+function sendChat() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text) return;
+  addMessage('user', text);
+  input.value = '';
+  setTimeout(() => botReply(text), 450);
+}
+function botReply(text) {
+  const t = text.toLowerCase();
+  if (t.includes('ai') || t.includes('ذكاء') || t.includes('بحث') && t.includes('مواصل')) {
+    addMessage('bot', 'عندنا بحث AI للمواصلات! اكتب وجهتك والـ AI يطلع لك كل الوسائل المتاحة والأسعار.');
+    addBotAction('افتح البحث الذكي', () => { toggleChat(); smoothScrollTo('ai-search-section-wrapper'); });
+  } else if (t.includes('تتبع') || t.includes('مواعيد')) {
+    addMessage('bot', 'افتح صفحة التتبع: تتبع وهمي، مواعيد، وحساب رحلة على الخريطة.');
+    addBotLink('افتح التتبع', 'tracking.html');
+  } else if (t.includes('شركة') || t.includes('شركات') || t.includes('قارن')) {
+    addMessage('bot', 'صفحة الشركات فيها مقارنة بين Blue Bus وSuperJet وEGBUS وReGo وSWVL وغيرهم.');
+    addBotLink('قارن الشركات', 'services.html');
+  } else if (t.includes('محفظ') || t.includes('رصيد') || t.includes('شحن')) {
+    addMessage('bot', 'المحفظة تقدر منها تشحن، تسحب، تحول، وتضيف بطاقة بشكل تجريبي.');
+    addBotLink('افتح المحفظة', 'wallet.html');
+  } else if (t.includes('طالب') || t.includes('طلبة')) {
+    addMessage('bot', 'صفحة الطلبة فيها باقات وخصومات ونموذج تفعيل اشتراك طالب.');
+    addBotLink('باقات الطلبة', 'students.html');
+  } else if (t.includes('عرض') || t.includes('خصم') || t.includes('كود')) {
+    addMessage('bot', 'العروض الحالية: FIRST30 لأول رحلة، STUDENT40 للطلبة، CASHBACK10 للمحفظة.');
+  } else if (t.includes('خبر')) {
+    addMessage('bot', 'صفحة الأخبار فيها تنبيهات المواصلات والطرق والحوادث مع فلاتر وبحث.');
+    addBotLink('افتح الأخبار', 'news.html');
+  } else {
+    addMessage('bot', 'أقدر أساعدك في: بحث AI للمواصلات، التتبع، مقارنة الشركات، المحفظة، الطلبة، الأخبار، أو العروض. اكتب اسم الخدمة.');
+  }
+}
+function addBotLink(label, url) {
+  const body = document.getElementById('chatBody');
+  const d = document.createElement('div');
+  d.className = 'msg bot';
+  d.innerHTML = '<a href="' + url + '" style="color:var(--gold2);font-weight:900;text-decoration:none;">' + label + ' ←</a>';
+  body.appendChild(d);
+  body.scrollTop = body.scrollHeight;
+}
+function addBotAction(label, fn) {
+  const body = document.getElementById('chatBody');
+  const d = document.createElement('div');
+  d.className = 'msg bot';
+  const btn = document.createElement('button');
+  btn.textContent = label + ' ←';
+  btn.style.cssText = 'background:none;border:none;color:var(--gold2);font-weight:900;font-family:Tajawal,sans-serif;font-size:13px;cursor:pointer;padding:0;';
+  btn.onclick = fn;
+  d.appendChild(btn);
+  body.appendChild(d);
+  body.scrollTop = body.scrollHeight;
 }
 
-function botReply(text){
-  const t=text.toLowerCase();
-  let reply='';
+/* ═══════════════════════════════════════
+   TOAST
+   ═══════════════════════════════════════ */
+let toastTimer;
+function showToast(msg) {
+  clearTimeout(toastTimer);
+  document.getElementById('toastMsg').textContent = msg;
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
 
-  if(t.includes('تتبع') || t.includes('رحلة') || t.includes('مواعيد')){
-    reply='افتح صفحة التتبع من هنا: tracking.html — هتلاقي تتبع وهمي، مواعيد، وحساب رحلة على الخريطة.';
-    addMessage('bot',reply);
-    addBotLink('افتح التتبع','tracking.html');
-  }else if(t.includes('شركة') || t.includes('شركات') || t.includes('سفر') || t.includes('قارن')){
-    reply='صفحة الشركات فيها مقارنة بين Blue Bus وSuperJet وEGBUS وReGo وSWVL وغيرهم حسب السعر والمميزات والعيوب.';
-    addMessage('bot',reply);
-    addBotLink('قارن الشركات','services.html');
-  }else if(t.includes('محفظ') || t.includes('رصيد') || t.includes('شحن')){
-    reply='المحفظة تقدر منها تشحن، تسحب، تحول، وتضيف بطاقة بشكل تجريبي.';
-    addMessage('bot',reply);
-    addBotLink('افتح المحفظة','wallet.html');
-  }else if(t.includes('طالب') || t.includes('طلبة') || t.includes('جامعة')){
-    reply='صفحة الطلبة فيها باقات وخصومات ونموذج تفعيل اشتراك طالب.';
-    addMessage('bot',reply);
-    addBotLink('باقات الطلبة','students.html');
-  }else if(t.includes('عرض') || t.includes('خصم') || t.includes('كود')){
-    reply='العروض الحالية: FIRST30 لأول رحلة، STUDENT40 للطلبة، CASHBACK10 للمحفظة.';
-    addMessage('bot',reply);
-  }else if(t.includes('خبر') || t.includes('اخبار') || t.includes('الأخبار')){
-    reply='صفحة الأخبار فيها تنبيهات المواصلات والطرق والحوادث مع فلاتر وبحث.';
-    addMessage('bot',reply);
-    addBotLink('افتح الأخبار','news.html');
-  }else{
-    reply='أقدر أساعدك في: التتبع، مقارنة الشركات، المحفظة، الطلبة، الأخبار، أو العروض. اكتب اسم الخدمة اللي محتاجها.';
-    addMessage('bot',reply);
+/* ═══════════════════════════════════════
+   AI SEARCH — STATE
+   ═══════════════════════════════════════ */
+let userLat = null, userLng = null, userAddress = '';
+let currentTab = 'destination';
+let currentResults = null;
+let loadingInterval = null;
+
+/* ─── Tab switching ─── */
+function switchTab(tab) {
+  currentTab = tab;
+  ['destination', 'route', 'nearby'].forEach(t => {
+    document.getElementById('panel-' + t).style.display = t === tab ? 'block' : 'none';
+    document.getElementById('tab-' + t).classList.toggle('active', t === tab);
+  });
+}
+
+/* ─── Fill destination chip ─── */
+function fillDest(text) {
+  document.getElementById('dest-input').value = text;
+  document.getElementById('dest-input').focus();
+}
+
+/* ─── Swap inputs ─── */
+function swapInputs() {
+  const f = document.getElementById('from-input');
+  const t = document.getElementById('to-input');
+  [f.value, t.value] = [t.value, f.value];
+}
+
+/* ─── Get location ─── */
+function getLocation(autoSearch = false) {
+  const ids = ['loc-status', 'loc-status-route', 'loc-status-nearby'];
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.textContent = '⏳ جاري تحديد موقعك...'; el.className = 'loc-status'; }
+  });
+  if (!navigator.geolocation) {
+    ids.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) { el.textContent = '❌ المتصفح مش بيدعم GPS'; el.className = 'loc-status error'; }
+    });
+    return;
+  }
+  navigator.geolocation.getCurrentPosition(pos => {
+    userLat = pos.coords.latitude;
+    userLng = pos.coords.longitude;
+    fetch(`https://nominatim.openstreetmap.org/reverse?lat=${userLat}&lon=${userLng}&format=json&accept-language=ar`)
+      .then(r => r.json())
+      .then(data => {
+        const addr = data.display_name
+          ? data.display_name.split(',').slice(0, 2).join('، ')
+          : `${userLat.toFixed(3)}, ${userLng.toFixed(3)}`;
+        userAddress = addr;
+        ids.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) { el.textContent = '✅ ' + addr; el.className = 'loc-status found'; }
+        });
+        const fromInput = document.getElementById('from-input');
+        if (fromInput && !fromInput.value) fromInput.value = addr;
+        if (autoSearch) runAISearch();
+      })
+      .catch(() => {
+        userAddress = `${userLat.toFixed(4)}, ${userLng.toFixed(4)}`;
+        ids.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) { el.textContent = '✅ تم تحديد موقعك'; el.className = 'loc-status found'; }
+        });
+        if (autoSearch) runAISearch();
+      });
+  }, err => {
+    const msg = err.code === 1 ? '❌ رفضت إذن الموقع' : '❌ تعذر تحديد الموقع';
+    ids.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) { el.textContent = msg; el.className = 'loc-status error'; }
+    });
+  }, { timeout: 10000, enableHighAccuracy: true });
+}
+
+/* ─── Build prompt ─── */
+function buildPrompt() {
+  let destination = '', from = '';
+
+  if (currentTab === 'destination') {
+    destination = document.getElementById('dest-input').value.trim();
+    from = userAddress || 'القاهرة';
+    if (!destination) { showToast('اكتب وجهتك الأول'); return null; }
+  } else if (currentTab === 'route') {
+    from = document.getElementById('from-input').value.trim() || userAddress || 'القاهرة';
+    destination = document.getElementById('to-input').value.trim();
+    if (!destination) { showToast('اكتب الوجهة'); return null; }
+  } else if (currentTab === 'nearby') {
+    if (!userLat) { showToast('حدد موقعك الأول'); return null; }
+    destination = 'nearby'; from = userAddress;
+  }
+
+  const locInfo = userLat
+    ? `موقع المستخدم: ${userAddress} (${userLat.toFixed(4)}, ${userLng.toFixed(4)})`
+    : `موقع المستخدم: ${from}`;
+
+  if (destination === 'nearby') {
+    return `أنت مساعد مواصلات مصري خبير. ${locInfo}
+اعرض أقرب مواقف ومحطات من موقع المستخدم بالعامية المصرية.
+أجب بـ JSON فقط بدون أي نص خارجه:
+{"destination":"المواقف القريبة","description":"وصف المنطقة","transport_options":[{"type":"metro|bus|microbus|minibus|taxi|uber","name":"","route":"","price_min":"","price_max":"","duration_min":"","duration_max":"","frequency":"","nearest_stop":"","stop_distance":"","badges":[],"is_best":false,"steps":[],"notes":""}],"tips":[]}`;
+  }
+
+  return `أنت مساعد مواصلات مصري خبير بكل وسائل النقل — مترو، أتوبيس، ميكروباص، تاكسي، أوبر، Blue Bus، SuperJet.
+${locInfo}
+الوجهة: ${destination}
+اعرض كل وسائل المواصلات للوصول من "${from}" إلى "${destination}" بالعامية المصرية.
+أجب بـ JSON فقط بدون أي نص خارجه:
+{"destination":"${destination}","description":"وصف الوجهة","from":"${from}","transport_options":[{"type":"metro|bus|microbus|minibus|taxi|uber","name":"","route":"","price_min":"","price_max":"","duration_min":"","duration_max":"","frequency":"","nearest_stop":"","stop_distance":"","badges":[],"is_best":false,"steps":[],"notes":""}],"tips":[]}
+رتّب من الأرخص للأغلى. is_best:true لأفضل خيار واحد فقط.`;
+}
+
+/* ─── Loading animation ─── */
+function startLoadingAnim() {
+  const steps = [
+    { id: 'ls-1', icon: 'fa-magnifying-glass', text: 'تحليل الوجهة...' },
+    { id: 'ls-2', icon: 'fa-map-location-dot', text: 'البحث عن المسارات...' },
+    { id: 'ls-3', icon: 'fa-calculator', text: 'حساب الأسعار...' },
+    { id: 'ls-4', icon: 'fa-map-pin', text: 'تحديد أقرب المواقف...' },
+  ];
+  const area = document.getElementById('aiResultsArea');
+  area.style.display = 'block';
+  area.innerHTML = `
+    <div class="loading-state">
+      <div class="loader-ring"></div>
+      <p>الـ AI بيحلل ويدور على أفضل المواصلات ليك...</p>
+      <div class="loading-steps">
+        ${steps.map(s => `<div class="loading-step" id="${s.id}"><i class="fa-solid ${s.icon}"></i>${s.text}</div>`).join('')}
+      </div>
+    </div>`;
+  let i = 0;
+  loadingInterval = setInterval(() => {
+    if (i > 0) {
+      const prev = document.getElementById(steps[i - 1]?.id);
+      if (prev) prev.classList.replace('active', 'done');
+    }
+    if (i < steps.length) {
+      const el = document.getElementById(steps[i].id);
+      if (el) el.classList.add('active');
+    }
+    i++;
+    if (i > steps.length) clearInterval(loadingInterval);
+  }, 700);
+}
+
+/* ─── Main AI search ─── */
+async function runAISearch() {
+  const prompt = buildPrompt();
+  if (!prompt) return;
+
+  const btn = document.getElementById('searchBtn');
+  btn.disabled = true;
+  document.getElementById('searchBtnText').textContent = 'جاري البحث...';
+  startLoadingAnim();
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await response.json();
+    clearInterval(loadingInterval);
+    const raw = (data.content || []).map(c => c.text || '').join('');
+    const jsonMatch = raw.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('no JSON');
+    const result = JSON.parse(jsonMatch[0]);
+    currentResults = result;
+    renderResults(result);
+  } catch (err) {
+    clearInterval(loadingInterval);
+    renderAIError();
+    console.error(err);
+  } finally {
+    btn.disabled = false;
+    document.getElementById('searchBtnText').textContent = 'ابحث بالـ AI';
   }
 }
 
-function addBotLink(label,url){
-  const body=document.getElementById('chatBody');
-  const wrap=document.createElement('div');
-  wrap.className='msg bot';
-  wrap.innerHTML='<a href="'+url+'" style="color:var(--gold2);font-weight:900;text-decoration:none;">'+label+' ←</a>';
-  body.appendChild(wrap);
-  body.scrollTop=body.scrollHeight;
+/* ─── Render results ─── */
+function renderResults(data) {
+  const area = document.getElementById('aiResultsArea');
+  const typeIcons = {
+    metro:    { icon: 'fa-train-subway', cls: 'metro' },
+    bus:      { icon: 'fa-bus',          cls: 'bus' },
+    microbus: { icon: 'fa-van-shuttle',  cls: 'microbus' },
+    minibus:  { icon: 'fa-bus-simple',   cls: 'minibus' },
+    taxi:     { icon: 'fa-taxi',         cls: 'taxi' },
+    uber:     { icon: 'fa-car',          cls: 'uber' },
+  };
+  const options = data.transport_options || [];
+
+  const cardsHTML = options.map((t, idx) => {
+    const ti = typeIcons[t.type] || { icon: 'fa-bus', cls: 'bus' };
+    const badgesHTML = (t.badges || []).map(b => {
+      const cls = b.includes('رخيص') ? 'cheap' : b.includes('سريع') ? 'fast' : b.includes('مكيف') ? 'ac' : 'best-pick';
+      return `<span class="t-badge ${cls}">${b}</span>`;
+    }).join('');
+    const stepsHTML = (t.steps || []).map(s =>
+      `<div class="step-item"><div class="step-dot"></div><p>${s}</p></div>`
+    ).join('');
+
+    return `
+    <div class="transport-card ${t.is_best ? 'best' : ''}" id="tc-${idx}">
+      <div class="transport-head" onclick="toggleCard(${idx})">
+        <div class="t-icon ${ti.cls}"><i class="fa-solid ${ti.icon}"></i></div>
+        <div class="t-info">
+          <div class="t-name">${t.name}</div>
+          <div class="t-route">${t.route}</div>
+          <div class="t-badges">
+            ${t.is_best ? '<span class="t-badge best-pick"><i class="fa-solid fa-star" style="font-size:9px;"></i> الأفضل</span>' : ''}
+            ${badgesHTML}
+          </div>
+        </div>
+        <div class="t-price">
+          <strong>${t.price_min}–${t.price_max} جم</strong>
+          <span>${t.duration_min}–${t.duration_max} دق</span>
+        </div>
+        <i class="fa-solid fa-chevron-down t-toggle"></i>
+      </div>
+      <div class="transport-details">
+        <div class="details-grid">
+          <div class="detail-stat"><strong>${t.price_min}–${t.price_max}</strong><span>جنيه</span></div>
+          <div class="detail-stat"><strong>${t.duration_min}–${t.duration_max}</strong><span>دقيقة</span></div>
+          <div class="detail-stat"><strong>${t.frequency || '—'}</strong><span>التكرار</span></div>
+        </div>
+        ${t.nearest_stop ? `
+        <div class="stop-card">
+          <i class="fa-solid fa-map-pin"></i>
+          <div>
+            <strong>أقرب موقف: ${t.nearest_stop}</strong>
+            <span>${t.stop_distance || ''}</span>
+          </div>
+        </div>` : ''}
+        ${stepsHTML ? `
+        <div class="steps-list">
+          <h4><i class="fa-solid fa-list-ol" style="margin-left:6px;"></i> خطوات الرحلة</h4>
+          ${stepsHTML}
+        </div>` : ''}
+        ${t.notes ? `
+        <div style="background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:12px;padding:12px;font-size:13px;color:var(--sand2);font-weight:600;">
+          <i class="fa-solid fa-lightbulb" style="color:var(--gold);margin-left:6px;"></i>${t.notes}
+        </div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+
+  const tipsHTML = (data.tips || []).map((tip, i) =>
+    `<div class="tip-item"><div class="tip-bullet">${i + 1}</div><span>${tip}</span></div>`
+  ).join('');
+
+  area.innerHTML = `
+    <div class="results-header">
+      <div>
+        <div class="results-title">نتائج البحث</div>
+        <div class="results-meta">${options.length} وسيلة متاحة${data.from ? ' • من: ' + data.from : ''}</div>
+      </div>
+      <button onclick="runAISearch()"
+        style="padding:8px 16px;border-radius:999px;border:1px solid var(--border2);background:transparent;
+               color:var(--sand2);font-family:'Tajawal',sans-serif;font-size:13px;font-weight:700;cursor:pointer;">
+        <i class="fa-solid fa-rotate-right" style="margin-left:6px;"></i>تحديث
+      </button>
+    </div>
+
+    <div class="dest-card">
+      <div class="dest-header">
+        <div class="dest-icon"><i class="fa-solid fa-location-dot"></i></div>
+        <div>
+          <div class="dest-name">${data.destination}</div>
+          <div class="dest-desc">${data.description || ''}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="compare-bar">
+      <button class="filter-btn active" onclick="filterCards('all', this)">الكل (${options.length})</button>
+      <button class="filter-btn" onclick="filterCards('cheap', this)">الأرخص</button>
+      <button class="filter-btn" onclick="filterCards('fast', this)">الأسرع</button>
+      <button class="filter-btn" onclick="filterCards('best', this)">الأفضل</button>
+    </div>
+
+    <div class="transport-grid" id="transportGrid">${cardsHTML}</div>
+
+    ${tipsHTML ? `
+    <div class="tips-card">
+      <h3><i class="fa-solid fa-lightbulb"></i> نصائح مفيدة</h3>
+      <div class="tips-list">${tipsHTML}</div>
+    </div>` : ''}
+  `;
+
+  /* Auto-open best */
+  const bestIdx = options.findIndex(t => t.is_best);
+  if (bestIdx >= 0) toggleCard(bestIdx);
+
+  area.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-/* TOAST */
-let toastTimer;
-function showToast(msg){
-  clearTimeout(toastTimer);
-  document.getElementById('toastMsg').textContent=msg;
-  const t=document.getElementById('toast');
-  t.classList.add('show');
-  toastTimer=setTimeout(()=>t.classList.remove('show'),3000);
+/* ─── Toggle card ─── */
+function toggleCard(idx) {
+  const card = document.getElementById('tc-' + idx);
+  if (card) card.classList.toggle('open');
 }
 
-document.getElementById('heroSearch').addEventListener('keydown',e=>{
-  if(e.key==='Enter') quickSearch();
+/* ─── Filter ─── */
+function filterCards(type, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (!currentResults) return;
+
+  const options = [...(currentResults.transport_options || [])];
+  let filtered = options;
+  if (type === 'cheap') filtered = [...options].sort((a, b) => Number(a.price_min) - Number(b.price_min));
+  if (type === 'fast')  filtered = [...options].sort((a, b) => Number(a.duration_min) - Number(b.duration_min));
+  if (type === 'best')  filtered = options.filter(t => t.is_best);
+
+  const typeIcons = {
+    metro:    { icon: 'fa-train-subway', cls: 'metro' },
+    bus:      { icon: 'fa-bus',          cls: 'bus' },
+    microbus: { icon: 'fa-van-shuttle',  cls: 'microbus' },
+    minibus:  { icon: 'fa-bus-simple',   cls: 'minibus' },
+    taxi:     { icon: 'fa-taxi',         cls: 'taxi' },
+    uber:     { icon: 'fa-car',          cls: 'uber' },
+  };
+
+  const grid = document.getElementById('transportGrid');
+  if (!grid) return;
+  grid.innerHTML = filtered.map((t, idx) => {
+    const ti = typeIcons[t.type] || { icon: 'fa-bus', cls: 'bus' };
+    const badgesHTML = (t.badges || []).map(b => {
+      const cls = b.includes('رخيص') ? 'cheap' : b.includes('سريع') ? 'fast' : b.includes('مكيف') ? 'ac' : 'best-pick';
+      return `<span class="t-badge ${cls}">${b}</span>`;
+    }).join('');
+    const stepsHTML = (t.steps || []).map(s =>
+      `<div class="step-item"><div class="step-dot"></div><p>${s}</p></div>`
+    ).join('');
+    return `
+    <div class="transport-card ${t.is_best ? 'best' : ''}" id="tcf-${idx}">
+      <div class="transport-head" onclick="this.closest('.transport-card').classList.toggle('open')">
+        <div class="t-icon ${ti.cls}"><i class="fa-solid ${ti.icon}"></i></div>
+        <div class="t-info">
+          <div class="t-name">${t.name}</div>
+          <div class="t-route">${t.route}</div>
+          <div class="t-badges">${t.is_best ? '<span class="t-badge best-pick">⭐ الأفضل</span>' : ''}${badgesHTML}</div>
+        </div>
+        <div class="t-price"><strong>${t.price_min}–${t.price_max} جم</strong><span>${t.duration_min}–${t.duration_max} دق</span></div>
+        <i class="fa-solid fa-chevron-down t-toggle"></i>
+      </div>
+      <div class="transport-details">
+        <div class="details-grid">
+          <div class="detail-stat"><strong>${t.price_min}–${t.price_max}</strong><span>جنيه</span></div>
+          <div class="detail-stat"><strong>${t.duration_min}–${t.duration_max}</strong><span>دقيقة</span></div>
+          <div class="detail-stat"><strong>${t.frequency || '—'}</strong><span>التكرار</span></div>
+        </div>
+        ${t.nearest_stop ? `<div class="stop-card"><i class="fa-solid fa-map-pin"></i><div><strong>أقرب موقف: ${t.nearest_stop}</strong><span>${t.stop_distance || ''}</span></div></div>` : ''}
+        ${stepsHTML ? `<div class="steps-list"><h4>خطوات الرحلة</h4>${stepsHTML}</div>` : ''}
+        ${t.notes ? `<div style="background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:12px;padding:12px;font-size:13px;color:var(--sand2);font-weight:600;"><i class="fa-solid fa-lightbulb" style="color:var(--gold);margin-left:6px;"></i>${t.notes}</div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ─── AI Error ─── */
+function renderAIError() {
+  const area = document.getElementById('aiResultsArea');
+  area.innerHTML = `
+    <div class="empty-state">
+      <div class="empty-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+      <h3>حصل مشكلة في البحث</h3>
+      <p>تأكد من اتصالك بالإنترنت وحاول تاني.<br>لو المشكلة استمرت، جرب تكتب الوجهة بشكل أوضح.</p>
+      <button onclick="runAISearch()"
+        style="margin-top:20px;padding:10px 24px;border-radius:12px;border:1px solid var(--border2);
+               background:rgba(201,168,76,.08);color:var(--gold2);font-family:'Tajawal',sans-serif;
+               font-size:14px;font-weight:800;cursor:pointer;">
+        <i class="fa-solid fa-rotate-right" style="margin-left:6px;"></i>حاول تاني
+      </button>
+    </div>`;
+}
+
+/* ═══════════════════════════════════════
+   KEYBOARD SHORTCUTS
+   ═══════════════════════════════════════ */
+document.getElementById('heroSearch').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doQuickNav(e.target.value);
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && ['dest-input','from-input','to-input'].includes(e.target.id)) {
+    runAISearch();
+  }
 });
 </script>
 </body>
